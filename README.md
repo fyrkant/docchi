@@ -2,4 +2,4 @@
 
 Här finner du kälkoden till mitt individuella mjukvaruutvecklingsprojekt som genomförst inom kursen 1DV430 på Linnéuniversitetet. 
 
-[Hoppa över till Wikin](../wiki) för mera information kring applikationen och utvecklandets framfart. 
+[Hoppa över till Wikin](../../wiki) för mera information kring applikationen och utvecklandets framfart. 
