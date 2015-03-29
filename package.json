@@ -4,6 +4,7 @@
   "description": "Project nandakanda",
   "main": "index.js",
   "scripts": {
+    "watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
     "build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
     "test": "test"
   },
@@ -25,6 +26,7 @@
     "react": "^0.13.1",
     "react-router": "^0.13.2",
     "reactfire": "^0.4.0",
-    "reactify": "^1.1.0"
+    "reactify": "^1.1.0",
+    "watchify": "^2.6.2"
   }
 }
