@@ -4,6 +4,7 @@
   "description": "Project nandakanda",
   "main": "index.js",
   "scripts": {
+    "build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
     "test": "test"
   },
   "repository": {
@@ -21,6 +22,8 @@
     "jquery": "^2.1.3",
     "lodash": "^3.6.0",
     "react": "^0.13.1",
-    "react-router": "^0.13.2"
+    "react-router": "^0.13.2",
+    "reactfire": "^0.4.0",
+    "reactify": "^1.1.0"
   }
 }
