@@ -19720,37 +19720,79 @@ module.exports = require('./lib/React');
 
 var React = require('react');
 
-var App = React.createClass({displayName: "App",
-	getInitialState:function(){
-		return {
-			txt: ""
+var APP =
+	React.createClass({displayName: "APP",
+		render:function(){
+			return (
+				React.createElement("div", null, 					
+					React.createElement(BButton, {className: "btn-primary"}, React.createElement(BIcon, {className: "glyphicon-heart"}), " Button"), 
+					React.createElement(BButton, {className: "btn-danger"}, React.createElement(BIcon, {className: "glyphicon-pencil"}), " Button"), 
+					React.createElement(BButton, {className: "btn-success"}, React.createElement(BIcon, {className: "glyphicon-inbox"}), " Button")
+				)
+			)
 		}
-	},
-	update:function(e){
-		this.setState({txt: e.target.value});
-	},
-	render:function(){
-		return (
-			React.createElement("div", null, 
-				React.createElement(Widget, {txt: this.state.txt, update: this.update})
-			)
-			);
-	}
-});
+	});
 
-var Widget = React.createClass({displayName: "Widget",
-	render:function(){
-		return (
-			React.createElement("div", null, 
-				React.createElement("input", {type: "text", onChange: this.props.update}), 
-				React.createElement("br", null), 
-				React.createElement("h1", null, this.props.txt)
-			)
-			);
-	}
-});
+var BButton =
+	React.createClass({displayName: "BButton",		
+		render:function(){
+			return React.createElement("a", {className: 'btn ' + this.props.className}, this.props.children)
+		}
+	});
 
-React.render(React.createElement(App, {txt: "this is the txt prop"}), document.body)
+var BIcon = 
+	React.createClass({displayName: "BIcon",
+		render:function(){
+			return React.createElement("i", {className: 'glyphicon ' + this.props.className})
+		}
+	});
+
+React.render(
+	React.createElement(APP, null),
+	document.body
+	);
+
+
+// var APP = React.createClass({
+// 	getInitialState:function(){
+// 		return {
+// 			red:0,
+// 			green:0,
+// 			blue:0
+// 		}
+// 	},
+// 	update:function(){
+// 		this.setState({
+// 			red:this.refs.red.refs.range.getDOMNode().value,
+// 			green:this.refs.green.refs.range.getDOMNode().value,
+// 			blue:this.refs.blue.refs.range.getDOMNode().value
+// 		});
+// 	},
+// 	render:function(){
+// 		return (
+// 			<div>
+// 				<Slider ref="red"  update={this.update} />
+// 				<label>{this.state.red}</label><br />
+// 				<Slider ref="green"  update={this.update} />
+// 				<label>{this.state.green}</label><br />
+// 				<Slider ref="blue" update={this.update} />
+// 				<label>{this.state.blue}</label>
+// 			</div>
+// 			);
+// 	}
+// });
+
+// var Slider = React.createClass({
+// 	render:function(){
+// 		return (
+// 			<div>			
+// 				<input ref="range" type="range" min="0" max="255" onChange={this.props.update} />
+// 			</div>
+// 			);
+// 	}
+// });
+
+// React.render(<APP txt="this is the txt prop" />, document.body)
 
 
 },{"react":156}]},{},[157]);
