@@ -5,12 +5,12 @@ var React = require('react'),
     Route = Router.Route,
     DefaultRoute = Router.DefaultRoute,
     App = require('./app'),
-    Test1 = require('./components/test1'),
+    TodoApp = require('./components/todoapp'),
     Test2 = require('./components/test2');
 
 module.exports = (
 	<Route name="app" path="/" handler={App}>
-		<Route name="test1" handler={Test1} />
+		<Route name="todoapp" handler={TodoApp} />
 		<Route name="test2" handler={Test2} />
 		<DefaultRoute handler={Test2} />
 	</Route>

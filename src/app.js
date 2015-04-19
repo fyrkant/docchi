@@ -12,7 +12,7 @@ var App = React.createClass({
 		return (
 			<div>
 				<ul className="nav nav-pills">
-					<li><Link to="test1">Test1</Link></li>
+					<li><Link to="todoapp">TodoApp</Link></li>
 					<li><Link to="test2">Test2</Link></li>
 				</ul>
 
