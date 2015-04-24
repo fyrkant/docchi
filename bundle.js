@@ -44224,6 +44224,7 @@ var TodoApp = React.createClass({displayName: "TodoApp",
 			});
 		}
 	},
+	// REnder
 	render: function() {
 		return (
 			React.createElement("div", null, 

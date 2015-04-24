@@ -34,6 +34,7 @@ var TodoApp = React.createClass({
 			});
 		}
 	},
+	// REnder
 	render: function() {
 		return (
 			<div>
