@@ -1,12 +1,16 @@
-var React = require('react');
+var React = require('react'),
+	_ = require('lodash');
 
-var TodoList = React.createClass({
+var TodoList = React.createClass({	
+	handleClick: function(index){
+		this.props.clickFunc(index);
+	},
 	render: function() {
-		var createItem = function(itemText, index) {
+		var createItem = (itemText, index) => {
 			return <li key={index + itemText}>{itemText} 
-					<button className="btn btn-default">X</button></li>;
+					<button onClick={this.handleClick.bind(this, index)}>X</button></li>;
 		};
-		return <ul>{this.props.items.map(createItem)}</ul>;
+		return <ul>{_.map(this.props.items, createItem)}</ul>;
 	}
 
 });
