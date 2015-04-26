@@ -12,6 +12,6 @@ module.exports = (
 	<Route name="app" path="/" handler={App}>
 		<Route name="todoapp" handler={TodoApp} />
 		<Route name="test2" handler={Test2} />
-		<DefaultRoute handler={Test2} />
+		<DefaultRoute handler={TodoApp} />
 	</Route>
 );

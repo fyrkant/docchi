@@ -45525,7 +45525,8 @@ var Test2 = React.createClass({displayName: "Test2",
 	render: function() {
 		return (
 			React.createElement("div", null, 
-				React.createElement("h1", null, "test2")
+				React.createElement("h1", null, "N�got annat"), 
+				React.createElement("p", null, "H�r kan det finnas n�got annat. Typ det h�r.")
 			)
 		);
 	}
@@ -45549,26 +45550,28 @@ var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/")
 
 
 var TodoApp = React.createClass({displayName: "TodoApp",
-	mixins:[ReactFireMixin, Reflux.connect(TodoStore, "items")],
+	mixins:[ReactFireMixin, Reflux.connect(TodoStore)],
 	getInitialState: function(){
 		return {items: [], text: ""};
 	},
 	onChange: function(e){
 		this.setState({text: e.target.value});
 	},
-	//handleSubmit: function(e){
-	//	e.preventDefault();
-	//	actions.submitTodoLine(e, this);
-	//},
-	//componentWillMount: function() {
-	//	this.bindAsObject(myFirebase, "items");
-	//},
+	handleSubmit: function(e){
+		e.preventDefault();
+		this.firebaseRefs["items"].push({
+			text: this.state.text
+		});
+		this.setState({text: ""});
+	},
+	componentWillMount: function() {
+		this.bindAsObject(myFirebase, "items");
+	},
 	clickFunc:function(key){
 		actions.deleteTodoLine(key);
 	},
 	render: function() {
-		return (
-			React.createElement("div", null, 
+		return (		React.createElement("div", null, 
 				React.createElement("h3", null, "TODO"), 
 				React.createElement(TodoList, {clickFunc: this.clickFunc, items: this.state.items, removeText: this.removeText}), 
 				React.createElement("form", {onSubmit: this.handleSubmit}, 
@@ -45634,7 +45637,7 @@ module.exports = (
 	React.createElement(Route, {name: "app", path: "/", handler: App}, 
 		React.createElement(Route, {name: "todoapp", handler: TodoApp}), 
 		React.createElement(Route, {name: "test2", handler: Test2}), 
-		React.createElement(DefaultRoute, {handler: Test2})
+		React.createElement(DefaultRoute, {handler: TodoApp})
 	)
 );
 
@@ -45647,7 +45650,7 @@ var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/")
 
 module.exports = Reflux.createStore({
     listenables: [actions],
-    deleteTodoLine: function(key) {
+    onDeleteTodoLine: function(key) {
         if (confirm("Vill du verkligen radera raden?")) {
             myFirebase.child(key).remove(function (error) {
                 if (error) {
@@ -45655,16 +45658,6 @@ module.exports = Reflux.createStore({
                 }
             });
         }
-    },
-    handleSubmit: function(e){
-        e.preventDefault();
-        this.firebaseRefs["items"].push({
-            text: this.state.text
-        });
-        this.setState({text: ""});
-    },
-    componentWillMount: function() {
-        this.bindAsObject(myFirebase, "items");
     }
 });
 

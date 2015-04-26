@@ -12,26 +12,28 @@ var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/")
 
 
 var TodoApp = React.createClass({
-	mixins:[ReactFireMixin, Reflux.connect(TodoStore, "items")],
+	mixins:[ReactFireMixin, Reflux.connect(TodoStore)],
 	getInitialState: function(){
 		return {items: [], text: ""};
 	},
 	onChange: function(e){
 		this.setState({text: e.target.value});
 	},
-	//handleSubmit: function(e){
-	//	e.preventDefault();
-	//	actions.submitTodoLine(e, this);
-	//},
-	//componentWillMount: function() {
-	//	this.bindAsObject(myFirebase, "items");
-	//},
+	handleSubmit: function(e){
+		e.preventDefault();
+		this.firebaseRefs["items"].push({
+			text: this.state.text
+		});
+		this.setState({text: ""});
+	},
+	componentWillMount: function() {
+		this.bindAsObject(myFirebase, "items");
+	},
 	clickFunc:function(key){
 		actions.deleteTodoLine(key);
 	},
 	render: function() {
-		return (
-			<div>
+		return (		<div>
 				<h3>TODO</h3>
 				<TodoList clickFunc={this.clickFunc} items={this.state.items} removeText={this.removeText} />
 				<form onSubmit={this.handleSubmit}>

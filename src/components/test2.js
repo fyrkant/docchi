@@ -5,7 +5,8 @@ var Test2 = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<h1>test2</h1>
+				<h1>Något annat</h1>
+				<p>Här kan det finnas något annat. Typ det här.</p>
 			</div>
 		);
 	}
