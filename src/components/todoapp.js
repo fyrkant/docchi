@@ -1,41 +1,34 @@
-var React = require('react'),	
+var React = require('react'),
+	Reflux = require('reflux'),
 	Firebase = require('firebase'),
 	_ = require('lodash'),
 	$ = require('jquery'),
 	ReactFireMixin = require('reactfire'),
-	TodoList = require('./todolist');
+	TodoList = require('./todolist'),
+	actions = require('../actions'),
+	TodoStore = require('../todostore');
 
 var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/");
 
 
 var TodoApp = React.createClass({
-	mixins:[ReactFireMixin],
+	mixins:[ReactFireMixin, Reflux.connect(TodoStore, "items")],
 	getInitialState: function(){
 		return {items: [], text: ""};
 	},
 	onChange: function(e){
 		this.setState({text: e.target.value});
 	},
-	handleSubmit: function(e){
-		e.preventDefault();
-		this.firebaseRefs["items"].push({
-			text: this.state.text
-		});
-		this.setState({text: ""});
-	},
-	componentWillMount: function() {
-		this.bindAsObject(myFirebase, "items");
-	},
+	//handleSubmit: function(e){
+	//	e.preventDefault();
+	//	actions.submitTodoLine(e, this);
+	//},
+	//componentWillMount: function() {
+	//	this.bindAsObject(myFirebase, "items");
+	//},
 	clickFunc:function(key){
-		if (confirm("Vill du verkligen radera inlägget?")) {
-			myFirebase.child(key).remove(function(error) {
-				if (error) {
-					console.log(error);
-			    }
-			});
-		}
+		actions.deleteTodoLine(key);
 	},
-	// REnder
 	render: function() {
 		return (
 			<div>
