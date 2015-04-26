@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 var React = require('react'),
 	Router = require('react-router'),
 	Link = Router.Link,
@@ -10,13 +8,15 @@ var App = React.createClass({
 
 	render: function() {
 		return (
-			<div>
-				<ul className="nav nav-pills">
-					<li><Link to="todoapp">TodoApp</Link></li>
-					<li><Link to="test2">Test2</Link></li>
-				</ul>
+			<div className="container">
+				<div className="row">
+					<div className="nav nav-pills">
+						<Link className="btn btn-default" to="todoapp">TodoApp</Link>
+						<Link className="btn btn-default" to="test2">Test2</Link>
+					</div>
 
-			<RouteHandler />
+					<RouteHandler />
+				</div>
 			</div>
 		);
 	}

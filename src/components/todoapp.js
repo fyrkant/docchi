@@ -33,13 +33,15 @@ var TodoApp = React.createClass({
 		actions.deleteTodoLine(key);
 	},
 	render: function() {
-		return (		<div>
+		return (		<div className="col-sm-6">
 				<h3>TODO</h3>
 				<TodoList clickFunc={this.clickFunc} items={this.state.items} removeText={this.removeText} />
-				<form onSubmit={this.handleSubmit}>
-					<input onChange={this.onChange}
-					 value={this.state.text} />
-					<button>{"Add #" + (_.toArray(this.state.items).length +1)}</button>
+				<form className="form-inline" onSubmit={this.handleSubmit}>
+					<div className="form-group">
+						<input className="form-control" onChange={this.onChange}
+						 value={this.state.text} />
+					</div>
+					<button className="btn btn-small btn-default">{"Add #" + (_.toArray(this.state.items).length +1)}</button>
 				</form>
 			</div>
 		);

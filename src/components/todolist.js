@@ -7,10 +7,11 @@ var TodoList = React.createClass({
 	},
 	render: function() {
 		var createItem = (itemText, index) => {
-			return <li key={index + itemText}>{itemText} 
-					<button onClick={this.handleClick.bind(this, index)}>X</button></li>;
+			return <tr key={index + itemText}>
+					<td>{itemText}
+					<a className="btn btn-xs btn-danger pull-right" onClick={this.handleClick.bind(this, index)}>X</a></td></tr>;
 		};
-		return <ul>{_.map(this.props.items, createItem)}</ul>;
+		return <div className="col-sm-8"><table className="table table-striped"><tbody>{_.map(this.props.items, createItem)}</tbody></table></div>;
 	}
 
 });
