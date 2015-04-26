@@ -7,6 +7,7 @@ var React = require('react'),
 
 var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/");
 
+
 var TodoApp = React.createClass({
 	mixins:[ReactFireMixin],
 	getInitialState: function(){
@@ -26,7 +27,7 @@ var TodoApp = React.createClass({
 		this.bindAsObject(myFirebase, "items");
 	},
 	clickFunc:function(key){
-		if (confirm("Vill du verkligen radera inlägget?")) {				
+		if (confirm("Vill du verkligen radera inlägget?")) {
 			myFirebase.child(key).remove(function(error) {
 				if (error) {
 					console.log(error);
@@ -41,7 +42,7 @@ var TodoApp = React.createClass({
 				<h3>TODO</h3>
 				<TodoList clickFunc={this.clickFunc} items={this.state.items} removeText={this.removeText} />
 				<form onSubmit={this.handleSubmit}>
-					<input onChange={this.onChange} 
+					<input onChange={this.onChange}
 					 value={this.state.text} />
 					<button>{"Add #" + (_.toArray(this.state.items).length +1)}</button>
 				</form>

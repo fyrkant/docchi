@@ -1,7 +1,7 @@
 {
   "name": "mw222rs-project",
   "version": "0.0.1",
-  "description": "Project nandakanda",
+  "description": "Docchi",
   "main": "index.js",
   "scripts": {
     "watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
@@ -27,6 +27,7 @@
     "react-router": "^0.13.2",
     "reactfire": "^0.4.0",
     "reactify": "^1.1.0",
+    "reflux": "^0.2.7",
     "watchify": "^2.6.2"
   }
 }
