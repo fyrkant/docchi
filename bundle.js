@@ -45887,7 +45887,7 @@ var App = React.createClass({displayName: "App",
 				React.createElement("div", {className: "row"}, 
 					React.createElement("div", {className: "nav nav-pills"}, 
 						React.createElement(Link, {className: "btn btn-default", to: "todoapp"}, "TodoApp"), 
-						React.createElement(Link, {className: "btn btn-default", to: "test2"}, "Test2")
+						React.createElement(Link, {className: "btn btn-default", to: "lorempage"}, "LoremPage")
 					), 
 
 					React.createElement(RouteHandler, null)
@@ -45905,20 +45905,28 @@ module.exports = App;
 },{"react":198,"react-router":29}],222:[function(require,module,exports){
 var React = require('react');
 
-var Test2 = React.createClass({displayName: "Test2",
+var LoremPage = React.createClass({displayName: "LoremPage",
 
 	render: function() {
 		return (
-			React.createElement("div", null, 
-				React.createElement("h1", null, "N�got annat"), 
-				React.createElement("p", null, "H�r kan det finnas n�got annat. Typ det h�r.")
+			React.createElement("div", {className: "col-sm-4"}, 
+				React.createElement("h1", null, "Pri atqui ridens"), 
+				React.createElement("p", null, "Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt."), 
+
+				React.createElement("p", null, "Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel."), 
+
+				React.createElement("p", null, "Pri atqui ridens possim ad. Autem idque ius eu, ad usu integre liberavisse. Eos volutpat intellegat ut. Minim ludus accusamus no est, ad sea suas vidisse postulant. Inermis legendos usu cu, iusto dicunt gloriatur ne vis."), 
+
+				React.createElement("p", null, "Cu sit odio docendi. Cum accusam scripserit adversarium in, usu aeque eleifend praesent ei. Te nam sonet prompta graecis, ius partem delectus ei, ei mel dolore mucius concludaturque. Vix eros dicant expetendis te. Usu te inimicus repudiandae, labore impetus deseruisse vim no, eum cu justo facete efficiendi."), 
+
+				React.createElement("p", null, "Vis dolore prompta an, odio eruditi his ei. Cu sed rebum vitae phaedrum, accumsan salutandi nam no, duo probo accusam maiestatis in. Quot dolorum cu sea, alia impetus nam ei. Delenit nonumes sea at. At nulla decore per, nec unum assum no, nibh molestie prodesset eos cu.")
 			)
 		);
 	}
 
 });
 
-module.exports = Test2;
+module.exports = LoremPage;
 
 },{"react":198}],223:[function(require,module,exports){
 var React = require('react'),
@@ -45959,12 +45967,14 @@ var TodoApp = React.createClass({displayName: "TodoApp",
 		return (		React.createElement("div", {className: "col-sm-6"}, 
 				React.createElement("h3", null, "TODO"), 
 				React.createElement(TodoList, {clickFunc: this.clickFunc, items: this.state.items, removeText: this.removeText}), 
-				React.createElement("form", {className: "form-inline", onSubmit: this.handleSubmit}, 
-					React.createElement("div", {className: "form-group"}, 
-						React.createElement("input", {className: "form-control", onChange: this.onChange, 
-						 value: this.state.text})
-					), 
-					React.createElement("button", {className: "btn btn-small btn-default"}, "Add #" + (_.toArray(this.state.items).length +1))
+				React.createElement("div", {className: "col-sm-8"}, 
+					React.createElement("form", {className: "form-inline", onSubmit: this.handleSubmit}, 
+						React.createElement("div", {className: "form-group"}, 
+							React.createElement("input", {className: "form-control", onChange: this.onChange, 
+								   value: this.state.text})
+							), 
+						React.createElement("button", {className: "btn btn-small btn-default"}, "Add #" + (_.toArray(this.state.items).length +1))
+					)
 				)
 			)
 		);
@@ -45990,7 +46000,7 @@ var TodoList = React.createClass({displayName: "TodoList",
 					React.createElement("td", null, itemText, 
 					React.createElement("a", {className: "btn btn-xs btn-danger pull-right", onClick: this.handleClick.bind(this, index)}, "X")));
 		}.bind(this);
-		return React.createElement("div", {className: "col-sm-8"}, React.createElement("table", {className: "table table-striped"}, React.createElement("tbody", null, _.map(this.props.items, createItem))));
+		return React.createElement("div", {className: "col-sm-8 fluid"}, React.createElement("table", {className: "table table-hover"}, React.createElement("tbody", null, _.map(this.props.items, createItem))));
 	}
 
 });
@@ -46017,17 +46027,17 @@ var React = require('react'),
     DefaultRoute = Router.DefaultRoute,
     App = require('./app'),
     TodoApp = require('./components/todoapp'),
-    Test2 = require('./components/test2');
+    LoremPage = require('./components/lorempage');
 
 module.exports = (
 	React.createElement(Route, {name: "app", path: "/", handler: App}, 
 		React.createElement(Route, {name: "todoapp", handler: TodoApp}), 
-		React.createElement(Route, {name: "test2", handler: Test2}), 
+		React.createElement(Route, {name: "lorempage", handler: LoremPage}), 
 		React.createElement(DefaultRoute, {handler: TodoApp})
 	)
 );
 
-},{"./app":221,"./components/test2":222,"./components/todoapp":223,"react":198,"react-router":29}],227:[function(require,module,exports){
+},{"./app":221,"./components/lorempage":222,"./components/todoapp":223,"react":198,"react-router":29}],227:[function(require,module,exports){
 var Reflux = require('reflux'),
     actions = require('./actions'),
     Firebase = require('firebase');
