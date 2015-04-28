@@ -4,9 +4,11 @@
   "description": "Docchi",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
-    "build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js"
+    "test": "mocha --compilers js:babel\\register --recursive",
+    "_watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
+    "_build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
+    "build": "browserify src/index.js -t babelify --outfile bundle.js",
+    "watch": "watchify src/index.js -t babelify --outfile bundle.js -v"
   },
   "repository": {
     "type": "git",
@@ -19,12 +21,14 @@
   },
   "homepage": "https://github.com/1dv430/mw222rs-project",
   "devDependencies": {
+    "babel": "^5.1.13",
+    "babelify": "^6.0.2",
     "browserify": "^9.0.3",
     "firebase": "^2.2.3",
-    "jest-cli": "^0.4.0",
     "jquery": "^2.1.3",
+    "jsdom": "^2.0.0",
     "lodash": "^3.6.0",
-    "react": "^0.13.1",
+    "mocha": "^2.2.4",
     "react-router": "^0.13.2",
     "react-tools": "^0.13.2",
     "reactfire": "^0.4.0",
@@ -34,6 +38,12 @@
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/__tests__/support/preprocessor.js",
-    "unmockedModulePathPatterns": ["<rootDir>/node_modules/react"]
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react",
+      "<rootDir>/node_modules/react-tools"
+    ]
+  },
+  "dependencies": {
+    "react": "^0.13.2"
   }
 }

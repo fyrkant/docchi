@@ -2,7 +2,7 @@ var React = require('react'),
 	Reflux = require('reflux'),
 	Firebase = require('firebase'),
 	_ = require('lodash'),
-	$ = require('jquery'),
+	/*$ = require('jquery'),*/
 	ReactFireMixin = require('reactfire'),
 	TodoList = require('./todolist'),
 	actions = require('../actions'),
@@ -21,7 +21,7 @@ var TodoApp = React.createClass({
 	},
 	handleSubmit: function(e){
 		e.preventDefault();
-		this.firebaseRefs["items"].push({
+		this.firebaseRefs.items.push({
 			text: this.state.text
 		});
 		this.setState({text: ""});
