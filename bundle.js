@@ -36670,7 +36670,6 @@ module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine"]);
 var React = require('react'),
     Router = require('react-router'),
     Link = Router.Link,
-    Route = Router.Route,
     RouteHandler = Router.RouteHandler;
 
 var App = React.createClass({

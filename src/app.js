@@ -1,7 +1,6 @@
 var React = require('react'),
 	Router = require('react-router'),
 	Link = Router.Link,
-	Route = Router.Route,
 	RouteHandler = Router.RouteHandler;
 
 var App = React.createClass({
@@ -24,4 +23,3 @@ var App = React.createClass({
 });
 
 module.exports = App;
-
