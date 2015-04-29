@@ -41,6 +41,8 @@ describe('Todolist component', function(){
       renderedComponent, 'p'
     );
 
+    assert.equal()
+
     assert.equal(text.getDOMNode().textContent, "testText");
 
     //assert(this.todoListElement.getAttribute('type') === 'checkbox');

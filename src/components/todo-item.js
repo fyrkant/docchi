@@ -12,7 +12,7 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     this.setDone(this.refs.done.getDOMNode().checked);
-  },
+  }, 
 
   render: function() {
     return (
