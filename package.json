@@ -36,13 +36,6 @@
     "reflux": "^0.2.7",
     "watchify": "^2.6.2"
   },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/__tests__/support/preprocessor.js",
-    "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/react-tools"
-    ]
-  },
   "dependencies": {
     "react": "^0.13.2"
   }

@@ -7,7 +7,7 @@ module.exports = React.createClass({
    * Lifecycle functions
    **/
   getInitialState: function() {
-    return { done: this.props.done }
+    return { done: this.props.done };
   },
 
   componentDidMount: function() {

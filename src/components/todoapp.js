@@ -35,7 +35,7 @@ var TodoApp = React.createClass({
 	render: function() {
 		return (		<div className="col-sm-6">
 				<h3>TODO</h3>
-				<TodoList clickFunc={this.clickFunc} items={this.state.items} removeText={this.removeText} />
+				<TodoList onClick={this.clickFunc} items={this.state.items} />
 				<div className="col-sm-8">
 					<form className="form-inline" onSubmit={this.handleSubmit}>
 						<div className="form-group">

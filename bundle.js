@@ -36803,7 +36803,7 @@ var TodoApp = React.createClass({
 				null,
 				'TODO'
 			),
-			React.createElement(TodoList, { clickFunc: this.clickFunc, items: this.state.items, removeText: this.removeText }),
+			React.createElement(TodoList, { onClick: this.clickFunc, items: this.state.items }),
 			React.createElement(
 				'div',
 				{ className: 'col-sm-8' },
@@ -36840,6 +36840,10 @@ var React = require('react'),
 var TodoList = React.createClass({
 	displayName: 'TodoList',
 
+	propTypes: {
+		onClick: React.PropTypes.func.isRequired,
+		items: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object]).isRequired
+	},
 	handleClick: function handleClick(index) {
 		this.props.clickFunc(index);
 	},
@@ -36853,7 +36857,11 @@ var TodoList = React.createClass({
 				React.createElement(
 					'td',
 					null,
-					itemText,
+					React.createElement(
+						'p',
+						{ className: 'list-text' },
+						itemText
+					),
 					React.createElement(
 						'a',
 						{ className: 'btn btn-xs btn-danger pull-right', onClick: _this.handleClick.bind(_this, index) },
