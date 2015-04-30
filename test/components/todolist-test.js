@@ -39,9 +39,7 @@ describe('Todolist component', function(){
 
     var text = TestUtils.findRenderedDOMComponentWithTag(
       renderedComponent, 'p'
-    );
-
-    assert.equal()
+    );    
 
     assert.equal(text.getDOMNode().textContent, "testText");
 

@@ -36694,6 +36694,11 @@ var App = React.createClass({
 						Link,
 						{ className: 'btn btn-default', to: 'lorempage' },
 						'LoremPage'
+					),
+					React.createElement(
+						Link,
+						{ className: 'btn btn-default', to: 'write' },
+						'Write'
 					)
 				),
 				React.createElement(RouteHandler, null)
@@ -36830,7 +36835,7 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../actions":219,"../todostore":226,"./todolist":223,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],223:[function(require,module,exports){
+},{"../actions":219,"../todostore":227,"./todolist":223,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],223:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36889,6 +36894,50 @@ var TodoList = React.createClass({
 module.exports = TodoList;
 
 },{"lodash":3,"react":197}],224:[function(require,module,exports){
+"use strict";
+
+var React = require("react");
+/*	Reflux = require('reflux'),
+	Firebase = require('firebase'),
+	_ = require('lodash'),
+	$ = require('jquery'),
+	ReactFireMixin = require('reactfire'),
+	TodoList = require('./todolist'),
+	actions = require('../actions'),
+	WriteStore = require('../writestore')*/
+
+//var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");
+
+var TodoApp = React.createClass({
+	displayName: "TodoApp",
+
+	render: function render() {
+		return React.createElement(
+			"div",
+			{ className: "col-sm-6" },
+			React.createElement(
+				"h3",
+				null,
+				"WRITE"
+			),
+			React.createElement(
+				"div",
+				{ className: "col-sm-8" },
+				React.createElement(
+					"p",
+					{ className: "text-muted" },
+					"Här ska man skriva historier."
+				)
+			)
+		);
+	},
+	componentWillUnmount: function componentWillUnmount() {}
+
+});
+
+module.exports = TodoApp;
+
+},{"react":197}],225:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36899,7 +36948,7 @@ ReactRouter.run(routes, function (Handler) {
 	React.render(React.createElement(Handler, null), document.body);
 });
 
-},{"./routes":225,"react":197,"react-router":28}],225:[function(require,module,exports){
+},{"./routes":226,"react":197,"react-router":28}],226:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36908,17 +36957,19 @@ var React = require('react'),
     DefaultRoute = Router.DefaultRoute,
     App = require('./app'),
     TodoApp = require('./components/todoapp'),
-    LoremPage = require('./components/lorempage');
+    LoremPage = require('./components/lorempage'),
+    Write = require('./components/write');
 
 module.exports = React.createElement(
   Route,
   { name: 'app', path: '/', handler: App },
   React.createElement(Route, { name: 'todoapp', handler: TodoApp }),
   React.createElement(Route, { name: 'lorempage', handler: LoremPage }),
+  React.createElement(Route, { name: 'write', handler: Write }),
   React.createElement(DefaultRoute, { handler: TodoApp })
 );
 
-},{"./app":220,"./components/lorempage":221,"./components/todoapp":222,"react":197,"react-router":28}],226:[function(require,module,exports){
+},{"./app":220,"./components/lorempage":221,"./components/todoapp":222,"./components/write":224,"react":197,"react-router":28}],227:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -36940,4 +36991,4 @@ module.exports = Reflux.createStore({
     }
 });
 
-},{"./actions":219,"firebase":2,"reflux":199}]},{},[224]);
+},{"./actions":219,"firebase":2,"reflux":199}]},{},[225]);

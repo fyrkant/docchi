@@ -12,6 +12,7 @@ var App = React.createClass({
 					<div className="nav nav-pills">
 						<Link className="btn btn-default" to="todoapp">TodoApp</Link>
 						<Link className="btn btn-default" to="lorempage">LoremPage</Link>
+						<Link className="btn btn-default" to="write">Write</Link>
 					</div>
 
 					<RouteHandler />

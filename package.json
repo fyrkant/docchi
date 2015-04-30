@@ -11,6 +11,7 @@
     "_build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
     "prebuild": "npm run test",
     "build": "browserify src/index.js -t babelify --outfile bundle.js",
+    "prewatch": "npm run test",
     "watch": "watchify src/index.js -t babelify --outfile bundle.js -v"
   },
   "repository": {
