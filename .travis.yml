@@ -6,4 +6,3 @@ node_js:
 	- "0.6"
 before_install: 
 	- "npm i -g babel"
-script: "npm run"
