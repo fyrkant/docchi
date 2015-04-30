@@ -17,7 +17,7 @@ var TodoApp = React.createClass({
 		return (		<div className="col-sm-6">
 				<h3>WRITE</h3>
 				<div className="col-sm-8">
-				    <p className="text-muted">Här ska man skriva historier.</p>
+				    <p className="text-muted">Här ska man skriva historier!</p>
 				</div>
 			</div>
 		);
