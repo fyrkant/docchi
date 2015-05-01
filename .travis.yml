@@ -4,6 +4,7 @@ node_js:
 	- "0.10"
 	- "0.8"
 	- "0.6"
-script: "npm"
 before_install: 
 	- "npm i -g babel"
+	- "npm i -g mocha"
+script: "mocha"
