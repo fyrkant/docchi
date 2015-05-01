@@ -34,7 +34,8 @@ var TodoApp = React.createClass({
 		actions.deleteTodoLine(key);
 	},
 	render: function() {
-		return (		<div className="col-sm-6">
+		return (		
+			<div className="col-sm-6">
 				<h3>TODO</h3>
 				<TodoList onClick={this.clickFunc} items={this.state.items} />
 				<div className="col-sm-8">
@@ -42,6 +43,7 @@ var TodoApp = React.createClass({
 						<div className="form-group">
 							<input className="form-control" onChange={this.onChange}
 								   value={this.state.text} />
+
 							</div>
 						<button className="btn btn-small btn-default">{"Add #" + (_.toArray(this.state.items).length +1)}</button>
 					</form>

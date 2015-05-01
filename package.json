@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "jsxhint --reporter node_modules/jshint-stylish/stylish.js src/** test/**",
-    "pretest": "npm run lint",
-    "test": "mocha --compilers js:babel\\register --recursive",
+    "test": "mocha --compilers js:babel/register --recursive",
     "_watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
     "_build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
     "prebuild": "npm run test",

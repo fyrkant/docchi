@@ -36897,20 +36897,31 @@ module.exports = TodoList;
 "use strict";
 
 var React = require("react");
-/*	Reflux = require('reflux'),
-	Firebase = require('firebase'),
-	_ = require('lodash'),
-	$ = require('jquery'),
-	ReactFireMixin = require('reactfire'),
-	TodoList = require('./todolist'),
-	actions = require('../actions'),
-	WriteStore = require('../writestore')*/
-
-//var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");
+// Reflux = require('reflux'),
+// Firebase = require('firebase');
+// _ = require('lodash'),
+// $ = require('jquery'),
+// ReactFireMixin = require('reactfire'),
+// TodoList = require('./todolist'),
+// actions = require('../actions'),
+// WriteStore = require('../writestore'),
+// myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");
 
 var TodoApp = React.createClass({
 	displayName: "TodoApp",
 
+	// mixins:[ReactFireMixin, Reflux.connect(WriteStore)],
+	getInitialState: function getInitialState() {
+		return { storyPart: { key: "", title: "", txt: "" } };
+	},
+	onChange: function onChange() {
+		this.setState({
+			storyPart: {
+				title: this.refs.title.getDOMNode().value,
+				txt: this.refs.txt.getDOMNode().value
+			}
+		});
+	},
 	render: function render() {
 		return React.createElement(
 			"div",
@@ -36918,16 +36929,37 @@ var TodoApp = React.createClass({
 			React.createElement(
 				"h3",
 				null,
-				"WRITE"
+				"SKRIV"
 			),
 			React.createElement(
 				"div",
 				{ className: "col-sm-8" },
 				React.createElement(
-					"p",
-					{ className: "text-muted" },
-					"Här ska man skriva historier."
+					"form",
+					null,
+					React.createElement("input", { type: "text",
+						ref: "title",
+						className: "form-control",
+						placeholder: "Titel",
+						onChange: this.onChange,
+						value: this.state.storyPart.title }),
+					React.createElement("textarea", { ref: "txt",
+						className: "form-control",
+						placeholder: "Text",
+						onChange: this.onChange,
+						value: this.state.storyPart.txt
+					})
 				)
+			),
+			React.createElement(
+				"h4",
+				null,
+				this.state.storyPart.title
+			),
+			React.createElement(
+				"p",
+				null,
+				this.state.storyPart.txt
 			)
 		);
 	},
