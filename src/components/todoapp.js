@@ -4,9 +4,8 @@ var React = require('react'),
 	_ = require('lodash'),
 	/*$ = require('jquery'),*/
 	ReactFireMixin = require('reactfire'),
-	TodoList = require('./todolist'),
-	actions = require('../actions'),
-	TodoStore = require('../todostore');
+	TodoList = require('./todolist'),	
+	TodoStore = require('../stores/todostore');
 
 var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/");
 
@@ -30,14 +29,12 @@ var TodoApp = React.createClass({
 	componentWillMount: function() {
 		this.bindAsObject(myFirebase, "items");
 	},
-	clickFunc:function(key){
-		actions.deleteTodoLine(key);
-	},
 	render: function() {
 		return (		
 			<div className="col-sm-6">
 				<h3>TODO</h3>
 				<TodoList onClick={this.clickFunc} items={this.state.items} />
+				
 				<div className="col-sm-8">
 					<form className="form-inline" onSubmit={this.handleSubmit}>
 						<div className="form-group">

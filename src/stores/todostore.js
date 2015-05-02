@@ -1,5 +1,5 @@
 var Reflux = require('reflux'),
-    actions = require('./actions'),
+    actions = require('../actions'),
     Firebase = require('firebase');
 
 var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/");

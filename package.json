@@ -8,9 +8,9 @@
     "test": "mocha --compilers js:babel/register --recursive",
     "_watch": "watchify -t [reactify --es6] src/index.js -o bundle.js -v",
     "_build": "browserify --debug -t [reactify --es6] src/index.js > bundle.js",
-    "prebuild": "npm run test",
+    "prebuild": "npm run lint",
     "build": "browserify src/index.js -t babelify --outfile bundle.js",
-    "prewatch": "npm run test",
+    "prewatch": "npm run lint",
     "watch": "watchify src/index.js -t babelify --outfile bundle.js -v"
   },
   "repository": {

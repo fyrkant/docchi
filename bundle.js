@@ -36662,7 +36662,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require("reflux");
 
-module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine"]);
+module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login"]);
 
 },{"reflux":199}],220:[function(require,module,exports){
 'use strict';
@@ -36670,12 +36670,14 @@ module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine"]);
 var React = require('react'),
     Router = require('react-router'),
     Link = Router.Link,
-    RouteHandler = Router.RouteHandler;
+    RouteHandler = Router.RouteHandler,
+    LoginButton = require('./components/loginbutton');
 
 var App = React.createClass({
 	displayName: 'App',
 
 	render: function render() {
+		var btnClass = 'btn btn-default navbar-btn';
 		return React.createElement(
 			'div',
 			{ className: 'container' },
@@ -36687,19 +36689,20 @@ var App = React.createClass({
 					{ className: 'nav nav-pills' },
 					React.createElement(
 						Link,
-						{ className: 'btn btn-default', to: 'todoapp' },
+						{ className: btnClass, to: 'todoapp' },
 						'TodoApp'
 					),
 					React.createElement(
 						Link,
-						{ className: 'btn btn-default', to: 'lorempage' },
+						{ className: btnClass, to: 'lorempage' },
 						'LoremPage'
 					),
 					React.createElement(
 						Link,
-						{ className: 'btn btn-default', to: 'write' },
+						{ className: btnClass, to: 'write' },
 						'Write'
-					)
+					),
+					React.createElement(LoginButton, null)
 				),
 				React.createElement(RouteHandler, null)
 			)
@@ -36710,7 +36713,72 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"react":197,"react-router":28}],221:[function(require,module,exports){
+},{"./components/loginbutton":222,"react":197,"react-router":28}],221:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    Reflux = require('reflux'),
+    actions = require('../actions'),
+    TodoStore = require('../stores/todostore');
+
+var ListItem = React.createClass({
+	displayName: 'ListItem',
+
+	mixins: [Reflux.connect(TodoStore)],
+	handleClick: function handleClick(key) {
+		actions.deleteTodoLine(key);
+	},
+	render: function render() {
+		return React.createElement(
+			'tr',
+			null,
+			React.createElement(
+				'td',
+				null,
+				React.createElement(
+					'p',
+					{ className: 'list-text' },
+					this.props.itemText
+				),
+				React.createElement(
+					'a',
+					{ className: 'btn btn-xs btn-danger pull-right',
+						onClick: actions.deleteTodoLine.bind(this, this.props.index) },
+					'X'
+				)
+			)
+		);
+	}
+
+});
+
+module.exports = ListItem;
+
+},{"../actions":219,"../stores/todostore":231,"react":197,"reflux":199}],222:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    Reflux = require('reflux'),
+    LoginStore = require('../stores/loginstore'),
+    actions = require('../actions');
+
+var LoginButton = React.createClass({
+	displayName: 'LoginButton',
+
+	mixins: [Reflux.connect(LoginStore)],
+	render: function render() {
+		return React.createElement(
+			'button',
+			{ className: 'btn btn-default navbar-btn', onClick: actions.login },
+			'Logga in'
+		);
+	}
+
+});
+
+module.exports = LoginButton;
+
+},{"../actions":219,"../stores/loginstore":230,"react":197,"reflux":199}],223:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -36759,7 +36827,7 @@ var LoremPage = React.createClass({
 
 module.exports = LoremPage;
 
-},{"react":197}],222:[function(require,module,exports){
+},{"react":197}],224:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36770,8 +36838,7 @@ var React = require('react'),
 /*$ = require('jquery'),*/
 ReactFireMixin = require('reactfire'),
     TodoList = require('./todolist'),
-    actions = require('../actions'),
-    TodoStore = require('../todostore');
+    TodoStore = require('../stores/todostore');
 
 var myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/items/');
 
@@ -36794,9 +36861,6 @@ var TodoApp = React.createClass({
 	},
 	componentWillMount: function componentWillMount() {
 		this.bindAsObject(myFirebase, 'items');
-	},
-	clickFunc: function clickFunc(key) {
-		actions.deleteTodoLine(key);
 	},
 	render: function render() {
 		return React.createElement(
@@ -36835,44 +36899,24 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../actions":219,"../todostore":227,"./todolist":223,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],223:[function(require,module,exports){
+},{"../stores/todostore":231,"./todolist":225,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],225:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    ListItem = require('./listitem');
 
 var TodoList = React.createClass({
 	displayName: 'TodoList',
 
 	propTypes: {
-		onClick: React.PropTypes.func.isRequired,
 		items: React.PropTypes.oneOfType([React.PropTypes.array, React.PropTypes.object]).isRequired
-	},
-	handleClick: function handleClick(index) {
-		this.props.clickFunc(index);
 	},
 	render: function render() {
 		var _this = this;
 
 		var createItem = function createItem(itemText, index) {
-			return React.createElement(
-				'tr',
-				{ key: index + itemText },
-				React.createElement(
-					'td',
-					null,
-					React.createElement(
-						'p',
-						{ className: 'list-text' },
-						itemText
-					),
-					React.createElement(
-						'a',
-						{ className: 'btn btn-xs btn-danger pull-right', onClick: _this.handleClick.bind(_this, index) },
-						'X'
-					)
-				)
-			);
+			return React.createElement(ListItem, { key: index, itemText: itemText, onClick: _this.handleClick, index: index });
 		};
 		return React.createElement(
 			'div',
@@ -36893,26 +36937,28 @@ var TodoList = React.createClass({
 
 module.exports = TodoList;
 
-},{"lodash":3,"react":197}],224:[function(require,module,exports){
-"use strict";
+},{"./listitem":221,"lodash":3,"react":197}],226:[function(require,module,exports){
+'use strict';
 
-var React = require("react");
-// Reflux = require('reflux'),
-// Firebase = require('firebase');
+var React = require('react'),
+    WriterOutput = require('./writeroutput'),
+    Reflux = require('reflux'),
+    Firebase = require('firebase'),
+    myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/docchi/'),
+    ReactFireMixin = require('reactfire'),
+    WriteStore = require('../stores/writestore');
 // _ = require('lodash'),
 // $ = require('jquery'),
-// ReactFireMixin = require('reactfire'),
+
 // TodoList = require('./todolist'),
 // actions = require('../actions'),
-// WriteStore = require('../writestore'),
-// myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");
 
 var TodoApp = React.createClass({
-	displayName: "TodoApp",
+	displayName: 'TodoApp',
 
-	// mixins:[ReactFireMixin, Reflux.connect(WriteStore)],
+	mixins: [ReactFireMixin, Reflux.connect(WriteStore)],
 	getInitialState: function getInitialState() {
-		return { storyPart: { key: "", title: "", txt: "" } };
+		return { storyPart: { key: '', title: '', txt: '' } };
 	},
 	onChange: function onChange() {
 		this.setState({
@@ -36922,45 +36968,45 @@ var TodoApp = React.createClass({
 			}
 		});
 	},
+	componentWillMount: function componentWillMount() {
+		this.bindAsObject(myFirebase, 'parts');
+	},
 	render: function render() {
 		return React.createElement(
-			"div",
-			{ className: "col-sm-6" },
+			'div',
+			null,
 			React.createElement(
-				"h3",
-				null,
-				"SKRIV"
-			),
-			React.createElement(
-				"div",
-				{ className: "col-sm-8" },
+				'div',
+				{ className: 'col-sm-6' },
 				React.createElement(
-					"form",
+					'h3',
 					null,
-					React.createElement("input", { type: "text",
-						ref: "title",
-						className: "form-control",
-						placeholder: "Titel",
-						onChange: this.onChange,
-						value: this.state.storyPart.title }),
-					React.createElement("textarea", { ref: "txt",
-						className: "form-control",
-						placeholder: "Text",
-						onChange: this.onChange,
-						value: this.state.storyPart.txt
-					})
+					'SKRIV'
+				),
+				React.createElement(
+					'div',
+					{ className: 'col-sm-8' },
+					React.createElement(
+						'form',
+						null,
+						React.createElement('input', { type: 'text',
+							ref: 'title',
+							className: 'form-control',
+							placeholder: 'Titel',
+							onChange: this.onChange,
+							value: this.state.storyPart.title }),
+						React.createElement('textarea', { ref: 'txt',
+							className: 'form-control',
+							placeholder: 'Text',
+							onChange: this.onChange,
+							value: this.state.storyPart.txt
+						})
+					)
 				)
 			),
-			React.createElement(
-				"h4",
-				null,
-				this.state.storyPart.title
-			),
-			React.createElement(
-				"p",
-				null,
-				this.state.storyPart.txt
-			)
+			React.createElement(WriterOutput, {
+				title: this.state.storyPart.title,
+				txt: this.state.storyPart.txt })
 		);
 	},
 	componentWillUnmount: function componentWillUnmount() {}
@@ -36969,7 +37015,36 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"react":197}],225:[function(require,module,exports){
+},{"../stores/writestore":232,"./writeroutput":227,"firebase":2,"react":197,"reactfire":198,"reflux":199}],227:[function(require,module,exports){
+"use strict";
+
+var React = require("react");
+
+var WriterOutput = React.createClass({
+	displayName: "WriterOutput",
+
+	render: function render() {
+		return React.createElement(
+			"div",
+			{ className: "col-sm-4" },
+			React.createElement(
+				"h4",
+				null,
+				this.props.title
+			),
+			React.createElement(
+				"p",
+				null,
+				this.props.txt
+			)
+		);
+	}
+
+});
+
+module.exports = WriterOutput;
+
+},{"react":197}],228:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36980,7 +37055,7 @@ ReactRouter.run(routes, function (Handler) {
 	React.render(React.createElement(Handler, null), document.body);
 });
 
-},{"./routes":226,"react":197,"react-router":28}],226:[function(require,module,exports){
+},{"./routes":229,"react":197,"react-router":28}],229:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -37001,11 +37076,32 @@ module.exports = React.createElement(
   React.createElement(DefaultRoute, { handler: TodoApp })
 );
 
-},{"./app":220,"./components/lorempage":221,"./components/todoapp":222,"./components/write":224,"react":197,"react-router":28}],227:[function(require,module,exports){
+},{"./app":220,"./components/lorempage":223,"./components/todoapp":224,"./components/write":226,"react":197,"react-router":28}],230:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
-    actions = require('./actions'),
+    Firebase = require('firebase'),
+    ref = new Firebase('https://blazing-fire-8429.firebaseio.com'),
+    actions = require('../actions');
+
+module.exports = Reflux.createStore({
+	listenables: [actions],
+	onLogin: function onLogin() {
+		ref.authWithOAuthPopup('github', function (error, authData) {
+			if (error) {
+				console.log('Login Failed!', error);
+			} else {
+				console.log('Authenticated successfully with payload:', authData);
+			}
+		});
+	}
+});
+
+},{"../actions":219,"firebase":2,"reflux":199}],231:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux'),
+    actions = require('../actions'),
     Firebase = require('firebase');
 
 var myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/items/');
@@ -37023,4 +37119,16 @@ module.exports = Reflux.createStore({
     }
 });
 
-},{"./actions":219,"firebase":2,"reflux":199}]},{},[225]);
+},{"../actions":219,"firebase":2,"reflux":199}],232:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux'),
+    actions = require('../actions');
+/*Firebase = require('firebase');
+var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");*/
+
+module.exports = Reflux.createStore({
+    listenables: [actions]
+});
+
+},{"../actions":219,"reflux":199}]},{},[228]);
