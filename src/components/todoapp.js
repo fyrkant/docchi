@@ -4,7 +4,7 @@ var React = require('react'),
 	_ = require('lodash'),
 	/*$ = require('jquery'),*/
 	ReactFireMixin = require('reactfire'),
-	TodoList = require('./todolist'),	
+	TodoList = require('./todolist'),
 	TodoStore = require('../stores/todostore');
 
 var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/items/");
@@ -30,11 +30,11 @@ var TodoApp = React.createClass({
 		this.bindAsObject(myFirebase, "items");
 	},
 	render: function() {
-		return (		
+		return (
 			<div className="col-sm-6">
 				<h3>TODO</h3>
 				<TodoList onClick={this.clickFunc} items={this.state.items} />
-				
+
 				<div className="col-sm-8">
 					<form className="form-inline" onSubmit={this.handleSubmit}>
 						<div className="form-group">
@@ -47,10 +47,7 @@ var TodoApp = React.createClass({
 				</div>
 			</div>
 		);
-	},
-	componentWillUnmount: function() {
 	}
-
 });
 
 module.exports = TodoApp;

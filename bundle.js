@@ -36662,7 +36662,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require("reflux");
 
-module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login"]);
+module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login", "saveStoryPart"]);
 
 },{"reflux":199}],220:[function(require,module,exports){
 'use strict';
@@ -36892,9 +36892,7 @@ var TodoApp = React.createClass({
 				)
 			)
 		);
-	},
-	componentWillUnmount: function componentWillUnmount() {}
-
+	}
 });
 
 module.exports = TodoApp;
@@ -36943,22 +36941,27 @@ module.exports = TodoList;
 var React = require('react'),
     WriterOutput = require('./writeroutput'),
     Reflux = require('reflux'),
-    Firebase = require('firebase'),
-    myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/docchi/'),
     ReactFireMixin = require('reactfire'),
-    WriteStore = require('../stores/writestore');
+    WriteStore = require('../stores/writestore'),
+    actions = require('../actions'),
+    Firebase = require('firebase');
 // _ = require('lodash'),
 // $ = require('jquery'),
 
 // TodoList = require('./todolist'),
 // actions = require('../actions'),
+var myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/storypart/');
 
 var TodoApp = React.createClass({
 	displayName: 'TodoApp',
 
 	mixins: [ReactFireMixin, Reflux.connect(WriteStore)],
 	getInitialState: function getInitialState() {
-		return { storyPart: { key: '', title: '', txt: '' } };
+		return { storyPart: {
+				key: '',
+				prepart: '',
+				title: '',
+				txt: '' } };
 	},
 	onChange: function onChange() {
 		this.setState({
@@ -36968,8 +36971,21 @@ var TodoApp = React.createClass({
 			}
 		});
 	},
-	componentWillMount: function componentWillMount() {
-		this.bindAsObject(myFirebase, 'parts');
+	handleSubmit: function handleSubmit(e) {
+		e.preventDefault();
+		actions.saveStoryPart.bind(this, this.state);
+	},
+	ComponentWillMount: function ComponentWillMount() {
+		this.bindAsObject(myFirebase, 'storyPart');
+	},
+	handleKeyUp: function handleKeyUp(evt) {
+		var text = evt.target.value;
+		if (evt.which === 13 && text) {
+			console.log('enter');
+			//actions.saveStoryPart(this.state.storyPart);
+		} else if (evt.which === 27) {
+			console.log('esc');
+		}
 	},
 	render: function render() {
 		return React.createElement(
@@ -36988,7 +37004,7 @@ var TodoApp = React.createClass({
 					{ className: 'col-sm-8' },
 					React.createElement(
 						'form',
-						null,
+						{ onSubmit: actions.saveStoryPart.bind(this) },
 						React.createElement('input', { type: 'text',
 							ref: 'title',
 							className: 'form-control',
@@ -36999,8 +37015,14 @@ var TodoApp = React.createClass({
 							className: 'form-control',
 							placeholder: 'Text',
 							onChange: this.onChange,
-							value: this.state.storyPart.txt
-						})
+							value: this.state.storyPart.txt,
+							onKeyUp: this.handleKeyUp
+						}),
+						React.createElement(
+							'button',
+							{ className: 'btn btn-standard btn-default pull-right' },
+							'Spara'
+						)
 					)
 				)
 			),
@@ -37015,7 +37037,7 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../stores/writestore":232,"./writeroutput":227,"firebase":2,"react":197,"reactfire":198,"reflux":199}],227:[function(require,module,exports){
+},{"../actions":219,"../stores/writestore":232,"./writeroutput":227,"firebase":2,"react":197,"reactfire":198,"reflux":199}],227:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -37120,15 +37142,30 @@ module.exports = Reflux.createStore({
 });
 
 },{"../actions":219,"firebase":2,"reflux":199}],232:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var Reflux = require('reflux'),
-    actions = require('../actions');
-/*Firebase = require('firebase');
-var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/docchi/");*/
+// var Reflux = require('reflux'),
+//     actions = require('../actions'),
+//     Firebase = require('firebase');
+//
+// //var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/storypart/");
+//
+// module.exports = Reflux.createStore({
+//     listenables: [actions],
+//     onSaveStoryPart: function(state){
+//       console.log("hit");
+//       console.log(state);
+//       this.firebaseRefs.storyPart.push({
+//         storyPart: state.storyPart
+//       }, function(err){console.log(err);});
+//       this.setState({storyPart:
+//   			{
+//   				key: "",
+//   				prepart: "",
+//   				title: "",
+//   				txt: ""
+//         }});
+//     }.bind(this)
+// });
 
-module.exports = Reflux.createStore({
-    listenables: [actions]
-});
-
-},{"../actions":219,"reflux":199}]},{},[228]);
+},{}]},{},[228]);
