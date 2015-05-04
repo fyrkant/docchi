@@ -1,41 +1,58 @@
 var React = require('react'),
 	WriterOutput = require('./writeroutput'),
-	Reflux = require('reflux'),
+	StoryList = require('./storylist'),
 	ReactFireMixin = require('reactfire'),
-	WriteStore = require('../stores/writestore'),
-	actions = require('../actions'),
 	Firebase = require('firebase');
-	// _ = require('lodash'),
-	// $ = require('jquery'),
 
-	// TodoList = require('./todolist'),
-	// actions = require('../actions'),
-var myFirebase = new Firebase("https://blazing-fire-8429.firebaseio.com/storypart/");
+
+var firebaseRef = new Firebase("https://blazing-fire-8429.firebaseio.com/storyparts/");
 
 var TodoApp = React.createClass({
-	mixins:[ReactFireMixin, Reflux.connect(WriteStore)],
+	mixins:[ReactFireMixin],
 	getInitialState:function(){
-		return {storyPart:
-			{
+		return {
+				storyParts:{},
 				key: "",
-				prepart: "",
+				parent: "",
 				title: "",
-				txt: ""}};
+				txt: "",
+				children:{
+					x: "",
+					y: ""
+				}};
 	},
 	onChange: function(){
 		this.setState({
-			storyPart: {
 				title: this.refs.title.getDOMNode().value,
 				txt: this.refs.txt.getDOMNode().value
-			}
-		});
+			});
 	},
 	handleSubmit:function(e){
 		e.preventDefault();
-		actions.saveStoryPart.bind(this, this.state);
+		var newEntry = this.firebaseRefs.storyParts.push({
+				parent: this.state.parent,
+				title: this.state.title,
+				txt: this.state.txt,
+				children:this.state.children
+		});
+
+		newEntry.update({
+			key: newEntry.key()
+		});
+
+		this.setState({
+					key: "",
+					parent: "",
+					title: "",
+					txt: "",
+					children:{
+						x: "",
+						y: ""
+					}
+					});
 	},
-	ComponentWillMount: function() {
-		this.bindAsObject(myFirebase, "storyPart");
+	componentWillMount: function() {
+		this.bindAsObject(firebaseRef, "storyParts");
 	},
 	handleKeyUp: function(evt){
 		var text = evt.target.value;
@@ -52,35 +69,37 @@ var TodoApp = React.createClass({
 			<div className="col-sm-6">
 				<h3>SKRIV</h3>
 				<div className="col-sm-8">
-					<form onSubmit={actions.saveStoryPart.bind(this)}>
+					<form onSubmit={this.handleSubmit}>
+
 						<input type="text"
 							ref="title"
 							className="form-control"
 							placeholder="Titel"
 							onChange={this.onChange}
-							value={this.state.storyPart.title} />
+							value={this.state.title} />
 
 						<textarea ref="txt"
 							className="form-control"
 							placeholder="Text"
 							onChange={this.onChange}
-							value={this.state.storyPart.txt}
+							value={this.state.txt}
 							onKeyUp={this.handleKeyUp}
 							/>
+
 						<button className="btn btn-standard btn-default pull-right">Spara</button>
+
 					</form>
+
+					<StoryList stories={this.state.storyParts} />
 
 				</div>
 			</div>
 			<WriterOutput
-				title={this.state.storyPart.title}
-				txt={this.state.storyPart.txt} />
+				title={this.state.title}
+				txt={this.state.txt} />
 		</div>
 		);
-	},
-	componentWillUnmount: function() {
 	}
-
 });
 
 module.exports = TodoApp;
