@@ -36662,7 +36662,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require("reflux");
 
-module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login"]);
+module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login", "addStoryPart"]);
 
 },{"reflux":199}],220:[function(require,module,exports){
 'use strict';
@@ -36754,7 +36754,7 @@ var ListItem = React.createClass({
 
 module.exports = ListItem;
 
-},{"../actions":219,"../stores/todostore":232,"react":197,"reflux":199}],222:[function(require,module,exports){
+},{"../actions":219,"../stores/todostore":233,"react":197,"reflux":199}],222:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36778,7 +36778,7 @@ var LoginButton = React.createClass({
 
 module.exports = LoginButton;
 
-},{"../actions":219,"../stores/loginstore":231,"react":197,"reflux":199}],223:[function(require,module,exports){
+},{"../actions":219,"../stores/loginstore":232,"react":197,"reflux":199}],223:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -36927,7 +36927,7 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../stores/todostore":232,"./todolist":226,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],226:[function(require,module,exports){
+},{"../stores/todostore":233,"./todolist":226,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],226:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -36972,55 +36972,17 @@ var React = require('react'),
     WriterOutput = require('./writeroutput'),
     StoryList = require('./storylist'),
     ReactFireMixin = require('reactfire'),
-    Firebase = require('firebase');
+    Firebase = require('firebase'),
+    WriterForm = require('./writerform');
 
 var firebaseRef = new Firebase('https://blazing-fire-8429.firebaseio.com/storyparts/');
 
-var TodoApp = React.createClass({
-	displayName: 'TodoApp',
+var WriteApp = React.createClass({
+	displayName: 'WriteApp',
 
 	mixins: [ReactFireMixin],
 	getInitialState: function getInitialState() {
-		return {
-			storyParts: {},
-			key: '',
-			parent: '',
-			title: '',
-			txt: '',
-			children: {
-				x: '',
-				y: ''
-			} };
-	},
-	onChange: function onChange() {
-		this.setState({
-			title: this.refs.title.getDOMNode().value,
-			txt: this.refs.txt.getDOMNode().value
-		});
-	},
-	handleSubmit: function handleSubmit(e) {
-		e.preventDefault();
-		var newEntry = this.firebaseRefs.storyParts.push({
-			parent: this.state.parent,
-			title: this.state.title,
-			txt: this.state.txt,
-			children: this.state.children
-		});
-
-		newEntry.update({
-			key: newEntry.key()
-		});
-
-		this.setState({
-			key: '',
-			parent: '',
-			title: '',
-			txt: '',
-			children: {
-				x: '',
-				y: ''
-			}
-		});
+		return { storyParts: {} };
 	},
 	componentWillMount: function componentWillMount() {
 		this.bindAsObject(firebaseRef, 'storyParts');
@@ -37049,28 +37011,7 @@ var TodoApp = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'col-sm-8' },
-					React.createElement(
-						'form',
-						{ onSubmit: this.handleSubmit },
-						React.createElement('input', { type: 'text',
-							ref: 'title',
-							className: 'form-control',
-							placeholder: 'Titel',
-							onChange: this.onChange,
-							value: this.state.title }),
-						React.createElement('textarea', { ref: 'txt',
-							className: 'form-control',
-							placeholder: 'Text',
-							onChange: this.onChange,
-							value: this.state.txt,
-							onKeyUp: this.handleKeyUp
-						}),
-						React.createElement(
-							'button',
-							{ className: 'btn btn-standard btn-default pull-right' },
-							'Spara'
-						)
-					),
+					React.createElement(WriterForm, null),
 					React.createElement(StoryList, { stories: this.state.storyParts })
 				)
 			),
@@ -37078,14 +37019,85 @@ var TodoApp = React.createClass({
 				title: this.state.title,
 				txt: this.state.txt })
 		);
-	},
-	componentWillUnmount: function componentWillUnmount() {}
+	}
+});
+
+module.exports = WriteApp;
+
+},{"./storylist":224,"./writerform":228,"./writeroutput":229,"firebase":2,"react":197,"reactfire":198}],228:[function(require,module,exports){
+'use strict';
+
+var React = require('react'),
+    Reflux = require('reflux'),
+    WriteStore = require('../stores/writestore'),
+    actions = require('../actions');
+
+var WriterForm = React.createClass({
+  displayName: 'WriterForm',
+
+  mixins: [Reflux.connect(WriteStore)],
+  onChange: function onChange() {},
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var storyPart = {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+    };
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryPart(storyPart);
+      this.emptyForm();
+    }
+  },
+  handleKeyUp: function handleKeyUp(evt) {
+    var storyPart = {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+    };
+    if (evt.which === 13 && storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryPart(storyPart);
+      this.emptyForm();
+    } else if (evt.which === 27) {
+      this.emptyForm();
+    }
+  },
+  emptyForm: function emptyForm() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+    this.refs.endingCheckbox.getDOMNode().checked = false;
+  },
+  render: function render() {
+    return React.createElement(
+      'form',
+      { onSubmit: this.handleSubmit },
+      React.createElement('input', { type: 'text',
+        ref: 'title',
+        className: 'form-control',
+        placeholder: 'Titel' }),
+      React.createElement('textarea', { ref: 'txt',
+        className: 'form-control',
+        placeholder: 'Text',
+        onKeyUp: this.handleKeyUp }),
+      React.createElement(
+        'p',
+        null,
+        React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+        'Avslutande del?'
+      ),
+      React.createElement(
+        'button',
+        { className: 'btn btn-standard btn-default pull-right' },
+        'Spara'
+      )
+    );
+  }
 
 });
 
-module.exports = TodoApp;
+module.exports = WriterForm;
 
-},{"./storylist":224,"./writeroutput":228,"firebase":2,"react":197,"reactfire":198}],228:[function(require,module,exports){
+},{"../actions":219,"../stores/writestore":234,"react":197,"reflux":199}],229:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -37114,7 +37126,7 @@ var WriterOutput = React.createClass({
 
 module.exports = WriterOutput;
 
-},{"react":197}],229:[function(require,module,exports){
+},{"react":197}],230:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -37125,7 +37137,7 @@ ReactRouter.run(routes, function (Handler) {
 	React.render(React.createElement(Handler, null), document.body);
 });
 
-},{"./routes":230,"react":197,"react-router":28}],230:[function(require,module,exports){
+},{"./routes":231,"react":197,"react-router":28}],231:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -37146,7 +37158,7 @@ module.exports = React.createElement(
   React.createElement(DefaultRoute, { handler: TodoApp })
 );
 
-},{"./app":220,"./components/lorempage":223,"./components/todoapp":225,"./components/write":227,"react":197,"react-router":28}],231:[function(require,module,exports){
+},{"./app":220,"./components/lorempage":223,"./components/todoapp":225,"./components/write":227,"react":197,"react-router":28}],232:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -37167,7 +37179,7 @@ module.exports = Reflux.createStore({
 	}
 });
 
-},{"../actions":219,"firebase":2,"reflux":199}],232:[function(require,module,exports){
+},{"../actions":219,"firebase":2,"reflux":199}],233:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -37189,4 +37201,45 @@ module.exports = Reflux.createStore({
     }
 });
 
-},{"../actions":219,"firebase":2,"reflux":199}]},{},[229]);
+},{"../actions":219,"firebase":2,"reflux":199}],234:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux'),
+    actions = require('../actions'),
+    Firebase = require('firebase');
+
+var firebaseRef = new Firebase('https://blazing-fire-8429.firebaseio.com/storyparts/');
+
+module.exports = Reflux.createStore({
+  listenables: [actions],
+  onAddStoryPart: function onAddStoryPart(storyPart) {
+    var newEntry = firebaseRef.push({
+      parent: '',
+      title: storyPart.title,
+      txt: storyPart.txt,
+      children: { x: '', y: '' },
+      isEnding: storyPart.isEnding
+    });
+
+    newEntry.update({
+      key: newEntry.key()
+    });
+  },
+  onSaveStoryPart: (function (state) {
+    console.log('hit');
+    console.log(state);
+    this.firebaseRefs.storyPart.push({
+      storyPart: state.storyPart
+    }, function (err) {
+      console.log(err);
+    });
+    this.setState({ storyPart: {
+        key: '',
+        prepart: '',
+        title: '',
+        txt: ''
+      } });
+  }).bind(undefined)
+});
+
+},{"../actions":219,"firebase":2,"reflux":199}]},{},[230]);

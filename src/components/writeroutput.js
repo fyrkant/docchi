@@ -14,4 +14,3 @@ var WriterOutput = React.createClass({
 });
 
 module.exports = WriterOutput;
-
