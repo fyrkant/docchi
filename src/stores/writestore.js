@@ -6,12 +6,15 @@ var firebaseRef = new Firebase("https://blazing-fire-8429.firebaseio.com/storypa
 
 module.exports = Reflux.createStore({
     listenables: [actions],
+    init:function(){
+
+    },
     onAddStoryPart:function(storyPart){
       var newEntry = firebaseRef.push({
   				parent: "",
   				title: storyPart.title,
   				txt: storyPart.txt,
-  				children: {x: "", y: ""},
+  				children: storyPart.children,
   				isEnding: storyPart.isEnding
   		});
 
@@ -19,18 +22,10 @@ module.exports = Reflux.createStore({
   			key: newEntry.key()
   		});
     },
-    onSaveStoryPart: function(state){
-      console.log("hit");
-      console.log(state);
-      this.firebaseRefs.storyPart.push({
-        storyPart: state.storyPart
-      }, function(err){console.log(err);});
-      this.setState({storyPart:
-  			{
-  				key: "",
-  				prepart: "",
-  				title: "",
-  				txt: ""
-        }});
-    }.bind(this)
+    onGetParent:function(){
+      console.log("hey");
+      var parent = {title: "TITEL!", txt: "TEXT!"};
+      return parent;
+    }
+
 });

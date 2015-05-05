@@ -36662,7 +36662,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require("reflux");
 
-module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login", "addStoryPart"]);
+module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login", "addStoryPart", "getParent"]);
 
 },{"reflux":199}],220:[function(require,module,exports){
 'use strict';
@@ -36969,6 +36969,10 @@ module.exports = TodoList;
 'use strict';
 
 var React = require('react'),
+    Reflux = require('reflux'),
+    actions = require('../actions'),
+    WriteStore = require('../stores/writestore'),
+    _ = require('lodash'),
     WriterOutput = require('./writeroutput'),
     StoryList = require('./storylist'),
     ReactFireMixin = require('reactfire'),
@@ -36980,21 +36984,19 @@ var firebaseRef = new Firebase('https://blazing-fire-8429.firebaseio.com/storypa
 var WriteApp = React.createClass({
 	displayName: 'WriteApp',
 
-	mixins: [ReactFireMixin],
+	mixins: [ReactFireMixin, Reflux.connect(WriteStore)],
 	getInitialState: function getInitialState() {
-		return { storyParts: {} };
+		return {
+			storyParts: {},
+			parent: {} };
 	},
 	componentWillMount: function componentWillMount() {
 		this.bindAsObject(firebaseRef, 'storyParts');
 	},
-	handleKeyUp: function handleKeyUp(evt) {
-		var text = evt.target.value;
-		if (evt.which === 13 && text) {
-			console.log('enter');
-			//actions.saveStoryPart(this.state.storyPart);
-		} else if (evt.which === 27) {
-			console.log('esc');
-		}
+	componentDidMount: function componentDidMount() {
+		this.setState({ parent: _.find(this.state.storyParts, function (s) {
+				return s.key === '-Jo_hiXPEvAf4eLI_sKA';
+			}) });
 	},
 	render: function render() {
 		return React.createElement(
@@ -37011,20 +37013,18 @@ var WriteApp = React.createClass({
 				React.createElement(
 					'div',
 					{ className: 'col-sm-8' },
-					React.createElement(WriterForm, null),
+					React.createElement(WriterForm, { parent: this.state.parent }),
 					React.createElement(StoryList, { stories: this.state.storyParts })
 				)
 			),
-			React.createElement(WriterOutput, {
-				title: this.state.title,
-				txt: this.state.txt })
+			React.createElement(WriterOutput, null)
 		);
 	}
 });
 
 module.exports = WriteApp;
 
-},{"./storylist":224,"./writerform":228,"./writeroutput":229,"firebase":2,"react":197,"reactfire":198}],228:[function(require,module,exports){
+},{"../actions":219,"../stores/writestore":234,"./storylist":224,"./writerform":228,"./writeroutput":229,"firebase":2,"lodash":3,"react":197,"reactfire":198,"reflux":199}],228:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -37042,7 +37042,8 @@ var WriterForm = React.createClass({
     var storyPart = {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      children: { x: '', y: '' }
     };
     if (storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryPart(storyPart);
@@ -37053,7 +37054,9 @@ var WriterForm = React.createClass({
     var storyPart = {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+      parent: this.props.parent,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      children: { x: '', y: '' }
     };
     if (evt.which === 13 && storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryPart(storyPart);
@@ -37098,26 +37101,35 @@ var WriterForm = React.createClass({
 module.exports = WriterForm;
 
 },{"../actions":219,"../stores/writestore":234,"react":197,"reflux":199}],229:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react'),
+    Reflux = require('reflux'),
+    WriteStore = require('../stores/writestore'),
+    actions = require('../actions');
 
 var WriterOutput = React.createClass({
-	displayName: "WriterOutput",
+	displayName: 'WriterOutput',
 
+	mixins: [Reflux.connect(WriteStore)],
+	getDefaultProps: function getDefaultProps() {
+		return {
+			parent: { title: 'titel', txt: 'text' }
+		};
+	},
 	render: function render() {
 		return React.createElement(
-			"div",
-			{ className: "col-sm-4" },
+			'div',
+			{ className: 'col-sm-4' },
 			React.createElement(
-				"h4",
+				'h4',
 				null,
-				this.props.title
+				actions.getParent().title
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				this.props.txt
+				actions.getParent().txt
 			)
 		);
 	}
@@ -37126,7 +37138,7 @@ var WriterOutput = React.createClass({
 
 module.exports = WriterOutput;
 
-},{"react":197}],230:[function(require,module,exports){
+},{"../actions":219,"../stores/writestore":234,"react":197,"reflux":199}],230:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -37211,35 +37223,27 @@ var Reflux = require('reflux'),
 var firebaseRef = new Firebase('https://blazing-fire-8429.firebaseio.com/storyparts/');
 
 module.exports = Reflux.createStore({
-  listenables: [actions],
-  onAddStoryPart: function onAddStoryPart(storyPart) {
-    var newEntry = firebaseRef.push({
-      parent: '',
-      title: storyPart.title,
-      txt: storyPart.txt,
-      children: { x: '', y: '' },
-      isEnding: storyPart.isEnding
-    });
+    listenables: [actions],
+    init: function init() {},
+    onAddStoryPart: function onAddStoryPart(storyPart) {
+        var newEntry = firebaseRef.push({
+            parent: '',
+            title: storyPart.title,
+            txt: storyPart.txt,
+            children: storyPart.children,
+            isEnding: storyPart.isEnding
+        });
 
-    newEntry.update({
-      key: newEntry.key()
-    });
-  },
-  onSaveStoryPart: (function (state) {
-    console.log('hit');
-    console.log(state);
-    this.firebaseRefs.storyPart.push({
-      storyPart: state.storyPart
-    }, function (err) {
-      console.log(err);
-    });
-    this.setState({ storyPart: {
-        key: '',
-        prepart: '',
-        title: '',
-        txt: ''
-      } });
-  }).bind(undefined)
+        newEntry.update({
+            key: newEntry.key()
+        });
+    },
+    onGetParent: function onGetParent() {
+        console.log('hey');
+        var parent = { title: 'TITEL!', txt: 'TEXT!' };
+        return parent;
+    }
+
 });
 
 },{"../actions":219,"firebase":2,"reflux":199}]},{},[230]);

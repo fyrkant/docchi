@@ -13,7 +13,8 @@ var WriterForm = React.createClass({
     var storyPart = {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      children: {x:"", y:""}
     };
     if(storyPart.title !== "" && storyPart.txt !== ""){
       actions.addStoryPart(storyPart);
@@ -24,7 +25,9 @@ var WriterForm = React.createClass({
     var storyPart = {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+      parent: this.props.parent,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      children: {x:"", y:""} 
     };
 		if (evt.which === 13 && storyPart.title !== "" && storyPart.txt !== "") {
       actions.addStoryPart(storyPart);
