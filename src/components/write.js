@@ -29,8 +29,12 @@ var WriteApp = React.createClass({
 
 		this.setState({parent: foundParent, h3: "Fortsätt på "+foundParent.title});
 	},
+	handleChildClick:function(childKey){
+		console.log(childKey);
+	},
 	render: function() {
 		actions.keyUpped;
+		
 		return (
 		<div>
 			<div className="col-sm-6">
@@ -43,7 +47,7 @@ var WriteApp = React.createClass({
 
 				</div>
 			</div>
-			<WriterOutput parent={this.state.parent}	/>
+			<WriterOutput parent={this.state.parent} handleClick={this.handleChildClick} />
 		</div>
 		);
 	}

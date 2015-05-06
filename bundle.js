@@ -36848,7 +36848,7 @@ var StoryList = React.createClass({
         { key: index, index: index },
         React.createElement(
           'button',
-          { onClick: _this.handleClick.bind(_this, story.key) },
+          { className: 'btn btn-xs btn-default', onClick: _this.handleClick.bind(_this, story.key) },
           story.title
         )
       );
@@ -37011,8 +37011,12 @@ var WriteApp = React.createClass({
 
 		this.setState({ parent: foundParent, h3: 'Fortsätt på ' + foundParent.title });
 	},
+	handleChildClick: function handleChildClick(childKey) {
+		console.log(childKey);
+	},
 	render: function render() {
 		actions.keyUpped;
+
 		return React.createElement(
 			'div',
 			null,
@@ -37031,7 +37035,7 @@ var WriteApp = React.createClass({
 					React.createElement(StoryList, { stories: this.state.storyParts, handleClick: this.handleClick })
 				)
 			),
-			React.createElement(WriterOutput, { parent: this.state.parent })
+			React.createElement(WriterOutput, { parent: this.state.parent, handleClick: this.handleChildClick })
 		);
 	}
 });
@@ -37106,11 +37110,6 @@ var WriterForm = React.createClass({
         'button',
         { className: 'btn btn-standard btn-default pull-right' },
         'Spara'
-      ),
-      React.createElement(
-        'p',
-        null,
-        this.props.parent.title
       )
     );
   }
@@ -37123,24 +37122,43 @@ module.exports = WriterForm;
 'use strict';
 
 var React = require('react'),
-    Reflux = require('reflux'),
-    WriteStore = require('../stores/writestore'),
-    actions = require('../actions');
+    _ = require('lodash');
+//Reflux = require('reflux'),
+// WriteStore = require('../stores/writestore'),
+// actions = require('../actions');
 
 var WriterOutput = React.createClass({
 	displayName: 'WriterOutput',
 
-	mixins: [Reflux.connect(WriteStore)],
 	getDefaultProps: function getDefaultProps() {
 		return {
 			parent: { title: 'titel', txt: 'text' }
 		};
 	},
+	handleClick: function handleClick(evt) {
+		this.props.handleClick(evt.target.textContent);
+	},
 	render: function render() {
+		var childButtons = !_.isEmpty(this.props.parent) ? React.createElement(
+			'span',
+			null,
+			React.createElement(
+				'button',
+				{ onClick: this.handleClick },
+				'X'
+			),
+			React.createElement(
+				'button',
+				{ onClick: this.handleClick },
+				'Y'
+			)
+		) : '';
+
+		var classString = !_.isEmpty(this.props.parent) ? 'col-sm-4 well' : 'hide';
 
 		return React.createElement(
 			'div',
-			{ className: 'col-sm-4' },
+			{ className: classString },
 			React.createElement(
 				'h4',
 				null,
@@ -37150,7 +37168,8 @@ var WriterOutput = React.createClass({
 				'p',
 				null,
 				this.props.parent.txt
-			)
+			),
+			childButtons
 		);
 	}
 
@@ -37158,7 +37177,7 @@ var WriterOutput = React.createClass({
 
 module.exports = WriterOutput;
 
-},{"../actions":219,"../stores/writestore":234,"react":197,"reflux":199}],230:[function(require,module,exports){
+},{"lodash":3,"react":197}],230:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),

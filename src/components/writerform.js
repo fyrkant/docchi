@@ -57,9 +57,7 @@ var WriterForm = React.createClass({
 
         <p><input type="checkbox" name="isEnding" ref="endingCheckbox" />Avslutande del?</p>
 
-        <button className="btn btn-standard btn-default pull-right">Spara</button>
-
-        <p>{this.props.parent.title}</p>
+        <button className="btn btn-standard btn-default pull-right">Spara</button>      
       </form>
     );
   }
