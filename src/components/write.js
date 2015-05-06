@@ -16,31 +16,34 @@ var WriteApp = React.createClass({
 	mixins:[ReactFireMixin, Reflux.connect(WriteStore)],
 	getInitialState:function(){
 		return {
+			h3:"Ny historia",
 			storyParts:{},
 			parent:{}};
 	},
 	componentWillMount: function() {
 		this.bindAsObject(firebaseRef, "storyParts");
-
 	},
-	componentDidMount:function(){
-		this.setState({parent: _.find(this.state.storyParts, function(s){return s.key === "-Jo_hiXPEvAf4eLI_sKA";})});
+	handleClick:function(key){
+		console.log(key);
+		var foundParent = _.find(this.state.storyParts, function(s){return s.key === key;});
+
+		this.setState({parent: foundParent, h3: "Fortsätt på "+foundParent.title});
 	},
 	render: function() {
 		actions.keyUpped;
 		return (
 		<div>
 			<div className="col-sm-6">
-				<h3>SKRIV</h3>
+				<h3>{this.state.h3}</h3>
 				<div className="col-sm-8">
 
 					<WriterForm parent={this.state.parent} />
 
-					<StoryList stories={this.state.storyParts} />
+					<StoryList stories={this.state.storyParts} handleClick={this.handleClick} />
 
 				</div>
 			</div>
-			<WriterOutput	/>
+			<WriterOutput parent={this.state.parent}	/>
 		</div>
 		);
 	}

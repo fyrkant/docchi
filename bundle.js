@@ -36834,24 +36834,33 @@ var React = require('react'),
     _ = require('lodash');
 
 var StoryList = React.createClass({
-    displayName: 'StoryList',
+  displayName: 'StoryList',
 
-    render: function render() {
-        var createItem = function createItem(story, index) {
-            return React.createElement(
-                'li',
-                { key: index, index: index },
-                story.title
-            );
-        };
-        return React.createElement(
-            'ul',
-            null,
-            _.map(_.filter(this.props.stories, function (s) {
-                return s.parent === '';
-            }), createItem)
-        );
-    }
+  handleClick: function handleClick(key) {
+    this.props.handleClick(key);
+  },
+  render: function render() {
+    var _this = this;
+
+    var createItem = function createItem(story, index) {
+      return React.createElement(
+        'li',
+        { key: index, index: index },
+        React.createElement(
+          'button',
+          { onClick: _this.handleClick.bind(_this, story.key) },
+          story.title
+        )
+      );
+    };
+    return React.createElement(
+      'ul',
+      null,
+      _.map(_.filter(this.props.stories, function (s) {
+        return !s.parent;
+      }), createItem)
+    );
+  }
 
 });
 
@@ -36987,18 +36996,23 @@ var WriteApp = React.createClass({
 	mixins: [ReactFireMixin, Reflux.connect(WriteStore)],
 	getInitialState: function getInitialState() {
 		return {
+			h3: 'Ny historia',
 			storyParts: {},
 			parent: {} };
 	},
 	componentWillMount: function componentWillMount() {
 		this.bindAsObject(firebaseRef, 'storyParts');
 	},
-	componentDidMount: function componentDidMount() {
-		this.setState({ parent: _.find(this.state.storyParts, function (s) {
-				return s.key === '-Jo_hiXPEvAf4eLI_sKA';
-			}) });
+	handleClick: function handleClick(key) {
+		console.log(key);
+		var foundParent = _.find(this.state.storyParts, function (s) {
+			return s.key === key;
+		});
+
+		this.setState({ parent: foundParent, h3: 'Fortsätt på ' + foundParent.title });
 	},
 	render: function render() {
+		actions.keyUpped;
 		return React.createElement(
 			'div',
 			null,
@@ -37008,16 +37022,16 @@ var WriteApp = React.createClass({
 				React.createElement(
 					'h3',
 					null,
-					'SKRIV'
+					this.state.h3
 				),
 				React.createElement(
 					'div',
 					{ className: 'col-sm-8' },
 					React.createElement(WriterForm, { parent: this.state.parent }),
-					React.createElement(StoryList, { stories: this.state.storyParts })
+					React.createElement(StoryList, { stories: this.state.storyParts, handleClick: this.handleClick })
 				)
 			),
-			React.createElement(WriterOutput, null)
+			React.createElement(WriterOutput, { parent: this.state.parent })
 		);
 	}
 });
@@ -37039,25 +37053,14 @@ var WriterForm = React.createClass({
   onChange: function onChange() {},
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
-    var storyPart = {
-      title: this.refs.title.getDOMNode().value,
-      txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
-      children: { x: '', y: '' }
-    };
+    var storyPart = this.populateStoryPart();
     if (storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryPart(storyPart);
       this.emptyForm();
     }
   },
   handleKeyUp: function handleKeyUp(evt) {
-    var storyPart = {
-      title: this.refs.title.getDOMNode().value,
-      txt: this.refs.txt.getDOMNode().value,
-      parent: this.props.parent,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
-      children: { x: '', y: '' }
-    };
+    var storyPart = this.populateStoryPart();
     if (evt.which === 13 && storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryPart(storyPart);
       this.emptyForm();
@@ -37069,6 +37072,17 @@ var WriterForm = React.createClass({
     this.refs.title.getDOMNode().value = '';
     this.refs.txt.getDOMNode().value = '';
     this.refs.endingCheckbox.getDOMNode().checked = false;
+  },
+  populateStoryPart: function populateStoryPart() {
+    var storyPart = {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      parent: this.props.parent,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      children: { x: '', y: '' }
+    };
+
+    return storyPart;
   },
   render: function render() {
     return React.createElement(
@@ -37092,6 +37106,11 @@ var WriterForm = React.createClass({
         'button',
         { className: 'btn btn-standard btn-default pull-right' },
         'Spara'
+      ),
+      React.createElement(
+        'p',
+        null,
+        this.props.parent.title
       )
     );
   }
@@ -37118,18 +37137,19 @@ var WriterOutput = React.createClass({
 		};
 	},
 	render: function render() {
+
 		return React.createElement(
 			'div',
 			{ className: 'col-sm-4' },
 			React.createElement(
 				'h4',
 				null,
-				actions.getParent().title
+				this.props.parent.title
 			),
 			React.createElement(
 				'p',
 				null,
-				actions.getParent().txt
+				this.props.parent.txt
 			)
 		);
 	}
@@ -37227,7 +37247,7 @@ module.exports = Reflux.createStore({
     init: function init() {},
     onAddStoryPart: function onAddStoryPart(storyPart) {
         var newEntry = firebaseRef.push({
-            parent: '',
+            parent: storyPart.parent,
             title: storyPart.title,
             txt: storyPart.txt,
             children: storyPart.children,

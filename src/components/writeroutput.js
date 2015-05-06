@@ -11,10 +11,11 @@ var WriterOutput = React.createClass({
 		};
 	},
 	render: function() {
+
 		return (
 			<div className="col-sm-4">
-				<h4>{actions.getParent().title}</h4>
-				<p >{actions.getParent().txt}</p>
+				<h4>{this.props.parent.title}</h4>
+				<p >{this.props.parent.txt}</p>
 			</div>
 		);
 	}

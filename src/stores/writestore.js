@@ -11,7 +11,7 @@ module.exports = Reflux.createStore({
     },
     onAddStoryPart:function(storyPart){
       var newEntry = firebaseRef.push({
-  				parent: "",
+  				parent: storyPart.parent,
   				title: storyPart.title,
   				txt: storyPart.txt,
   				children: storyPart.children,
