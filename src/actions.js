@@ -4,6 +4,7 @@ module.exports = Reflux.createActions([
     "deleteTodoLine",
     "submitTodoLine",
     "login",
+    "bindAsObject",
     "addStoryPart",
-    "getParent"
+    "getData"
 ]);

@@ -1,25 +1,23 @@
 var React = require('react'),
+    _ = require('lodash'),
     Reflux = require('reflux'),
     WriteStore = require('../stores/writestore'),
     actions = require('../actions');
 
 var WriterForm = React.createClass({
   mixins:[Reflux.connect(WriteStore)],
-  onChange:function(){
-
-  },
   handleSubmit:function(e){
     e.preventDefault();
     var storyPart = this.populateStoryPart();
     if(storyPart.title !== "" && storyPart.txt !== ""){
-      actions.addStoryPart(storyPart);
+      actions.addStoryPart(storyPart, this.props.isChild);
       this.emptyForm();
     }
   },
   handleKeyUp: function(evt){
-    var storyPart = this.populateStoryPart();
 		if (evt.which === 13 && storyPart.title !== "" && storyPart.txt !== "") {
-      actions.addStoryPart(storyPart);
+      var storyPart = this.populateStoryPart();
+      actions.addStoryPart(storyPart, this.props.isChild);
       this.emptyForm();
 		} else if (evt.which === 27) {
 			this.emptyForm();
@@ -34,7 +32,7 @@ var WriterForm = React.createClass({
     var storyPart = {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value,
-      parent: this.props.parent,
+      key: _.isUndefined(this.props.selected) ? "" : this.props.selected.key,
       isEnding: this.refs.endingCheckbox.getDOMNode().checked,
       children: {x:"", y:""}
     };
@@ -57,7 +55,7 @@ var WriterForm = React.createClass({
 
         <p><input type="checkbox" name="isEnding" ref="endingCheckbox" />Avslutande del?</p>
 
-        <button className="btn btn-standard btn-default pull-right">Spara</button>      
+        <button className="btn btn-standard btn-default pull-right">Spara</button>
       </form>
     );
   }
