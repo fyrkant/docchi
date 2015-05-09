@@ -1,41 +1,43 @@
 var React = require('react'),
 		Reflux = require('reflux'),
-		actions = require('../actions'),
-		WriteStore = require('../stores/writestore'),
+		DocchiStore = require('../stores/docchistore'),
 		_ = require('lodash'),
 		StoryNode = require('./storynode'),
 		StoryList = require('./storylist'),
-		ReactFireMixin = require('reactfire'),
-		Firebase = require('firebase'),
-		WriterForm = require('./writerform');
-
-
-var firebaseRef = new Firebase("https://blazing-fire-8429.firebaseio.com/storyparts/");
-
+		WriterForm = require('./writerform'),
+		actions = require('../actions');
 
 var WriteApp = React.createClass({
-	mixins:[ReactFireMixin, Reflux.connect(WriteStore, "stories")],
-  componentWillMount: function() {
-		this.bindAsObject(firebaseRef, "storyParts");
+	mixins:[Reflux.connect(DocchiStore)],
+	getInitialState(){
+		return {
+			h3:"ny historia",
+			stories: {},
+			selected:{},
+			focused:{}
+			};
 	},
-	handleClick:function(key){
-		//console.log(key);
-		var foundSelected = _.find(this.state.storyParts, function(s){return s.key === key;});
+	handleClick(key){
 
-		this.setState({selected: foundSelected, /*h3: "fortsättning på "+foundSelected.title*/});
+		var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
+
+		if (foundSelected.isParent){
+			console.log("true "+foundSelected.isParent);
+		} else {
+			console.log("false "+foundSelected.isParent);
+		}
+
+		actions.changeSelected(foundSelected);
 	},
-	handleChildClick:function(key){
-		this.setState({isChild: true});
-
-		var foundSelected = _.find(this.state.storyParts, function(s){return s.key === key;});
-
-		this.setState({selected: foundSelected, h3: "fortsättning på "+foundSelected.title});
-	},
-	render: function() {
-		actions.keyUpped;
-
-		var storyNode = _.isEmpty(this.state.selected) ? "" : <StoryNode key={this.state.selected.key} stories={this.state.storyParts} data={this.state.selected} handleClick={this.handleChildClick} />;
-		var storyListClass = _.isEmpty(_.filter(this.state.storyParts, function(s){return s.isParent;})) ? "hide" : "panel panel-default";
+	// handleChildClick(key){
+	// 	this.setState({isChild: true});
+	//
+	// 	var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
+	//
+	// 	this.setState({selected: foundSelected, h3: "fortsättning på "+foundSelected.title});
+	// },
+	render() {
+		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "panel panel-default";
 
 		return (
 		<div>
@@ -45,17 +47,17 @@ var WriteApp = React.createClass({
 						<h3 className="panel-title">Skriv: <strong>{this.state.h3}</strong></h3>
 					</div>
 					<div className="panel-body">
-						<WriterForm selected={this.state.selected} isChild={this.state.isChild} />
+						<WriterForm focus={this.state.focus} />
 					</div>
 				</div>
 				<div className={storyListClass}>
 					<div className="panel-body">
 						<h4>Påbörjade:</h4>
-						<StoryList stories={this.state.storyParts} handleClick={this.handleClick} />
+						<StoryList stories={this.state.stories} handleClick={this.handleClick} />
 					</div>
 				</div>
 			</div>
-			{storyNode}
+			<StoryNode key={this.state.selected.key} stories={this.state.stories} selected={this.state.selected} />
 		</div>
 		);
 	}

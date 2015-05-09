@@ -1,23 +1,18 @@
 var React = require('react'),
 		_ = require('lodash'),
-		Reflux = require('reflux'),
-		WriteStore = require('../stores/writestore'),
 		actions = require('../actions');
 
 var StoryNode = React.createClass({
-	mixins:[Reflux.connect(WriteStore)],
+	data: {},
 	handleClick:function(evt){
 		this.props.handleClick(evt.target.textContent);
 	},
-	toggleIsChild: function(ev){
-		// if (this.props.data.children) {
-		// 	console.log(this.props.data.key);
-		// }
-		//
-		if(this.props.data.isParent){
-			this.props.handleClick(this.props.data.key);
+	clickSelect: function(ev){
+
+		if(this.props.selected.isParent){
+			actions.changeFocus(this.props.selected, false);
 		} else {
-			this.props.onClick();
+			actions.changeFocus(this.props.selected, true);
 		}
 
 		ev.preventDefault();
@@ -34,23 +29,21 @@ var StoryNode = React.createClass({
 		// }
 
 
-		var button = this.props.data.isEnding ? "" : <button className="btn btn-default" onClick={this.toggleIsChild}>Lägg till fortsättning</button>;
-
-		var data = _.find(this.props.stories, function(s){return s.key === this.props.data.key;}.bind(this));
+		var button = this.props.selected.isEnding ? "" : <button className="btn btn-default" onClick={this.clickSelect}>Lägg till fortsättning</button>;
 
 		return (
 			<div className="col-sm-4">
 				<div className="panel panel-default">
 					<div className="panel-heading">
-						<h3 className="panel-title">{data.title}</h3>
+						<h3 className="panel-title">{this.props.selected.title}</h3>
 					</div>
 					<div className="panel-body">
-						<p >{data.txt}</p>
+						<p>{this.props.selected.txt}</p>
 						{button}
 					</div>
 				</div>
-				{_.map(this.props.data.children, function(n){
-					return <StoryNode key={n.key} data={_.find(this.props.stories, function(s){return s.key === n.key;})} stories={this.props.stories} onClick={this.props.onClick} />;
+				{_.map(this.props.selected.children, function(n){
+					return <StoryNode key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s){return s.key === n.key;})} />;
 				}.bind(this))}
 			</div>
 			);
