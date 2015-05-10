@@ -5,8 +5,7 @@ var React = require('react'),
 		jquery = require('jquery'),
 		StoryNode = require('./storynode'),
 		StoryList = require('./storylist'),
-		WriterForm = require('./writerform'),
-		actions = require('../actions');
+		WriterForm = require('./writerform');
 
 require('jquery-ui');
 
@@ -17,47 +16,36 @@ var WriteApp = React.createClass({
 			h3:"ny historia",
 			stories: {},
 			selected:{},
-			focused:{}
+			focus:{}
 			};
-	},
-	handleClick(key){
-
-		var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
-
-		if (foundSelected.isParent){
-			console.log("true "+foundSelected.isParent);
-		} else {
-			console.log("false "+foundSelected.isParent);
-		}
-
-		actions.changeSelected(foundSelected);
 	},
 	componentDidMount(){
 		jquery("#drag").draggable();
 		jquery("#selectable").selectable();
+
+		jquery("#show-drawer").click(function(){
+			jquery(".drawer").toggle("slide", { direction: "right" }, 500);
+		});
+
 	},
 	render() {
-		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "panel panel-default";
+		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "story-list panel panel-default";
+
+		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "tree";
+
+		var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
 		return (
 		<div>
-			<div className="col-sm-6">
-				<div id="drag" className="panel panel-default">
-					<div className="panel-heading">
-						<h3 className="panel-title">Skriv: <strong>{this.state.h3}</strong></h3>
-					</div>
-					<div className="panel-body">
-						<WriterForm focus={this.state.focus} />
-					</div>
-				</div>
+				<WriterForm focus={this.state.focus} activated={activated} h3={this.state.h3} />
 				<div className={storyListClass}>
-					<div className="panel-body">
-						<h4>Påbörjade:</h4>
-						<StoryList stories={this.state.stories} handleClick={this.handleClick} />
-					</div>
+					<h4>Påbörjade:</h4>
+					<StoryList stories={this.state.stories} />
 				</div>
+
+			<div className={storyNodeClass}>
+				<StoryNode key={this.state.selected.key} stories={this.state.stories} selected={this.state.selected} />
 			</div>
-			<StoryNode key={this.state.selected.key} stories={this.state.stories} selected={this.state.selected} />
 		</div>
 		);
 	}

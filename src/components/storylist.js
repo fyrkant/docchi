@@ -1,9 +1,12 @@
 var React = require('react'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    actions = require('../actions');
 
 var StoryList = React.createClass({
   handleClick:function(key){
-    this.props.handleClick(key);
+    var foundSelected = _.find(this.props.stories, function(s){return s.key === key;});
+
+		actions.changeSelected(foundSelected);
   },
   render: function() {
       var createItem = (story, index) => {

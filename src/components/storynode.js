@@ -5,62 +5,64 @@ var React = require('react'),
 var StoryNode = React.createClass({
 	clickSelect(ev){
 
-		actions.changeFocus(this.props.selected);
+		actions.changeFocus(this.props.selected, "Skriv fortsättning på "+"\""+this.props.selected.title+"\"");
 
 		ev.preventDefault();
 		ev.stopPropagation();
 
 	},
+	toBeBlownUp: [],
+	visitChildren(obj){
+
+		this.toBeBlownUp.push(obj.key);
+
+		if(!obj.children) {
+			return;
+		}
+
+		_.forEach(obj.children, function(child){
+			var foundChild = _.find(this.props.stories, function(s){return s.key === child.key;});
+			this.visitChildren(foundChild);
+		}.bind(this));
+	},
 	storypartDestroyer(){
+		this.toBeBlownUp = [];
 
-		var toBeBlownUp = [];
+		var parentKey = "";
 
+		_.map(this.props.stories, function(story){
+			if(story.children){
+				_.forEach(story.children, function(child) {
+					if (child.key === this.props.selected.key) {
+						parentKey = story.key;
+					}
+				}.bind(this));
+			}
+		}.bind(this));
 
 		if(!this.props.selected.children){
 			if(confirm("Vill du verkligen radera historiadelen med titel "+this.props.selected.title+" ?")){
-				toBeBlownUp.push(this.props.selected.key);
 
-				actions.destroyStoryPart(toBeBlownUp);
+				actions.destroyStoryPart(this.props.selected.key, parentKey);
 			}
 		} else {
+			if(confirm("VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?")){
+				this.visitChildren(this.props.selected);
 
-			alert("Du kan inte ta bort en historiedel som har barn, ta bort barnen först!");
-
-			// if(confirm("VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill det?")){
-			// 	toBeBlownUp.push(this.props.selected.key);
-			//
-			// 	_.forEach(this.props.selected.children, function(c){
-			// 		_.find(this.props.stories, function(k){return k.key === c.key;});
-			// 	});
-			//
-			// 	actions.destroyStoryPart(toBeBlownUp);
-			//
-			// }
+				actions.destroyStoryParts(this.toBeBlownUp, parentKey);
+			}
 		}
-
-		console.log("DESTROY!!"+this.props.selected.title);
 	},
 	render() {
-		// var children = this.props.parent.children ? "har barn" : "";
-		//
-		// if(this.props.parent.children){
-		// 	_.map(this.props.parent.children, function(n){
-		// 		return <ChildNode key={n.key} data={n} />;
-		// 	});
-		// }
 
-
-		var button = this.props.selected.isEnding ? "" : <button className="btn btn-default" onClick={this.clickSelect}>Lägg till fortsättning</button>;
-
-		return (
-			<div onClick={this.clickSelect} >
+		return !this.props.selected ? <div /> : (
+			<div onDoubleClick={this.clickSelect} >
 				<div className="panel panel-default story-part">
 					<div className="panel-heading">
 						<h3 className="panel-title">{this.props.selected.title} <button onClick={this.storypartDestroyer} className="btn btn-xs btn-danger pull-right">X</button></h3>
 					</div>
 					<div className="panel-body">
 						<p>{this.props.selected.txt}</p>
-						{button}
 					</div>
 				</div>
 				<div className="child-divs">
@@ -70,6 +72,9 @@ var StoryNode = React.createClass({
 				</div>
 			</div>
 			);
+
+
+
 	}
 
 });
