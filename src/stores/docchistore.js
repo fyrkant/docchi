@@ -11,6 +11,7 @@ module.exports = Reflux.createStore({
       this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
       this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
       this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
+      this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
     },
     onAddStoryPart(storyPart){
       if (storyPart.parentKey) { // If the storypart is a child..
@@ -42,6 +43,9 @@ module.exports = Reflux.createStore({
         });
 
       }
+  },
+  onDestroyStoryPart(array){
+    array.forEach(function(i){ console.log(i);});
   },
   onChangeSelected(selected){
     this.trigger({selected: selected});

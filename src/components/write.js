@@ -2,10 +2,13 @@ var React = require('react'),
 		Reflux = require('reflux'),
 		DocchiStore = require('../stores/docchistore'),
 		_ = require('lodash'),
+		jquery = require('jquery'),
 		StoryNode = require('./storynode'),
 		StoryList = require('./storylist'),
 		WriterForm = require('./writerform'),
 		actions = require('../actions');
+
+require('jquery-ui');
 
 var WriteApp = React.createClass({
 	mixins:[Reflux.connect(DocchiStore)],
@@ -29,20 +32,17 @@ var WriteApp = React.createClass({
 
 		actions.changeSelected(foundSelected);
 	},
-	// handleChildClick(key){
-	// 	this.setState({isChild: true});
-	//
-	// 	var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
-	//
-	// 	this.setState({selected: foundSelected, h3: "fortsättning på "+foundSelected.title});
-	// },
+	componentDidMount(){
+		jquery("#drag").draggable();
+		jquery("#selectable").selectable();
+	},
 	render() {
 		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "panel panel-default";
 
 		return (
 		<div>
 			<div className="col-sm-6">
-				<div className="panel panel-default">
+				<div id="drag" className="panel panel-default">
 					<div className="panel-heading">
 						<h3 className="panel-title">Skriv: <strong>{this.state.h3}</strong></h3>
 					</div>
