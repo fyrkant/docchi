@@ -33,11 +33,11 @@ var WriteApp = React.createClass({
 
 		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "tree";
 
-		var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
+		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
 		return (
 		<div>
-				<WriterForm focus={this.state.focus} activated={activated} h3={this.state.h3} />
+				<WriterForm focus={this.state.focus} h3={this.state.h3} />
 				<div className={storyListClass}>
 					<h4>Påbörjade:</h4>
 					<StoryList stories={this.state.stories} />

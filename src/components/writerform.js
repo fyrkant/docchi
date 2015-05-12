@@ -41,20 +41,20 @@ var WriterForm = React.createClass({
               ref="title"
               className="form-control"
               placeholder="Titel"
-              disabled={this.props.activated} />
+              />
 
             <textarea ref="txt"
               className="form-control"
               placeholder="Text"
               rows="8"
-              disabled={this.props.activated} />
+              />
 
             <p><input type="checkbox"
               name="isEnding"
               ref="endingCheckbox"
-              disabled={this.props.activated} />Avslutande del?</p>
+              />Avslutande del?</p>
 
-            <button className="btn btn-standard btn-default pull-right" disabled={this.props.activated} >Spara</button>
+            <button className="btn btn-standard btn-default pull-right"  >Spara</button>
           </form>
         </div>
       </div>

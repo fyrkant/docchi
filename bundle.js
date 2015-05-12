@@ -62080,12 +62080,12 @@ var WriteApp = React.createClass({
 
 		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
 
-		var activated = storyNodeClass !== 'tree' && _.isEmpty(this.state.focus) ? true : false;
+		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
 		return React.createElement(
 			'div',
 			null,
-			React.createElement(WriterForm, { focus: this.state.focus, activated: activated, h3: this.state.h3 }),
+			React.createElement(WriterForm, { focus: this.state.focus, h3: this.state.h3 }),
 			React.createElement(
 				'div',
 				{ className: storyListClass },
@@ -62166,25 +62166,25 @@ var WriterForm = React.createClass({
             React.createElement('input', { type: 'text',
               ref: 'title',
               className: 'form-control',
-              placeholder: 'Titel',
-              disabled: this.props.activated }),
+              placeholder: 'Titel'
+            }),
             React.createElement('textarea', { ref: 'txt',
               className: 'form-control',
               placeholder: 'Text',
-              rows: '8',
-              disabled: this.props.activated }),
+              rows: '8'
+            }),
             React.createElement(
               'p',
               null,
               React.createElement('input', { type: 'checkbox',
                 name: 'isEnding',
-                ref: 'endingCheckbox',
-                disabled: this.props.activated }),
+                ref: 'endingCheckbox'
+              }),
               'Avslutande del?'
             ),
             React.createElement(
               'button',
-              { className: 'btn btn-standard btn-default pull-right', disabled: this.props.activated },
+              { className: 'btn btn-standard btn-default pull-right' },
               'Spara'
             )
           )
