@@ -11,13 +11,12 @@ var StoryList = React.createClass({
   render: function() {
       var createItem = (story, index) => {
         return <li key={index} index={index}>
-                  <button className="btn btn-xs btn-default"
-                          onClick={this.handleClick.bind(this, story.key)}>
+                  <a onClick={this.handleClick.bind(this, story.key)}>
                           {story.title}
-                  </button>
+                  </a>
               </li>;
   		};
-      return <ul>{_.map(_.filter(this.props.stories, function(s){return s.isParent;}), createItem)}</ul>;
+      return <ul className="submenu">{_.map(_.filter(this.props.stories, function(s){return s.isParent;}), createItem)}</ul>;
 
   }
 

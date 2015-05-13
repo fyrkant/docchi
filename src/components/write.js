@@ -2,7 +2,7 @@ var React = require('react'),
 		Reflux = require('reflux'),
 		DocchiStore = require('../stores/docchistore'),
 		_ = require('lodash'),
-		jquery = require('jquery'),
+		$ = require('jquery'),
 		StoryNode = require('./storynode'),
 		StoryList = require('./storylist'),
 		WriterForm = require('./writerform');
@@ -20,16 +20,15 @@ var WriteApp = React.createClass({
 			};
 	},
 	componentDidMount(){
-		jquery("#drag").draggable();
-		jquery("#selectable").selectable();
-
-		jquery("#show-drawer").click(function(){
-			jquery(".drawer").toggle("slide", { direction: "right" }, 500);
+		$('.js-accordion-trigger').bind('click', function(e){
+		  $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
+		  $(this).parent().toggleClass('is-expanded');
+		  e.preventDefault();
 		});
 
 	},
 	render() {
-		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "story-list panel panel-default";
+		var storyListClass = _.isEmpty(_.filter(this.state.stories, function(s){return s.isParent;})) ? "hide" : "story-list";
 
 		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "tree";
 
@@ -38,9 +37,15 @@ var WriteApp = React.createClass({
 		return (
 		<div>
 				<WriterForm focus={this.state.focus} h3={this.state.h3} />
+
+
 				<div className={storyListClass}>
-					<h4>Påbörjade:</h4>
-					<StoryList stories={this.state.stories} />
+					<ul className="accordion">
+						<li>
+							<StoryList stories={this.state.stories} />
+							<button href="#" className="js-accordion-trigger">Visa redan påbörjade</button>
+						</li>
+					</ul>
 				</div>
 
 			<div className={storyNodeClass}>

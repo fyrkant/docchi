@@ -61854,16 +61854,15 @@ var StoryList = React.createClass({
                 'li',
                 { key: index, index: index },
                 React.createElement(
-                    'button',
-                    { className: 'btn btn-xs btn-default',
-                        onClick: _this.handleClick.bind(_this, story.key) },
+                    'a',
+                    { onClick: _this.handleClick.bind(_this, story.key) },
                     story.title
                 )
             );
         };
         return React.createElement(
             'ul',
-            null,
+            { className: 'submenu' },
             _.map(_.filter(this.props.stories, function (s) {
                 return s.isParent;
             }), createItem)
@@ -61944,18 +61943,14 @@ var StoryNode = React.createClass({
 				'div',
 				{ className: 'panel panel-default story-part' },
 				React.createElement(
-					'div',
-					{ className: 'panel-heading' },
+					'h3',
+					{ className: 'panel-title' },
+					this.props.selected.title,
+					' ',
 					React.createElement(
-						'h3',
-						{ className: 'panel-title' },
-						this.props.selected.title,
-						' ',
-						React.createElement(
-							'button',
-							{ onClick: this.storypartDestroyer, className: 'btn btn-xs btn-danger pull-right' },
-							'X'
-						)
+						'button',
+						{ onClick: this.storypartDestroyer },
+						'X'
 					)
 				),
 				React.createElement(
@@ -62099,7 +62094,7 @@ var React = require('react'),
     Reflux = require('reflux'),
     DocchiStore = require('../stores/docchistore'),
     _ = require('lodash'),
-    jquery = require('jquery'),
+    $ = require('jquery'),
     StoryNode = require('./storynode'),
     StoryList = require('./storylist'),
     WriterForm = require('./writerform');
@@ -62119,17 +62114,16 @@ var WriteApp = React.createClass({
 		};
 	},
 	componentDidMount: function componentDidMount() {
-		jquery('#drag').draggable();
-		jquery('#selectable').selectable();
-
-		jquery('#show-drawer').click(function () {
-			jquery('.drawer').toggle('slide', { direction: 'right' }, 500);
+		$('.js-accordion-trigger').bind('click', function (e) {
+			$(this).parent().find('.submenu').toggle('fold'); // apply the toggle to the ul
+			$(this).parent().toggleClass('is-expanded');
+			e.preventDefault();
 		});
 	},
 	render: function render() {
 		var storyListClass = _.isEmpty(_.filter(this.state.stories, function (s) {
 			return s.isParent;
-		})) ? 'hide' : 'story-list panel panel-default';
+		})) ? 'hide' : 'story-list';
 
 		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
 
@@ -62143,11 +62137,19 @@ var WriteApp = React.createClass({
 				'div',
 				{ className: storyListClass },
 				React.createElement(
-					'h4',
-					null,
-					'Påbörjade:'
-				),
-				React.createElement(StoryList, { stories: this.state.stories })
+					'ul',
+					{ className: 'accordion' },
+					React.createElement(
+						'li',
+						null,
+						React.createElement(StoryList, { stories: this.state.stories }),
+						React.createElement(
+							'button',
+							{ href: '#', className: 'js-accordion-trigger' },
+							'Visa redan påbörjade'
+						)
+					)
+				)
 			),
 			React.createElement(
 				'div',
@@ -62197,53 +62199,47 @@ var WriterForm = React.createClass({
   render: function render() {
     return React.createElement(
       Draggable,
-      { cancel: 'input, textarea, button', start: { x: -25, y: 25 } },
+      { cancel: 'input, textarea, button, label' },
       React.createElement(
         'div',
         { className: 'writer' },
         React.createElement(
-          'div',
-          { className: 'heading' },
-          React.createElement(
-            'h3',
-            null,
-            this.props.h3
-          )
+          'h3',
+          null,
+          this.props.h3
         ),
         React.createElement(
-          'div',
-          null,
+          'form',
+          { onSubmit: this.handleSubmit },
+          React.createElement('input', { type: 'text',
+            ref: 'title',
+            placeholder: 'Titel'
+          }),
+          React.createElement('textarea', { ref: 'txt',
+            placeholder: 'Text',
+            rows: '8'
+          }),
           React.createElement(
-            'form',
-            { onSubmit: this.handleSubmit },
-            React.createElement('input', { type: 'text',
-              ref: 'title',
-              className: 'form-control',
-              placeholder: 'Titel'
-            }),
-            React.createElement('textarea', { ref: 'txt',
-              className: 'form-control',
-              placeholder: 'Text',
-              rows: '8'
-            }),
+            'span',
+            { className: 'switch' },
             React.createElement(
-              'div',
-              { className: 'switch' },
+              'p',
+              null,
               React.createElement(
-                'p',
+                'strong',
                 null,
                 'Avslutande del?'
-              ),
-              React.createElement(
-                'label',
-                { className: 'label-switch' },
-                React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
-                React.createElement('div', { className: 'checkbox' })
               )
             ),
             React.createElement(
+              'label',
+              { className: 'label-switch' },
+              React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+              React.createElement('div', { className: 'checkbox' })
+            ),
+            React.createElement(
               'button',
-              { className: 'btn btn-standard btn-default pull-right' },
+              null,
               'Spara'
             )
           )
@@ -62264,7 +62260,7 @@ var React = require('react'),
     routes = require('./routes');
 
 ReactRouter.run(routes, function (Handler) {
-	React.render(React.createElement(Handler, null), document.body);
+		React.render(React.createElement(Handler, null), document.body);
 });
 
 },{"./routes":237,"react":203,"react-router":34}],237:[function(require,module,exports){

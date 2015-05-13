@@ -58,9 +58,7 @@ var StoryNode = React.createClass({
 		return !this.props.selected ? <div /> : (
 			<div onDoubleClick={this.clickSelect} >
 				<div className="panel panel-default story-part">
-					<div className="panel-heading">
-						<h3 className="panel-title">{this.props.selected.title} <button onClick={this.storypartDestroyer} className="btn btn-xs btn-danger pull-right">X</button></h3>
-					</div>
+					<h3 className="panel-title">{this.props.selected.title} <button onClick={this.storypartDestroyer}>X</button></h3>
 					<div className="panel-body">
 						<p>{this.props.selected.txt}</p>
 					</div>

@@ -29,38 +29,31 @@ var WriterForm = React.createClass({
   },
   render: function() {
     return (
-      <Draggable cancel="input, textarea, button" start={{x:-25, y:25}}>
+      <Draggable cancel="input, textarea, button, label">
         <div className="writer">
-          <div className="heading">
-            <h3>{this.props.h3}</h3>
-          </div>
-          <div>
-            <form onSubmit={this.handleSubmit}>
+          <h3>{this.props.h3}</h3>
+          <form onSubmit={this.handleSubmit}>
 
               <input type="text"
                 ref="title"
-                className="form-control"
                 placeholder="Titel"
                 />
 
               <textarea ref="txt"
-                className="form-control"
                 placeholder="Text"
                 rows="8"
                 />
 
-              <div className="switch">
-                <p>Avslutande del?</p>
+              <span className="switch">
+                <p><strong>Avslutande del?</strong></p>
                 <label className="label-switch">
                   <input type="checkbox" name="isEnding" ref="endingCheckbox" />
                   <div className="checkbox"></div>
                 </label>
-              </div>
 
-
-              <button className="btn btn-standard btn-default pull-right"  >Spara</button>
+                <button>Spara</button>
+              </span>
             </form>
-          </div>
         </div>
       </Draggable>
 

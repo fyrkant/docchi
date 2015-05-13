@@ -1,18 +1,31 @@
 .writer {
   border: $base-border;
-  border-radius: 5px;
+  border-radius: $base-border-radius;
   padding: 5px;
+  width: 400px;
+  position: absolute;
+  bottom: 25px;
+  left: 50px;
+  textarea {
+    resize: none;
+  }
 }
 .switch {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: baseline;
+  justify-content: space-between;
   p {
-    display: inline-block;
-    order: 2;
+    order: 1;
+    margin-top:5px;
   }
   label {
-    display:inline-block;
     order: 1;
+    align-self: center;
+    margin-right: 30%;
+
+  }
+  button {
+    order: 3;
   }
 }
