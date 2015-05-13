@@ -11,7 +11,8 @@
     "prebuild": "npm run lint",
     "build": "browserify src/index.js -t babelify --outfile bundle.js",
     "prewatch": "npm run lint",
-    "watch": "watchify src/index.js -t babelify --outfile bundle.js -v"
+    "watch": "watchify src/index.js -t babelify --outfile bundle.js -v",
+    "sass": "sass stylesheets/style.scss css/base.css"
   },
   "repository": {
     "type": "git",

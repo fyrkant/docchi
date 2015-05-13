@@ -1,0 +1,18 @@
+.writer {
+  border: $base-border;
+  border-radius: 5px;
+  padding: 5px;
+}
+.switch {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: baseline;
+  p {
+    display: inline-block;
+    order: 2;
+  }
+  label {
+    display:inline-block;
+    order: 1;
+  }
+}

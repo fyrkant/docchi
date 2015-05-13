@@ -61616,41 +61616,94 @@ var React = require('react'),
     Router = require('react-router'),
     Link = Router.Link,
     RouteHandler = Router.RouteHandler,
+    $ = require('jquery'),
     LoginButton = require('./components/loginbutton');
 
 var App = React.createClass({
 	displayName: 'App',
 
+	componentDidMount: function componentDidMount() {
+		var menuToggle = $('#js-centered-navigation-mobile-menu').unbind();
+		$('#js-centered-navigation-menu').removeClass('show');
+
+		menuToggle.on('click', function (e) {
+			e.preventDefault();
+			$('#js-centered-navigation-menu').slideToggle(function () {
+				if ($('#js-centered-navigation-menu').is(':hidden')) {
+					$('#js-centered-navigation-menu').removeAttr('style');
+				}
+			});
+		});
+	},
 	render: function render() {
-		var btnClass = 'btn btn-default navbar-btn';
+		var btnClass = ''; // "btn btn-default navbar-btn";
 		return React.createElement(
 			'div',
 			null,
 			React.createElement(
-				'div',
-				{ className: 'container' },
+				'header',
+				{ className: 'centered-navigation', role: 'banner' },
 				React.createElement(
 					'div',
-					{ className: 'row' },
+					{ className: 'centered-navigation-wrapper' },
 					React.createElement(
-						'div',
-						{ className: 'nav nav-pills' },
+						'a',
+						{ href: '#', className: 'mobile-logo' },
+						React.createElement('img', { src: 'https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_3_dark.png', alt: 'Logo image' })
+					),
+					React.createElement(
+						'a',
+						{ href: '#', id: 'js-centered-navigation-mobile-menu', className: 'centered-navigation-mobile-menu' },
+						'MENU'
+					),
+					React.createElement(
+						'nav',
+						{ role: 'navigation' },
 						React.createElement(
-							Link,
-							{ className: btnClass, to: 'todoapp' },
-							'TodoApp'
-						),
-						React.createElement(
-							Link,
-							{ className: btnClass, to: 'lorempage' },
-							'LoremPage'
-						),
-						React.createElement(
-							Link,
-							{ className: btnClass, to: 'write' },
-							'Write'
-						),
-						React.createElement(LoginButton, null)
+							'ul',
+							{ id: 'js-centered-navigation-menu', className: 'centered-navigation-menu show' },
+							React.createElement(
+								'li',
+								{ className: 'nav-link' },
+								React.createElement(
+									Link,
+									{ className: btnClass, to: 'todoapp' },
+									'TodoApp'
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'nav-link' },
+								React.createElement(
+									Link,
+									{ className: btnClass, to: 'lorempage' },
+									'LoremPage'
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'nav-link logo' },
+								React.createElement(
+									'a',
+									{ href: '#', className: 'logo' },
+									React.createElement('img', { src: 'https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_3_dark.png', alt: 'Logo image' })
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'nav-link' },
+								React.createElement(
+									Link,
+									{ className: btnClass, to: 'write' },
+									'Write'
+								)
+							),
+							React.createElement(
+								'li',
+								{ className: 'nav-link' },
+								React.createElement(LoginButton, null)
+							)
+						)
 					)
 				)
 			),
@@ -61662,7 +61715,7 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"./components/loginbutton":228,"react":203,"react-router":34}],227:[function(require,module,exports){
+},{"./components/loginbutton":228,"jquery":4,"react":203,"react-router":34}],227:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -61728,46 +61781,46 @@ var LoginButton = React.createClass({
 module.exports = LoginButton;
 
 },{"../actions":225,"../stores/loginstore":239,"react":203,"reflux":205}],229:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
 var LoremPage = React.createClass({
-	displayName: "LoremPage",
+	displayName: 'LoremPage',
 
 	render: function render() {
 		return React.createElement(
-			"div",
-			{ className: "col-sm-4" },
+			'article',
+			null,
 			React.createElement(
-				"h1",
+				'h1',
 				null,
-				"Pri atqui ridens!!"
+				'docchi'
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				"Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt."
+				'Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt.'
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				"Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel."
+				'Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel.'
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				"Pri atqui ridens possim ad. Autem idque ius eu, ad usu integre liberavisse. Eos volutpat intellegat ut. Minim ludus accusamus no est, ad sea suas vidisse postulant. Inermis legendos usu cu, iusto dicunt gloriatur ne vis."
+				'Pri atqui ridens possim ad. Autem idque ius eu, ad usu integre liberavisse. Eos volutpat intellegat ut. Minim ludus accusamus no est, ad sea suas vidisse postulant. Inermis legendos usu cu, iusto dicunt gloriatur ne vis.'
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				"Cu sit odio docendi. Accusam scripserit adversarium in, usu aeque eleifend praesent ei. Te nam sonet prompta graecis, ius partem delectus ei, ei mel dolore mucius concludaturque. Vix eros dicant expetendis te. Usu te inimicus repudiandae, labore impetus deseruisse vim no, eum cu justo facete efficiendi."
+				'Cu sit odio docendi. Accusam scripserit adversarium in, usu aeque eleifend praesent ei. Te nam sonet prompta graecis, ius partem delectus ei, ei mel dolore mucius concludaturque. Vix eros dicant expetendis te. Usu te inimicus repudiandae, labore impetus deseruisse vim no, eum cu justo facete efficiendi.'
 			),
 			React.createElement(
-				"p",
+				'p',
 				null,
-				"Vis dolore prompta an, odio eruditi his ei. Cu sed rebum vitae phaedrum, accumsan salutandi nam no, duo probo accusam maiestatis in. Quot dolorum cu sea, alia impetus nam ei. Delenit nonumes sea at. At nulla decore per, nec unum assum no, nibh molestie prodesset eos cu."
+				'Vis dolore prompta an, odio eruditi his ei. Cu sed rebum vitae phaedrum, accumsan salutandi nam no, duo probo accusam maiestatis in. Quot dolorum cu sea, alia impetus nam ei. Delenit nonumes sea at. At nulla decore per, nec unum assum no, nibh molestie prodesset eos cu.'
 			)
 		);
 	}
@@ -62147,19 +62200,19 @@ var WriterForm = React.createClass({
       { cancel: 'input, textarea, button', start: { x: -25, y: 25 } },
       React.createElement(
         'div',
-        { className: 'panel panel-default writer' },
+        { className: 'writer' },
         React.createElement(
           'div',
-          { className: 'panel-heading handle' },
+          { className: 'heading' },
           React.createElement(
             'h3',
-            { className: 'panel-title' },
+            null,
             this.props.h3
           )
         ),
         React.createElement(
           'div',
-          { className: 'panel-body' },
+          null,
           React.createElement(
             'form',
             { onSubmit: this.handleSubmit },
@@ -62174,13 +62227,19 @@ var WriterForm = React.createClass({
               rows: '8'
             }),
             React.createElement(
-              'p',
-              null,
-              React.createElement('input', { type: 'checkbox',
-                name: 'isEnding',
-                ref: 'endingCheckbox'
-              }),
-              'Avslutande del?'
+              'div',
+              { className: 'switch' },
+              React.createElement(
+                'p',
+                null,
+                'Avslutande del?'
+              ),
+              React.createElement(
+                'label',
+                { className: 'label-switch' },
+                React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+                React.createElement('div', { className: 'checkbox' })
+              )
             ),
             React.createElement(
               'button',
@@ -62226,7 +62285,7 @@ module.exports = React.createElement(
   React.createElement(Route, { name: 'todoapp', handler: TodoApp }),
   React.createElement(Route, { name: 'lorempage', handler: LoremPage }),
   React.createElement(Route, { name: 'write', handler: Write }),
-  React.createElement(DefaultRoute, { handler: TodoApp })
+  React.createElement(DefaultRoute, { handler: Write })
 );
 
 },{"./app":226,"./components/lorempage":229,"./components/todoapp":232,"./components/write":234,"react":203,"react-router":34}],238:[function(require,module,exports){
