@@ -5,7 +5,7 @@ var React = require('react'),
 var StoryNode = React.createClass({
 	clickSelect(ev){
 
-		actions.changeFocus(this.props.selected, "Skriv fortsättning på "+"\""+this.props.selected.title+"\"");
+		actions.changeFocus(this.props.selected, this.props.selected.title);
 
 		ev.preventDefault();
 		ev.stopPropagation();

@@ -1,0 +1,10 @@
+.todo-app {
+  @include outer-container;
+
+  margin-top: 40px;
+
+  > * {
+    @include span-columns(6);
+    @include shift(4);
+  }
+}

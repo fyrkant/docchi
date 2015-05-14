@@ -22,7 +22,7 @@ var App = React.createClass({
 	render() {
 		var btnClass = ""; // "btn btn-default navbar-btn";
 		return (
-			<div>
+			<div className="container stretch">
 				<header className="centered-navigation" role="banner">
 				  <div className="centered-navigation-wrapper">
 						<a href="#" className="mobile-logo">

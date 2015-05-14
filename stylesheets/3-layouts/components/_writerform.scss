@@ -1,14 +1,38 @@
 .writer {
+  z-index: 1000;
   border: $base-border;
   border-radius: $base-border-radius;
+  background: white;
   padding: 5px;
   width: 400px;
-  position: absolute;
+  position: fixed;
   bottom: 25px;
   left: 50px;
+  overflow: visible;
   textarea {
     resize: none;
   }
+  h4 {
+    font-decoration: none;
+    font-size: 0.8em;
+  }
+  h3 {
+    font-style: italic;
+    font-size: 1.2em;
+    padding: 0.2em;
+  }
+
+  ul.submenu {
+    position: absolute;
+    margin-left: 155px;
+  }
+
+  .js-accordion-trigger {
+    font-size:0.9em;
+    text-align: center;
+    width: 150px;
+  }
+
 }
 .switch {
   display: flex;

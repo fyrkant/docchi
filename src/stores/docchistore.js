@@ -11,8 +11,6 @@ module.exports = Reflux.createStore({
 
       storiesRef.on("child_removed", this.updateStories.bind(this));
 
-
-
       this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
       this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
       this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
@@ -91,7 +89,7 @@ module.exports = Reflux.createStore({
   },
   onChangeFocus(focus, title){
 
-    this.trigger({focus: focus, h3: title});
+    this.trigger({focus: focus, statusWord: "Fortsätt på", h3: title});
   },
   updateSelected(snap){
     this.trigger({selected:(this.last = snap.val() || {})});

@@ -4,8 +4,8 @@ var LoremPage = React.createClass({
 
 	render: function() {
 		return (
-			<article>
-				<h1>docchi</h1>
+			<article className="lorem-page">
+				<h1>Docchi</h1>
 				<p>Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt.</p>
 
 				<p>Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel.</p>

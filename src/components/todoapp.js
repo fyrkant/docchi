@@ -31,18 +31,18 @@ var TodoApp = React.createClass({
 	},
 	render: function() {
 		return (
-			<div className="col-sm-6">
+			<div className="todo-app">
 				<h3>TODO</h3>
 				<TodoList onClick={this.clickFunc} items={this.state.items} />
 
-				<div className="col-sm-8">
-					<form className="form-inline" onSubmit={this.handleSubmit}>
-						<div className="form-group">
-							<input className="form-control" onChange={this.onChange}
+				<div>
+					<form onSubmit={this.handleSubmit}>
+						<div>
+							<input onChange={this.onChange}
 								   value={this.state.text} />
 
 							</div>
-						<button className="btn btn-small btn-default">{"Add #" + (_.toArray(this.state.items).length +1)}</button>
+						<button>{"Add #" + (_.toArray(this.state.items).length +1)}</button>
 					</form>
 				</div>
 			</div>

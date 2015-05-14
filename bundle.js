@@ -61639,7 +61639,7 @@ var App = React.createClass({
 		var btnClass = ''; // "btn btn-default navbar-btn";
 		return React.createElement(
 			'div',
-			null,
+			{ className: 'container stretch' },
 			React.createElement(
 				'header',
 				{ className: 'centered-navigation', role: 'banner' },
@@ -61781,46 +61781,46 @@ var LoginButton = React.createClass({
 module.exports = LoginButton;
 
 },{"../actions":225,"../stores/loginstore":239,"react":203,"reflux":205}],229:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var React = require('react');
+var React = require("react");
 
 var LoremPage = React.createClass({
-	displayName: 'LoremPage',
+	displayName: "LoremPage",
 
 	render: function render() {
 		return React.createElement(
-			'article',
-			null,
+			"article",
+			{ className: "lorem-page" },
 			React.createElement(
-				'h1',
+				"h1",
 				null,
-				'docchi'
+				"Docchi"
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt.'
+				"Lorem ipsum dolor sit amet, mea paulo scripserit ullamcorper ei. Commune conceptam eos no. Lorem clita consequuntur eu mel, sit id lucilius democritum. Quo ne velit graece, tamquam necessitatibus in cum. Eu vitae decore vis. Exerci disputationi duo id, in oratio doming debitis nam, te eam quis abhorreant liberavisse. Minim volutpat necessitatibus sea cu, per et feugiat dissentiunt."
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel.'
+				"Nec case mundi disputando ei, ei liber fabulas epicurei ius, cu has denique assentior. Id iriure apeirian mel, unum modus at mei. Id has graece quaestio vituperata, eos adhuc affert eu, no per propriae euripidis. Eu tale feugiat oportere est, cu nostrud qualisque pri, at vim consequat interesset. Viris convenire ut qui, ea nec causae virtute quaestio, ei gloriatur moderatius mel."
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Pri atqui ridens possim ad. Autem idque ius eu, ad usu integre liberavisse. Eos volutpat intellegat ut. Minim ludus accusamus no est, ad sea suas vidisse postulant. Inermis legendos usu cu, iusto dicunt gloriatur ne vis.'
+				"Pri atqui ridens possim ad. Autem idque ius eu, ad usu integre liberavisse. Eos volutpat intellegat ut. Minim ludus accusamus no est, ad sea suas vidisse postulant. Inermis legendos usu cu, iusto dicunt gloriatur ne vis."
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Cu sit odio docendi. Accusam scripserit adversarium in, usu aeque eleifend praesent ei. Te nam sonet prompta graecis, ius partem delectus ei, ei mel dolore mucius concludaturque. Vix eros dicant expetendis te. Usu te inimicus repudiandae, labore impetus deseruisse vim no, eum cu justo facete efficiendi.'
+				"Cu sit odio docendi. Accusam scripserit adversarium in, usu aeque eleifend praesent ei. Te nam sonet prompta graecis, ius partem delectus ei, ei mel dolore mucius concludaturque. Vix eros dicant expetendis te. Usu te inimicus repudiandae, labore impetus deseruisse vim no, eum cu justo facete efficiendi."
 			),
 			React.createElement(
-				'p',
+				"p",
 				null,
-				'Vis dolore prompta an, odio eruditi his ei. Cu sed rebum vitae phaedrum, accumsan salutandi nam no, duo probo accusam maiestatis in. Quot dolorum cu sea, alia impetus nam ei. Delenit nonumes sea at. At nulla decore per, nec unum assum no, nibh molestie prodesset eos cu.'
+				"Vis dolore prompta an, odio eruditi his ei. Cu sed rebum vitae phaedrum, accumsan salutandi nam no, duo probo accusam maiestatis in. Quot dolorum cu sea, alia impetus nam ei. Delenit nonumes sea at. At nulla decore per, nec unum assum no, nibh molestie prodesset eos cu."
 			)
 		);
 	}
@@ -61885,7 +61885,7 @@ var StoryNode = React.createClass({
 
 	clickSelect: function clickSelect(ev) {
 
-		actions.changeFocus(this.props.selected, 'Skriv fortsättning på ' + '"' + this.props.selected.title + '"');
+		actions.changeFocus(this.props.selected, this.props.selected.title);
 
 		ev.preventDefault();
 		ev.stopPropagation();
@@ -62017,7 +62017,7 @@ var TodoApp = React.createClass({
 	render: function render() {
 		return React.createElement(
 			'div',
-			{ className: 'col-sm-6' },
+			{ className: 'todo-app' },
 			React.createElement(
 				'h3',
 				null,
@@ -62026,19 +62026,19 @@ var TodoApp = React.createClass({
 			React.createElement(TodoList, { onClick: this.clickFunc, items: this.state.items }),
 			React.createElement(
 				'div',
-				{ className: 'col-sm-8' },
+				null,
 				React.createElement(
 					'form',
-					{ className: 'form-inline', onSubmit: this.handleSubmit },
+					{ onSubmit: this.handleSubmit },
 					React.createElement(
 						'div',
-						{ className: 'form-group' },
-						React.createElement('input', { className: 'form-control', onChange: this.onChange,
+						null,
+						React.createElement('input', { onChange: this.onChange,
 							value: this.state.text })
 					),
 					React.createElement(
 						'button',
-						{ className: 'btn btn-small btn-default' },
+						null,
 						'Add #' + (_.toArray(this.state.items).length + 1)
 					)
 				)
@@ -62094,9 +62094,7 @@ var React = require('react'),
     Reflux = require('reflux'),
     DocchiStore = require('../stores/docchistore'),
     _ = require('lodash'),
-    $ = require('jquery'),
     StoryNode = require('./storynode'),
-    StoryList = require('./storylist'),
     WriterForm = require('./writerform');
 
 require('jquery-ui');
@@ -62107,23 +62105,15 @@ var WriteApp = React.createClass({
 	mixins: [Reflux.connect(DocchiStore)],
 	getInitialState: function getInitialState() {
 		return {
-			h3: 'ny historia',
+			statusWord: 'Skriv',
+			h3: 'Ny historia',
 			stories: {},
 			selected: {},
 			focus: {}
 		};
 	},
-	componentDidMount: function componentDidMount() {
-		$('.js-accordion-trigger').bind('click', function (e) {
-			$(this).parent().find('.submenu').toggle('fold'); // apply the toggle to the ul
-			$(this).parent().toggleClass('is-expanded');
-			e.preventDefault();
-		});
-	},
+	componentDidMount: function componentDidMount() {},
 	render: function render() {
-		var storyListClass = _.isEmpty(_.filter(this.state.stories, function (s) {
-			return s.isParent;
-		})) ? 'hide' : 'story-list';
 
 		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
 
@@ -62131,42 +62121,32 @@ var WriteApp = React.createClass({
 
 		return React.createElement(
 			'div',
-			null,
-			React.createElement(WriterForm, { focus: this.state.focus, h3: this.state.h3 }),
-			React.createElement(
-				'div',
-				{ className: storyListClass },
-				React.createElement(
-					'ul',
-					{ className: 'accordion' },
-					React.createElement(
-						'li',
-						null,
-						React.createElement(StoryList, { stories: this.state.stories }),
-						React.createElement(
-							'button',
-							{ href: '#', className: 'js-accordion-trigger' },
-							'Visa redan påbörjade'
-						)
-					)
-				)
-			),
+			{ className: 'stretch' },
 			React.createElement(
 				'div',
 				{ className: storyNodeClass },
 				React.createElement(StoryNode, { key: this.state.selected.key, stories: this.state.stories, selected: this.state.selected })
-			)
+			),
+			React.createElement(WriterForm, { focus: this.state.focus, h3: this.state.h3, statusWord: this.state.statusWord, stories: this.state.stories })
 		);
 	}
 });
 
 module.exports = WriteApp;
 
-},{"../stores/docchistore":238,"./storylist":230,"./storynode":231,"./writerform":235,"jquery":4,"jquery-ui":3,"lodash":5,"react":203,"reflux":205}],235:[function(require,module,exports){
+// $('.js-accordion-trigger').bind('click', function(e){
+//   $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
+//   $(this).parent().toggleClass('is-expanded');
+//   e.preventDefault();
+// });
+
+},{"../stores/docchistore":238,"./storynode":231,"./writerform":235,"jquery-ui":3,"lodash":5,"react":203,"reflux":205}],235:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     _ = require('lodash'),
+    StoryList = require('./storylist'),
+    $ = require('jquery'),
     Draggable = require('react-draggable'),
     actions = require('../actions');
 
@@ -62175,6 +62155,7 @@ var WriterForm = React.createClass({
 
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
     var storyPart = this.populateStoryPart();
     if (storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryPart(storyPart);
@@ -62196,51 +62177,97 @@ var WriterForm = React.createClass({
 
     return storyPart;
   },
+  componentDidMount: function componentDidMount() {
+    $('.js-accordion-trigger').bind('click', function (e) {
+      $(this).parent().find('.submenu').toggle('fold'); // apply the toggle to the ul
+      $(this).parent().toggleClass('is-expanded');
+      e.preventDefault();
+    });
+  },
   render: function render() {
+    var storyListClass = _.isEmpty(_.filter(this.props.stories, function (s) {
+      return s.isParent;
+    })) ? 'hide' : 'story-list';
+
+    var storyCount = _.toArray(_.filter(this.props.stories, function (s) {
+      return s.isParent;
+    })).length;
+    var btnTxt = storyCount === 1 ? 'oavslutad' : 'oavslutade';
+
     return React.createElement(
-      Draggable,
-      { cancel: 'input, textarea, button, label' },
+      'div',
+      { className: 'writer-wrap' },
       React.createElement(
-        'div',
-        { className: 'writer' },
+        Draggable,
+        { cancel: 'input, textarea, button, label, ul, li', grid: [50, 50] },
         React.createElement(
-          'h3',
-          null,
-          this.props.h3
-        ),
-        React.createElement(
-          'form',
-          { onSubmit: this.handleSubmit },
-          React.createElement('input', { type: 'text',
-            ref: 'title',
-            placeholder: 'Titel'
-          }),
-          React.createElement('textarea', { ref: 'txt',
-            placeholder: 'Text',
-            rows: '8'
-          }),
+          'div',
+          { className: 'writer' },
           React.createElement(
-            'span',
-            { className: 'switch' },
+            'h4',
+            null,
+            this.props.statusWord,
+            ':'
+          ),
+          React.createElement(
+            'h3',
+            null,
+            this.props.h3
+          ),
+          React.createElement(
+            'form',
+            { onSubmit: this.handleSubmit },
+            React.createElement('input', { type: 'text',
+              ref: 'title',
+              placeholder: 'Titel'
+            }),
+            React.createElement('textarea', { ref: 'txt',
+              placeholder: 'Text',
+              rows: '8'
+            }),
             React.createElement(
-              'p',
-              null,
+              'span',
+              { className: 'switch' },
               React.createElement(
-                'strong',
+                'p',
                 null,
-                'Avslutande del?'
+                React.createElement(
+                  'strong',
+                  null,
+                  'Avslutande del?'
+                )
+              ),
+              React.createElement(
+                'label',
+                { className: 'label-switch' },
+                React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+                React.createElement('div', { className: 'checkbox' })
+              ),
+              React.createElement(
+                'button',
+                null,
+                'Spara'
               )
-            ),
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: storyListClass },
             React.createElement(
-              'label',
-              { className: 'label-switch' },
-              React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
-              React.createElement('div', { className: 'checkbox' })
-            ),
-            React.createElement(
-              'button',
-              null,
-              'Spara'
+              'ul',
+              { className: 'accordion' },
+              React.createElement(
+                'li',
+                null,
+                React.createElement(StoryList, { stories: this.props.stories }),
+                React.createElement(
+                  'a',
+                  { href: '#', className: 'js-accordion-trigger' },
+                  storyCount,
+                  ' ',
+                  btnTxt
+                )
+              )
             )
           )
         )
@@ -62252,7 +62279,7 @@ var WriterForm = React.createClass({
 
 module.exports = WriterForm;
 
-},{"../actions":225,"lodash":5,"react":203,"react-draggable":6}],236:[function(require,module,exports){
+},{"../actions":225,"./storylist":230,"jquery":4,"lodash":5,"react":203,"react-draggable":6}],236:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -62377,7 +62404,7 @@ module.exports = Reflux.createStore({
   },
   onChangeFocus: function onChangeFocus(focus, title) {
 
-    this.trigger({ focus: focus, h3: title });
+    this.trigger({ focus: focus, statusWord: 'Fortsätt på', h3: title });
   },
   updateSelected: function updateSelected(snap) {
     this.trigger({ selected: this.last = snap.val() || {} });

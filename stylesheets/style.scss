@@ -1,14 +1,7 @@
-@import 'bourbon/bourbon';
-@import 'neat/neat';
-@import 'base/base';
-@import 'refills/centered-navigation';
-@import 'refills/texture';
-@import 'refills/label-switch';
-@import 'refills/sliding-panel';
-@import 'refills/texture';
-@import 'refills/accordion';
-@import 'components/writerform';
-@import 'components/storylist';
+@import '0-plugins/plugins-dir',
+        '1-base/base-dir',
+        '2-modules/modules-dir',
+        '3-layouts/layouts-dir';
 
 
 .hide {
@@ -19,4 +12,15 @@ h1 {
 }
 .list-text {
   display:inline;
+}
+
+.container {
+  margin: -8px;
+  height: 100%;
+}
+
+
+.stretch {
+  height: 100%;
+  position: relative;
 }
