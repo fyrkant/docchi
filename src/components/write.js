@@ -1,6 +1,7 @@
 var React = require('react'),
 		Reflux = require('reflux'),
 		DocchiStore = require('../stores/docchistore'),
+		// $ = require('jquery'),
 		_ = require('lodash'),
 		StoryNode = require('./storynode'),
 		WriterForm = require('./writerform');
@@ -18,17 +19,17 @@ var WriteApp = React.createClass({
 			focus:{}
 			};
 	},
-	componentDidMount(){
-		// $('.js-accordion-trigger').bind('click', function(e){
-		//   $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
-		//   $(this).parent().toggleClass('is-expanded');
-		//   e.preventDefault();
-		// });
-
-	},
+	// componentDidMount(){
+  //   $('.js-accordion-trigger').bind('click', function(e){
+	// 	  $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
+	// 	  $(this).parent().toggleClass('is-expanded');
+	// 		console.log("log");
+	// 	  e.preventDefault();
+	// 	});
+  // },
 	render() {
 
-		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "tree";
+		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "story-node-wrapper";
 
 		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 

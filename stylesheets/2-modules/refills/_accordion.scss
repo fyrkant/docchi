@@ -19,13 +19,26 @@
   margin: 0 0 $base-spacing 0;
   padding: 0;
 
+  a.js-accordion-trigger {
+    background: $blue;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 2px;
+  }
+
+
   ul {
     margin: 0;
     padding: 0;
+
+
   }
 
   li {
     list-style: none;
+
+
 
     > a {
       color: $accordion-menu-color;
@@ -47,6 +60,10 @@
   ul.submenu {
     display: none;
 
+    transform: translateX(-50px);
+
+    transition: all 5s ease-in-out;
+
     li {
       background-color: $accordion-menu-sub-background;
       border-bottom: $accordion-menu-border;
@@ -61,10 +78,17 @@
         background-color: $accordion-menu-sub-hover;
       }
     }
+
+
   }
 
   .is-expanded {
     display: block;
     padding-bottom: 0;
+
+    ul.submenu {
+      display:block;
+      transform: translateX(0px);
+    }
   }
 }

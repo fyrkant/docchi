@@ -619,41 +619,58 @@ img, picture {
   margin: 0 0 1.5em 0;
   padding: 0; }
   /* line 22, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+  .accordion a.js-accordion-trigger {
+    background: #477dca;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 2px; }
+  /* line 31, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
   .accordion ul {
     margin: 0;
     padding: 0; }
-  /* line 27, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+  /* line 38, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
   .accordion li {
     list-style: none; }
-    /* line 30, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+    /* line 43, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
     .accordion li > a {
       color: #333;
       display: block;
       padding: 0.3em 1.618em;
       text-decoration: none; }
-    /* line 37, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+    /* line 50, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
     .accordion li:last-child {
       border: none; }
-    /* line 42, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+    /* line 55, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
     .accordion li:focus, .accordion li:hover {
       background-color: #fcfcfc; }
-  /* line 47, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+  /* line 60, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
   .accordion ul.submenu {
-    display: none; }
-    /* line 50, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+    display: none;
+    -webkit-transform: translateX(-50px);
+        -ms-transform: translateX(-50px);
+            transform: translateX(-50px);
+    transition: all 5s ease-in-out; }
+    /* line 67, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
     .accordion ul.submenu li {
       background-color: #eaeaea;
       border-bottom: 1px solid #ddd; }
-      /* line 55, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+      /* line 72, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
       .accordion ul.submenu li:first-child {
         box-shadow: inset 0 1px 1px #dadada; }
-      /* line 60, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+      /* line 77, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
       .accordion ul.submenu li:focus, .accordion ul.submenu li:hover {
         background-color: #efefef; }
-  /* line 66, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+  /* line 85, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
   .accordion .is-expanded {
     display: block;
     padding-bottom: 0; }
+    /* line 89, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
+    .accordion .is-expanded ul.submenu {
+      display: block;
+      -webkit-transform: translateX(0px);
+          -ms-transform: translateX(0px);
+              transform: translateX(0px); }
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
 .writer {
@@ -682,14 +699,20 @@ img, picture {
   /* line 25, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
   .writer ul.submenu {
     position: absolute;
+    margin-top: -30px;
     margin-left: 155px; }
-  /* line 30, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+  /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
   .writer .js-accordion-trigger {
     font-size: 0.9em;
     text-align: center;
     width: 150px; }
+  /* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+  .writer .story-list {
+    position: absolute;
+    top: 5px;
+    right: 5px; }
 
-/* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+/* line 44, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
 .switch {
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -703,13 +726,13 @@ img, picture {
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-  /* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+  /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
   .switch p {
     -webkit-order: 1;
         -ms-flex-order: 1;
             order: 1;
     margin-top: 5px; }
-  /* line 46, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+  /* line 53, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
   .switch label {
     -webkit-order: 1;
         -ms-flex-order: 1;
@@ -718,17 +741,11 @@ img, picture {
         -ms-flex-item-align: center;
             align-self: center;
     margin-right: 30%; }
-  /* line 52, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
+  /* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
   .switch button {
     -webkit-order: 3;
         -ms-flex-order: 3;
             order: 3; }
-
-/* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/storylist */
-.story-list {
-  position: absolute;
-  top: 5px;
-  right: 5px; }
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/lorem-page */
 .lorem-page {
@@ -778,6 +795,51 @@ img, picture {
     /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
     .todo-app > *:last-child {
       margin-right: 0; }
+
+/* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+.story-node-wrapper {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row; }
+
+/* line 7, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+.story-node {
+  margin: 10px;
+  width: 300px;
+  position: relative;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  min-height: 150px;
+  padding: 5px; }
+  /* line 18, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  .story-node h3 {
+    font-size: 1.2em;
+    padding-top: 5px; }
+  /* line 22, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  .story-node hr {
+    padding: 0;
+    margin: 3px; }
+  /* line 28, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  .story-node ul.submenu {
+    position: absolute;
+    margin-top: -30px;
+    margin-left: 30px; }
+  /* line 35, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  .story-node .accordion {
+    position: absolute;
+    top: 5px;
+    right: 5px; }
+  /* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  .story-node .js-accordion-trigger {
+    font-size: 0.9em;
+    width: 25px; }
 
 /* line 7, C:/temp/mw222rs-project/stylesheets/style.scss */
 .hide {

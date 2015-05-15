@@ -61715,7 +61715,46 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"./components/loginbutton":228,"jquery":4,"react":203,"react-router":34}],227:[function(require,module,exports){
+},{"./components/loginbutton":229,"jquery":4,"react":203,"react-router":34}],227:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Accordion = React.createClass({
+  displayName: 'Accordion',
+
+  accordionClick: function accordionClick(ev) {
+    ev.target.parentNode.classList.toggle('is-expanded');
+    ev.preventDefault();
+  },
+
+  render: function render() {
+
+    return React.createElement(
+      'ul',
+      { className: 'accordion' },
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#', className: 'js-accordion-trigger', onClick: this.accordionClick },
+          this.props.triggerText
+        ),
+        React.createElement(
+          'ul',
+          { className: 'submenu' },
+          this.props.children
+        )
+      )
+    );
+  }
+
+});
+
+module.exports = Accordion;
+
+},{"react":203}],228:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -61756,7 +61795,7 @@ var ListItem = React.createClass({
 
 module.exports = ListItem;
 
-},{"../actions":225,"../stores/todostore":240,"react":203,"reflux":205}],228:[function(require,module,exports){
+},{"../actions":225,"../stores/todostore":241,"react":203,"reflux":205}],229:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -61780,7 +61819,7 @@ var LoginButton = React.createClass({
 
 module.exports = LoginButton;
 
-},{"../actions":225,"../stores/loginstore":239,"react":203,"reflux":205}],229:[function(require,module,exports){
+},{"../actions":225,"../stores/loginstore":240,"react":203,"reflux":205}],230:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -61829,12 +61868,13 @@ var LoremPage = React.createClass({
 
 module.exports = LoremPage;
 
-},{"react":203}],230:[function(require,module,exports){
+},{"react":203}],231:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     _ = require('lodash'),
-    actions = require('../actions');
+    actions = require('../actions'),
+    Accordion = require('./accordion');
 
 var StoryList = React.createClass({
     displayName: 'StoryList',
@@ -61849,6 +61889,13 @@ var StoryList = React.createClass({
     render: function render() {
         var _this = this;
 
+        var storyCount = _.toArray(_.filter(this.props.stories, function (s) {
+            return s.isParent;
+        })).length;
+        var btnTxt = storyCount === 1 ? 'oavslutad' : 'oavslutade';
+
+        var triggerText = storyCount + ' ' + btnTxt;
+
         var createItem = function createItem(story, index) {
             return React.createElement(
                 'li',
@@ -61861,8 +61908,8 @@ var StoryList = React.createClass({
             );
         };
         return React.createElement(
-            'ul',
-            { className: 'submenu' },
+            Accordion,
+            { triggerText: triggerText },
             _.map(_.filter(this.props.stories, function (s) {
                 return s.isParent;
             }), createItem)
@@ -61873,11 +61920,12 @@ var StoryList = React.createClass({
 
 module.exports = StoryList;
 
-},{"../actions":225,"lodash":5,"react":203}],231:[function(require,module,exports){
+},{"../actions":225,"./accordion":227,"lodash":5,"react":203}],232:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     _ = require('lodash'),
+    Accordion = require('./accordion'),
     actions = require('../actions');
 
 var StoryNode = React.createClass({
@@ -61941,25 +61989,38 @@ var StoryNode = React.createClass({
 			{ onDoubleClick: this.clickSelect },
 			React.createElement(
 				'div',
-				{ className: 'panel panel-default story-part' },
+				{ className: 'story-node' },
 				React.createElement(
 					'h3',
-					{ className: 'panel-title' },
-					this.props.selected.title,
-					' ',
-					React.createElement(
-						'button',
-						{ onClick: this.storypartDestroyer },
-						'X'
-					)
+					null,
+					this.props.selected.title
+				),
+				React.createElement('hr', null),
+				React.createElement(
+					'p',
+					null,
+					this.props.selected.txt
 				),
 				React.createElement(
-					'div',
-					{ className: 'panel-body' },
+					Accordion,
+					{ triggerText: '?' },
 					React.createElement(
-						'p',
+						'li',
 						null,
-						this.props.selected.txt
+						React.createElement(
+							'a',
+							{ href: '#' },
+							'Ändra'
+						)
+					),
+					React.createElement(
+						'li',
+						null,
+						React.createElement(
+							'a',
+							{ href: '#', onClick: this.storypartDestroyer },
+							'Radera'
+						)
 					)
 				)
 			),
@@ -61979,7 +62040,7 @@ var StoryNode = React.createClass({
 
 module.exports = StoryNode;
 
-},{"../actions":225,"lodash":5,"react":203}],232:[function(require,module,exports){
+},{"../actions":225,"./accordion":227,"lodash":5,"react":203}],233:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -62049,7 +62110,7 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../stores/todostore":240,"./todolist":233,"firebase":2,"lodash":5,"react":203,"reactfire":204,"reflux":205}],233:[function(require,module,exports){
+},{"../stores/todostore":241,"./todolist":234,"firebase":2,"lodash":5,"react":203,"reactfire":204,"reflux":205}],234:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -62087,13 +62148,15 @@ var TodoList = React.createClass({
 
 module.exports = TodoList;
 
-},{"./listitem":227,"lodash":5,"react":203}],234:[function(require,module,exports){
+},{"./listitem":228,"lodash":5,"react":203}],235:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     Reflux = require('reflux'),
     DocchiStore = require('../stores/docchistore'),
-    _ = require('lodash'),
+
+// $ = require('jquery'),
+_ = require('lodash'),
     StoryNode = require('./storynode'),
     WriterForm = require('./writerform');
 
@@ -62112,10 +62175,17 @@ var WriteApp = React.createClass({
 			focus: {}
 		};
 	},
-	componentDidMount: function componentDidMount() {},
+	// componentDidMount(){
+	//   $('.js-accordion-trigger').bind('click', function(e){
+	// 	  $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
+	// 	  $(this).parent().toggleClass('is-expanded');
+	// 		console.log("log");
+	// 	  e.preventDefault();
+	// 	});
+	// },
 	render: function render() {
 
-		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
+		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'story-node-wrapper';
 
 		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
@@ -62134,19 +62204,13 @@ var WriteApp = React.createClass({
 
 module.exports = WriteApp;
 
-// $('.js-accordion-trigger').bind('click', function(e){
-//   $(this).parent().find('.submenu').toggle('fold');  // apply the toggle to the ul
-//   $(this).parent().toggleClass('is-expanded');
-//   e.preventDefault();
-// });
-
-},{"../stores/docchistore":238,"./storynode":231,"./writerform":235,"jquery-ui":3,"lodash":5,"react":203,"reflux":205}],235:[function(require,module,exports){
+},{"../stores/docchistore":239,"./storynode":232,"./writerform":236,"jquery-ui":3,"lodash":5,"react":203,"reflux":205}],236:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
     _ = require('lodash'),
     StoryList = require('./storylist'),
-    $ = require('jquery'),
+    Accordion = require('./accordion'),
     Draggable = require('react-draggable'),
     actions = require('../actions');
 
@@ -62177,29 +62241,17 @@ var WriterForm = React.createClass({
 
     return storyPart;
   },
-  componentDidMount: function componentDidMount() {
-    $('.js-accordion-trigger').bind('click', function (e) {
-      $(this).parent().find('.submenu').toggle('fold'); // apply the toggle to the ul
-      $(this).parent().toggleClass('is-expanded');
-      e.preventDefault();
-    });
-  },
   render: function render() {
     var storyListClass = _.isEmpty(_.filter(this.props.stories, function (s) {
       return s.isParent;
     })) ? 'hide' : 'story-list';
-
-    var storyCount = _.toArray(_.filter(this.props.stories, function (s) {
-      return s.isParent;
-    })).length;
-    var btnTxt = storyCount === 1 ? 'oavslutad' : 'oavslutade';
 
     return React.createElement(
       'div',
       { className: 'writer-wrap' },
       React.createElement(
         Draggable,
-        { cancel: 'input, textarea, button, label, ul, li', grid: [50, 50] },
+        { cancel: 'input, textarea, button, label, ul, li' },
         React.createElement(
           'div',
           { className: 'writer' },
@@ -62253,22 +62305,7 @@ var WriterForm = React.createClass({
           React.createElement(
             'div',
             { className: storyListClass },
-            React.createElement(
-              'ul',
-              { className: 'accordion' },
-              React.createElement(
-                'li',
-                null,
-                React.createElement(StoryList, { stories: this.props.stories }),
-                React.createElement(
-                  'a',
-                  { href: '#', className: 'js-accordion-trigger' },
-                  storyCount,
-                  ' ',
-                  btnTxt
-                )
-              )
-            )
+            React.createElement(StoryList, { stories: this.props.stories })
           )
         )
       )
@@ -62279,7 +62316,7 @@ var WriterForm = React.createClass({
 
 module.exports = WriterForm;
 
-},{"../actions":225,"./storylist":230,"jquery":4,"lodash":5,"react":203,"react-draggable":6}],236:[function(require,module,exports){
+},{"../actions":225,"./accordion":227,"./storylist":231,"lodash":5,"react":203,"react-draggable":6}],237:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -62290,7 +62327,7 @@ ReactRouter.run(routes, function (Handler) {
 		React.render(React.createElement(Handler, null), document.body);
 });
 
-},{"./routes":237,"react":203,"react-router":34}],237:[function(require,module,exports){
+},{"./routes":238,"react":203,"react-router":34}],238:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -62311,7 +62348,7 @@ module.exports = React.createElement(
   React.createElement(DefaultRoute, { handler: Write })
 );
 
-},{"./app":226,"./components/lorempage":229,"./components/todoapp":232,"./components/write":234,"react":203,"react-router":34}],238:[function(require,module,exports){
+},{"./app":226,"./components/lorempage":230,"./components/todoapp":233,"./components/write":235,"react":203,"react-router":34}],239:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -62423,7 +62460,7 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":225,"firebase":2,"reflux":205}],239:[function(require,module,exports){
+},{"../actions":225,"firebase":2,"reflux":205}],240:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -62444,7 +62481,7 @@ module.exports = Reflux.createStore({
 	}
 });
 
-},{"../actions":225,"firebase":2,"reflux":205}],240:[function(require,module,exports){
+},{"../actions":225,"firebase":2,"reflux":205}],241:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux'),
@@ -62466,4 +62503,4 @@ module.exports = Reflux.createStore({
     }
 });
 
-},{"../actions":225,"firebase":2,"reflux":205}]},{},[236]);
+},{"../actions":225,"firebase":2,"reflux":205}]},{},[237]);

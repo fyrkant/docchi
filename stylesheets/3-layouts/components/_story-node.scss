@@ -1,0 +1,47 @@
+.story-node-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.story-node {
+  margin: 10px;
+  width: 300px;
+  position: relative;
+  background: white;
+  border: $base-border;
+  border-radius: $base-border-radius;
+  min-height: 150px;
+
+  padding: 5px;
+
+  h3 {
+    font-size: 1.2em;
+    padding-top: 5px;
+  }
+  hr {
+    padding: 0;
+    margin: 3px;
+  }
+
+
+  ul.submenu {
+    position: absolute;
+    margin-top: -30px;
+    margin-left: 30px;
+
+  }
+
+  .accordion {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+  }
+
+  .js-accordion-trigger {
+    font-size:0.9em;
+    width: 25px;
+  }
+
+}

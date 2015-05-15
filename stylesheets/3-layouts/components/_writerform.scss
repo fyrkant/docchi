@@ -24,6 +24,7 @@
 
   ul.submenu {
     position: absolute;
+    margin-top: -30px;
     margin-left: 155px;
   }
 
@@ -31,6 +32,12 @@
     font-size:0.9em;
     text-align: center;
     width: 150px;
+  }
+  .story-list {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
   }
 
 }

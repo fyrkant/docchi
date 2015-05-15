@@ -1,6 +1,7 @@
 var React = require('react'),
     _ = require('lodash'),
-    actions = require('../actions');
+    actions = require('../actions'),
+    Accordion = require('./accordion');
 
 var StoryList = React.createClass({
   handleClick:function(key){
@@ -9,6 +10,12 @@ var StoryList = React.createClass({
 		actions.changeSelected(foundSelected);
   },
   render: function() {
+
+      var storyCount = _.toArray(_.filter(this.props.stories, function(s){return s.isParent;})).length;
+      var btnTxt = storyCount === 1 ? "oavslutad" : "oavslutade";
+
+      var triggerText = storyCount + " " + btnTxt;
+
       var createItem = (story, index) => {
         return <li key={index} index={index}>
                   <a onClick={this.handleClick.bind(this, story.key)}>
@@ -16,7 +23,7 @@ var StoryList = React.createClass({
                   </a>
               </li>;
   		};
-      return <ul className="submenu">{_.map(_.filter(this.props.stories, function(s){return s.isParent;}), createItem)}</ul>;
+      return <Accordion triggerText={triggerText}>{_.map(_.filter(this.props.stories, function(s){return s.isParent;}), createItem)}</Accordion>;
 
   }
 
