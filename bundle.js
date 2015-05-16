@@ -61986,7 +61986,7 @@ var StoryNode = React.createClass({
 
 		return !this.props.selected ? React.createElement('div', null) : React.createElement(
 			'div',
-			{ onDoubleClick: this.clickSelect },
+			null,
 			React.createElement(
 				'div',
 				{ className: 'story-node' },
@@ -62022,6 +62022,11 @@ var StoryNode = React.createClass({
 							'Radera'
 						)
 					)
+				),
+				React.createElement(
+					'button',
+					{ onClick: this.clickSelect },
+					'Lägg till barn'
 				)
 			),
 			React.createElement(
@@ -62185,7 +62190,7 @@ var WriteApp = React.createClass({
 	// },
 	render: function render() {
 
-		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'story-node-wrapper';
+		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
 
 		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
@@ -62210,7 +62215,6 @@ module.exports = WriteApp;
 var React = require('react'),
     _ = require('lodash'),
     StoryList = require('./storylist'),
-    Accordion = require('./accordion'),
     Draggable = require('react-draggable'),
     actions = require('../actions');
 
@@ -62316,7 +62320,7 @@ var WriterForm = React.createClass({
 
 module.exports = WriterForm;
 
-},{"../actions":225,"./accordion":227,"./storylist":231,"lodash":5,"react":203,"react-draggable":6}],237:[function(require,module,exports){
+},{"../actions":225,"./storylist":231,"lodash":5,"react":203,"react-draggable":6}],237:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),

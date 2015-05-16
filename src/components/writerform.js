@@ -1,7 +1,6 @@
 var React = require('react'),
     _ = require('lodash'),
     StoryList = require('./storylist'),
-    Accordion = require('./accordion'),
     Draggable = require('react-draggable'),
     actions = require('../actions');
 

@@ -57,7 +57,7 @@ var StoryNode = React.createClass({
 	render() {
 
 		return !this.props.selected ? <div /> : (
-			<div onDoubleClick={this.clickSelect} >
+			<div>
 				<div className="story-node">
 					<h3>{this.props.selected.title}</h3>
 
@@ -70,7 +70,7 @@ var StoryNode = React.createClass({
 						<li><a href="#" onClick={this.storypartDestroyer}>Radera</a></li>
 					</Accordion>
 
-
+					<button onClick={this.clickSelect}>Lägg till barn</button>
 
 				</div>
 
