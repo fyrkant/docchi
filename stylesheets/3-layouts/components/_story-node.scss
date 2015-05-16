@@ -1,65 +1,68 @@
+$story-node-border : 2px solid $blue;
+
 .story-node-wrapper {
   display: flex;
   align-items: center;
   flex-direction: column;
   }
+
 .child-divs {
   display: flex;
-  // div.story-node::before, div.story-node::after {
-  //   content: '';
-	//   position: absolute; top: -20px; right: 50%;
-	//   border-top: 2px solid $blue;
-	//   width: 50%; height: 20px;
-  // }
-  //
-  // div.story-node::after{
-  // 	right: auto; top: -20px; left: 50%;
-  // 	border-left: 2px solid $blue;
-  // }
-  //
-  // div.story-node:only-child::after, div.story-node:only-child::before {
-  //   display:none;
-  // }
-  //
-  // div.story-node:only-child {
-  //   padding-top: 0;
-  // }
-  //
-  // /*Adding back the vertical connector to the last nodes*/
-  // div.story-node:last-child::before{
-  // 	border-right: 2px solid $blue;
-  // 	border-radius: 0 5px 0 0;
-  // 	-webkit-border-radius: 0 5px 0 0;
-  // 	-moz-border-radius: 0 5px 0 0;
-  // }
-  // div.story-node:first-child::after{
-  // 	border-radius: 5px 0 0 0;
-  // 	-webkit-border-radius: 5px 0 0 0;
-  // 	-moz-border-radius: 5px 0 0 0;
-  // }
-  //
-  // /*Time to add downward connectors from parents*/
-  // div.story-node::before{
-  // 	content: '';
-  // 	position: absolute; top: 100%; left: 50%;
-  // 	border-left: 2px solid $blue;
-  // 	width: 0; height: 20px;
-  // }
+  flex-direction: row;
 }
+
+.child-divs .story-node::before, .child-divs .story-node::after {
+  content:'';
+  position: absolute;
+  top: -20px;
+  border-top: $story-node-border;
+  width: 55%;
+  height: 20px;
+}
+
+.child-divs .story-node::after {
+  right: auto;
+  left: 50%;
+  border-left: $story-node-border;
+}
+
+.child-divs .story-node:last-child::after {
+  background-color: pink;
+}
+
+.child-divs .story-node::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-left: $story-node-border;
+  width: 0;
+  height: 20px;
+}
+
+// .story-node:::after, .story-node:last-child::before {
+//   display: none;
+// }
+
+
 
 .story-node {
   position: relative;
+  @include transition(all 0.5s ease-in-out);
+
   background: white;
-  // display: block;
+  display: block;
 
   margin: 20px auto 20px;
+  padding: 5px;
+
   width: 300px;
-  border: $base-border;
-  border-radius: $base-border-radius;
   min-height: 150px;
 
+  border: $base-border;
+  border-radius: $base-border-radius;
 
-  padding: 5px;
+
 
   h3 {
     font-size: 1.2em;
@@ -88,32 +91,4 @@
     font-size:0.9em;
     width: 25px;
   }
-
-}
-
-.tree {
-
-  .story-node {
-    position: relative;
-    @include transition(all 0.5s ease-in-out);
-
-  }
-
-
-  .child-divs{
-    position: relative;
-    padding: 20px 5px 0 5px;
-
-    @include transition(all 0.5s ease-in-out);
-  }
-
-  .child-divs::before, .child-divs::after {
-    content: '';
-    position:absolute;
-    top:0;
-    right: 50%;
-    border-top: 2px solid $blue;
-  }
-
-
 }

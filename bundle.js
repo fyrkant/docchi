@@ -62190,7 +62190,7 @@ var WriteApp = React.createClass({
 	// },
 	render: function render() {
 
-		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : 'tree';
+		var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : '';
 
 		//var activated = storyNodeClass !== "tree" && _.isEmpty(this.state.focus) ? true : false;
 
