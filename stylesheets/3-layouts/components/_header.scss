@@ -1,0 +1,24 @@
+.centered-navigation {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+
+  @include transition(all 0.5s);
+}
+
+h1.header-title {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: white;
+  font-size: 15em;
+  align-self: center;
+
+  @include transition(all 0.5s);
+}
+
+.close {
+  h1.header-title {
+    margin: 0;
+    font-size: 4em;
+  }
+}

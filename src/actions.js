@@ -7,6 +7,7 @@ module.exports = Reflux.createActions([
     "addStoryPart",
     "changeSelected",
     "changeFocus",
+    "resetFocus",
     "destroyStoryPart",
     "destroyStoryParts"
 ]);

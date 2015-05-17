@@ -7,10 +7,9 @@ var LoginButton = React.createClass({
 	mixins:[Reflux.connect(LoginStore)],
 	render: function() {
 		return (
-			<button className="btn btn-default navbar-btn" onClick={actions.login}>Logga in</button>
+			<button onClick={actions.login}>Logga in</button>
 		);
 	}
-
 });
 
 module.exports = LoginButton;

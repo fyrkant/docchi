@@ -6,49 +6,50 @@ var Reflux = require('reflux'),
 var storiesRef = new Firebase("https://blazing-fire-8429.firebaseio.com/stories/");
 
 module.exports = Reflux.createStore({
-    init(){
-      storiesRef.on("value", this.updateStories.bind(this));
+  init(){
+    storiesRef.on("value", this.updateStories.bind(this));
 
-      storiesRef.on("child_removed", this.updateStories.bind(this));
+    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
+    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
-      this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
-      this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
-      this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
-      this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
-      this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
-    },
-    onAddStoryPart(storyPart){
-      if (storyPart.parentKey) { // If the storypart is a child..
-        //var parent = storiesRef.child(storyPart.parentKey).child("children"); // gets reference to the children-field of parent-node
+    this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
+    this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
+    this.listenTo(actions.resetFocus, this.resetFocus);
+    this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
+    this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
+  },
+  onAddStoryPart(storyPart){
+    if (storyPart.parentKey) { // If the storypart has a parent it is a child..
 
-        var newChild = storiesRef.push({ // Creates new post for child-node
-            title: storyPart.title,
-            txt: storyPart.txt,
-            isEnding: storyPart.isEnding
-        });
-        newChild.update({ // Adds the key to the newly created child-node
-          key: newChild.key()
-        });
+      var newChild = storiesRef.push({ // Creates new post for child-node
+          title: storyPart.title,
+          txt: storyPart.txt,
+          isEnding: storyPart.isEnding
+      });
+      newChild.update({ // Adds the key to the newly created child-node
+        key: newChild.key()
+      });
 
-        var parent = storiesRef.child(storyPart.parentKey).child("children").child(newChild.key());
+      var parent = storiesRef.child(storyPart.parentKey).child("children").child(newChild.key());
 
-        parent.set({ // And to the child-field of the parent
-          key: newChild.key()
-        });
+      parent.set({ // And to the child-field of the parent
+        key: newChild.key()
+      });
 
-      } else { // if it isn't a child, then it's a parent - congrats!
+    } else { // if it isn't a child, then it's a parent - congrats!
 
-        var newParent = storiesRef.push({  // Adds new post
-            title: storyPart.title,
-            txt: storyPart.txt,
-            isEnding: storyPart.isEnding,
-            isParent: true
-        });
-        newParent.update({ // Attaches key to key-field
-          key: newParent.key()
-        });
+      var newParent = storiesRef.push({  // Adds new post
+          title: storyPart.title,
+          txt: storyPart.txt,
+          isEnding: storyPart.isEnding,
+          isParent: true
+      });
+      newParent.update({ // Attaches key to key-field
+        key: newParent.key()
+      });
 
-      }
+    }
   },
   onDestroyStoryPart(key, parentKey){
 
@@ -73,8 +74,6 @@ module.exports = Reflux.createStore({
         }
       }
     });
-
-
   },
   onDestroyStoryParts(array, parentKey){
     array.forEach(function(key){
@@ -87,6 +86,9 @@ module.exports = Reflux.createStore({
   resetSelected(){
     this.trigger({selected:{}, focus: {}});
   },
+  resetFocus(){
+    this.trigger({focus: {}, statusWord: "Skriv", h3: "Ny historia"});
+  },
   onChangeFocus(focus, title){
 
     this.trigger({focus: focus, statusWord: "Fortsätt på", h3: title});
@@ -95,9 +97,34 @@ module.exports = Reflux.createStore({
     this.trigger({selected:(this.last = snap.val() || {})});
   },
   updateStories(snap){
+    console.log("VALUE");
+    console.log(snap.val());
+
     this.trigger({stories:(this.last = snap.val() || {})});
   },
+  updateStoriesChildAdded(snap){
+    console.log("CHILD_ADDED");
+    console.log(snap.val());
+
+    this.getParentNode(snap.val());
+
+    this.trigger({stories:(this.last = snap.val() || {})});
+  },
+  updateStoriesChildRemoved(snap){
+    console.log("CHILD_REMOVED");
+    console.log(snap.val());
+
+    this.resetFocus();
+
+    this.trigger({stories:(this.last = snap.val() || {})});
+  },
+  getParentNode(node){
+    console.log(node);
+  },
   getDefaultData(){
+
+    console.log("default data");
+
     var stories;
 
     storiesRef.on("value", function(snap){

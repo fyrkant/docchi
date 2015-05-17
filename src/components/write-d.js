@@ -1,17 +1,14 @@
 var React = require('react'),
 		Reflux = require('reflux'),
-		Router = require('react-router'),
+		// Router = require('react-router'),
 		DocchiStore = require('../stores/docchistore'),
-		actions = require('../actions'),
 		_ = require('lodash'),
 		StoryNode = require('./storynode'),
 		WriterForm = require('./writerform');
 
-// var RouteHandler = Router.RouteHandler;
-
 
 var WriteApp = React.createClass({
-	mixins:[Reflux.connect(DocchiStore), Router.State],
+	mixins:[Reflux.connect(DocchiStore)],
 	getInitialState(){
 		return {
 			statusWord:"Skriv",
@@ -20,13 +17,6 @@ var WriteApp = React.createClass({
 			selected:"",
 			focus:{}
 			};
-	},
-	componentDidMount: function() {
-		// var key = this.context.router.getCurrentParams().key;
-		//
-		// var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
-		//
-		// actions.changeSelected(foundSelected);
 	},
 	render() {
 
@@ -38,11 +28,9 @@ var WriteApp = React.createClass({
 
 		return (
 		<div>
-
 			<div className={storyNodeClass}>
-				<StoryNode stories={this.state.stories} key={this.state.selected.key} selected={this.state.selected} />
+				<StoryNode key={this.state.selected.key} stories={this.state.stories} selected={this.state.selected} />
 			</div>
-
 
 			<WriterForm focus={this.state.focus} h3={this.state.h3} statusWord={this.state.statusWord} stories={this.state.stories} />
 		</div>

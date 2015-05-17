@@ -3,6 +3,8 @@ var React = require('react'),
     actions = require('../actions'),
     Accordion = require('./accordion');
 
+var Link = require('react-router').Link;
+
 var StoryList = React.createClass({
   handleClick:function(key){
     var foundSelected = _.find(this.props.stories, function(s){return s.key === key;});
@@ -18,9 +20,9 @@ var StoryList = React.createClass({
 
       var createItem = (story, index) => {
         return <li key={index} index={index}>
-                  <a onClick={this.handleClick.bind(this, story.key)}>
-                          {story.title}
-                  </a>
+                  <Link to="writeOld" params={{key:story.key}}>
+                    {story.title}
+                  </Link>
               </li>;
   		};
       return <Accordion triggerText={triggerText}>{_.map(_.filter(this.props.stories, function(s){return s.isParent;}), createItem)}</Accordion>;

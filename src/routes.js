@@ -2,16 +2,24 @@ var React = require('react'),
     Router = require('react-router'),
     Route = Router.Route,
     DefaultRoute = Router.DefaultRoute,
-    App = require('./app'),
     TodoApp = require('./components/todoapp'),
     LoremPage = require('./components/lorempage'),
-    Write = require('./components/write');
+    Write = require('./components/write'),
+    StoryNode = require('./components/storynode'),
+    Wrapper = require('./components/wrapper'),
+    Home = require('./components/home');
 
 module.exports = (
-	<Route name="app" path="/" handler={App}>
-		<Route name="todoapp" handler={TodoApp} />
-		<Route name="lorempage" handler={LoremPage} />
-    <Route name="write" handler={Write} />
-		<DefaultRoute handler={Write} />
+	<Route handler={Wrapper}>
+
+    <DefaultRoute handler={Home} />
+
+		<Route name="todoapp" path="todo" handler={TodoApp} />
+		<Route name="lorempage" path="lorem" handler={LoremPage} />
+    <Route name="write" path="write" handler={Write}>
+      <Route name="writeNew" path="new" handler={StoryNode} />
+      <Route name="writeOld" path=":key" handler={StoryNode} />
+  	  <DefaultRoute handler={Write} />
+    </Route>
 	</Route>
 );

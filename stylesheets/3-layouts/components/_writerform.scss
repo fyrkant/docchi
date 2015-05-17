@@ -31,6 +31,18 @@
     margin-left: 155px;
   }
 
+  a.reset-focus-trigger {
+    position: absolute;
+    top: 5px;
+    left: 155px;
+    background: $blue;
+    font-size: 0.9em;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 2px 5px;
+  }
+
   .js-accordion-trigger {
     font-size:0.9em;
     text-align: center;

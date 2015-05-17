@@ -1,4 +1,4 @@
-var React = require('react'),
+var React = require('react'),		
 		_ = require('lodash'),
 		Accordion = require('./accordion'),
 		actions = require('../actions');
@@ -10,7 +10,6 @@ var StoryNode = React.createClass({
 
 		ev.preventDefault();
 		ev.stopPropagation();
-
 	},
 	toBeBlownUp: [],
 	visitChildren(obj){
@@ -55,7 +54,6 @@ var StoryNode = React.createClass({
 		}
 	},
 	render() {
-
 		return !this.props.selected ? <div /> : (
 			<div>
 				<div className="story-node">
@@ -81,11 +79,7 @@ var StoryNode = React.createClass({
 				</div>
 			</div>
 			);
-
-
-
 	}
-
 });
 
 module.exports = StoryNode;

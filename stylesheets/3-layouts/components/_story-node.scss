@@ -11,11 +11,32 @@ $story-node-border : 2px solid $blue;
   flex-direction: row;
 }
 
-.child-divs .story-node::before, .child-divs .story-node::after {
+.story-node .child-divs ::before {
+  background-color: red;
   content:'';
   position: absolute;
   top: -20px;
-  border-top: $story-node-border;
+  border-top: 3px solid red;
+  width: 55%;
+  height: 20px;
+}
+
+.child-divs .story-node::before {
+  background-color: transparentize(blue, 0.7);
+  content:'';
+  position: absolute;
+  top: -20px;
+  border-top: 3px solid red;
+  width: 55%;
+  height: 20px;
+}
+
+.child-divs .story-node::after {
+  background-color: green;
+  content:'';
+  position: absolute;
+  top: -20px;
+  border-top: 3px solid red;
   width: 55%;
   height: 20px;
 }
@@ -23,7 +44,7 @@ $story-node-border : 2px solid $blue;
 .child-divs .story-node::after {
   right: auto;
   left: 50%;
-  border-left: $story-node-border;
+  border-left: 3px solid pink;
 }
 
 .child-divs .story-node:last-child::after {
@@ -35,8 +56,8 @@ $story-node-border : 2px solid $blue;
   position: absolute;
   top: 100%;
   left: 50%;
-  border-left: $story-node-border;
-  width: 0;
+  border-left: 3px solid green;
+  width: 20px;
   height: 20px;
 }
 
