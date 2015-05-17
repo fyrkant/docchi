@@ -6,13 +6,13 @@ var React = require('react'),
     LoremPage = require('./components/lorempage'),
     Write = require('./components/write'),
     StoryNode = require('./components/storynode'),
-    Wrapper = require('./components/wrapper'),
+    // Wrapper = require('./components/wrapper'),
     Home = require('./components/home');
 
 module.exports = (
-	<Route handler={Wrapper}>
+	<Route handler={Home}>
 
-    <DefaultRoute handler={Home} />
+    <DefaultRoute handler={Write} />
 
 		<Route name="todoapp" path="todo" handler={TodoApp} />
 		<Route name="lorempage" path="lorem" handler={LoremPage} />

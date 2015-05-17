@@ -1,0 +1,45 @@
+.home {
+
+  header {
+    background-color: $blue;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h1 {
+      margin: 10px;
+      font-size: 4em;
+      color: transparentize(white, 0.5);
+
+      @include transition(all .5s ease-in-out);
+
+      &:hover {
+        color: white;
+      }
+
+      }
+    h2 {
+      padding: 0 20px;
+      margin-top: auto;
+
+      font-family: $georgia;
+      width: 50%;
+      font-size: 2.5em;
+
+      a {
+        padding: 0 20px;
+        color: white;
+      }
+
+      .write {
+        @include transition(all 1s ease-in-out);
+      }
+
+  }
+  }
+
+
+
+
+  }

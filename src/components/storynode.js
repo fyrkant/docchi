@@ -1,6 +1,6 @@
-var React = require('react'),		
+var React = require('react'),
 		_ = require('lodash'),
-		Accordion = require('./accordion'),
+		// Accordion = require('./accordion'),
 		actions = require('../actions');
 
 var StoryNode = React.createClass({
@@ -53,31 +53,28 @@ var StoryNode = React.createClass({
 			}
 		}
 	},
+	shower(ev){
+		ev.target.nextSibling.classList.toggle('hide');
+	},
 	render() {
+
+
 		return !this.props.selected ? <div /> : (
-			<div>
-				<div className="story-node">
-					<h3>{this.props.selected.title}</h3>
+			<ul className="tree">
+				<li>
+					<a href="#" onClick={this.shower}>{this.props.selected.title}</a>
+					<div className="hide story-node">
+						<p>{this.props.selected.txt}</p>
 
-					<hr />
+						<button onClick={this.clickSelect}> + </button>
+						<button onClick={this.storypartDestroyer}> - </button>
+					</div>
 
-					<p>{this.props.selected.txt}</p>
-
-					<Accordion triggerText="?">
-						<li><a href="#">Ändra</a></li>
-						<li><a href="#" onClick={this.storypartDestroyer}>Radera</a></li>
-					</Accordion>
-
-					<button onClick={this.clickSelect}>Lägg till barn</button>
-
-				</div>
-
-				<div className="child-divs">
-					{_.map(this.props.selected.children, function(n){
-						return <StoryNode key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s){return s.key === n.key;})} />;
-					}.bind(this))}
-				</div>
-			</div>
+						{_.map(this.props.selected.children, function(n){
+							return <StoryNode key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s){return s.key === n.key;})} />;
+						}.bind(this))}
+				</li>
+			</ul>
 			);
 	}
 });

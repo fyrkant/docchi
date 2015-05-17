@@ -20,7 +20,7 @@ var StoryList = React.createClass({
 
       var createItem = (story, index) => {
         return <li key={index} index={index}>
-                  <Link to="writeOld" params={{key:story.key}}>
+                  <Link to="writeOld" params={{key:story.key}} onClick={this.handleClick.bind(this, story.key)}>
                     {story.title}
                   </Link>
               </li>;

@@ -2,7 +2,7 @@ var React = require('react'),
 		Reflux = require('reflux'),
 		Router = require('react-router'),
 		DocchiStore = require('../stores/docchistore'),
-		actions = require('../actions'),
+		// actions = require('../actions'),
 		_ = require('lodash'),
 		StoryNode = require('./storynode'),
 		WriterForm = require('./writerform');
@@ -22,6 +22,8 @@ var WriteApp = React.createClass({
 			};
 	},
 	componentDidMount: function() {
+		console.log(this.context.router.getCurrentParams().key);
+
 		// var key = this.context.router.getCurrentParams().key;
 		//
 		// var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
