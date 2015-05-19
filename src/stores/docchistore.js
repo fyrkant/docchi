@@ -13,6 +13,7 @@ module.exports = Reflux.createStore({
     // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
     this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
     this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
     this.listenTo(actions.resetFocus, this.resetFocus);
@@ -50,6 +51,15 @@ module.exports = Reflux.createStore({
       });
 
     }
+  },
+  onEditStoryPartText(key, text){
+
+    var thatStoryPartRef = storiesRef.child(key);
+
+    thatStoryPartRef.update({
+      txt: text
+    });
+
   },
   onDestroyStoryPart(key, parentKey){
 

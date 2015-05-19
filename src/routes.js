@@ -7,7 +7,8 @@ var React = require('react'),
     Write = require('./components/write'),
     StoryNode = require('./components/storynode'),
     // Wrapper = require('./components/wrapper'),
-    Home = require('./components/home');
+    Home = require('./components/home'),
+    Read = require('./components/read');
 
 module.exports = (
 	<Route handler={Home}>
@@ -21,5 +22,6 @@ module.exports = (
       <Route name="writeOld" path=":key" handler={StoryNode} />
   	  <DefaultRoute handler={Write} />
     </Route>
+    <Route name="read" path="read" handler={Read} />
 	</Route>
 );

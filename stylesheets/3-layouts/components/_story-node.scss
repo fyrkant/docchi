@@ -53,6 +53,22 @@
   top:1em; /* (line-height/2) */
   bottom:0;
 }
+
+
+.tree ul li textarea.edit {
+  display: none;
+}
+
+.tree ul li.editing{
+  label {
+    display: none;
+  }
+
+  textarea {
+    display: block;
+  }
+}
+
 .story-node {
   position: relative;
   @include transition(all 0.5s ease-in-out);

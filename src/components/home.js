@@ -3,7 +3,6 @@ var React = require('react'),
     RouteHandler = require('react-router').RouteHandler;
 
 var Home = React.createClass({
-
   render: function() {
     return (
       <div className="home">
@@ -14,10 +13,12 @@ var Home = React.createClass({
             <span className="write">
               <Link to="write">Skriv</Link>
               </span>
-            <span className="read">Läs</span>
+            <span className="read">
+              <Link to="read">Läs</Link>
+            </span>
           </h2>
         </header>
-        <RouteHandler />
+        <RouteHandler {...this.props} />
       </div>
     );
   }

@@ -5,6 +5,7 @@ module.exports = Reflux.createActions([
     "submitTodoLine",
     "login",
     "addStoryPart",
+    "editStoryPartText",
     "changeSelected",
     "changeFocus",
     "resetFocus",

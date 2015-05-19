@@ -1,9 +1,13 @@
-var React = require('react'),
+var React = require('react/addons'),
 		_ = require('lodash'),
 		// Accordion = require('./accordion'),
 		actions = require('../actions');
 
 var StoryNode = React.createClass({
+	mixins:[React.addons.LinkedStateMixin],
+	getInitialState() {
+		return {};
+	},
 	clickSelect(ev){
 
 		actions.changeFocus(this.props.selected, this.props.selected.title);
@@ -53,18 +57,58 @@ var StoryNode = React.createClass({
 			}
 		}
 	},
-	shower(ev){
+	showNode(ev){
 		ev.target.nextSibling.classList.toggle('hide');
+
+		ev.preventDefault();
+	},
+	handleEditStart(evt){
+		evt.preventDefault();
+
+		this.setState({
+			isEditing: true,
+			editValue: this.props.selected.txt
+		}, function(){
+			this.refs.editInput.getDOMNode().focus();
+		});
+	},
+	handleValueChange(evt){
+		var text = this.state.editValue;
+
+		if (evt.which === 13 && text) {
+			this.refs.editInput.getDOMNode().blur();
+		}
+		else if (evt.which === 27) {
+			this.setState({isEditing: false}, function(){
+				this.refs.editInput.getDOMNode().blur();
+			});
+		}
+	},
+	handleBlur(){
+		var text = this.state.editValue;
+
+		if (this.state.isEditing && text) {
+			actions.editStoryPartText(this.props.selected.key, text);
+		}
+
+		this.setState({isEditing: false});
 	},
 	render() {
 
+		var editingClass = React.addons.classSet({'editing': this.state.isEditing});
 
 		return !this.props.selected ? <div /> : (
 			<ul className="tree">
-				<li>
-					<a href="#" onClick={this.shower}>{this.props.selected.title}</a>
-					<div className="hide story-node">
-						<p>{this.props.selected.txt}</p>
+				<li className={editingClass}>
+					<a href="#" onClick={this.showNode}>{this.props.selected.title}</a>
+					<div className={"hide story-node"}>
+						<label className="view" onDoubleClick={this.handleEditStart}>{this.props.selected.txt}</label>
+
+						<textarea ref="editInput"
+							className="edit"
+							valueLink={this.linkState('editValue')}
+							onKeyUp={this.handleValueChange}
+							onBlur={this.handleBlur} />
 
 						<button onClick={this.clickSelect}> + </button>
 						<button onClick={this.storypartDestroyer}> - </button>

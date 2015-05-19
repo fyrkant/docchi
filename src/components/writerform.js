@@ -37,7 +37,7 @@ var WriterForm = React.createClass({
       <Draggable cancel="input, textarea, button, label, ul, li" >
         <div className="writer">
           <h4>{this.props.statusWord}:</h4>
-          <a href="#" className="reset-focus-trigger" onClick={actions.resetFocus}>Börja på ny</a>
+          
           <h3>{this.props.h3}</h3>
           <form onSubmit={this.handleSubmit}>
 
