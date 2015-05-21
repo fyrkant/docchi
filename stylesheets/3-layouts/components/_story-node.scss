@@ -55,12 +55,12 @@
 }
 
 
-.tree ul li textarea.edit {
+textarea.edit {
   display: none;
 }
 
-.tree ul li.editing{
-  label {
+div.editing{
+  p.view {
     display: none;
   }
 

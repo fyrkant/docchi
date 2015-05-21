@@ -3,7 +3,7 @@ var _ = require('lodash');
 // Accordion = require('./accordion'),
 var actions = require('../actions');
 
-var StoryNode = React.createClass({
+var Stories = React.createClass({
   mixins:[React.addons.LinkedStateMixin],
   getInitialState() {
     return {};
@@ -111,7 +111,7 @@ var StoryNode = React.createClass({
 					</div>
 
 						{_.map(this.props.selected.children, function(n) {
-  return <StoryNode key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s) {return s.key === n.key;})} />;
+  return <Stories key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s) {return s.key === n.key;})} />;
 						}.bind(this))}
 				</li>
 			</ul>
@@ -119,4 +119,4 @@ var StoryNode = React.createClass({
   }
 });
 
-module.exports = StoryNode;
+module.exports = Stories;

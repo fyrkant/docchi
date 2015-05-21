@@ -1,17 +1,23 @@
 var Reflux = require('reflux');
-// var _ = require('lodash');
 var actions = require('../actions');
 var Firebase = require('firebase');
+//_ = require('lodash'),
 
 var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
 
 module.exports = Reflux.createStore({
+  focusedRef: undefined,
   init() {
-    storiesRef.on('value', this.updateStories.bind(this));
 
-    // storiesRef.on('child_removed', this.updateStoriesChildRemoved.bind(this));
-    // storiesRef.on('child_added', this.updateStoriesChildAdded.bind(this));
-    //
+    this.focusedRef = storiesRef;
+
+    this.focusedRef.on('value', this.updateStories.bind(this));
+
+    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
+    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
+
+    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
+    this.listenTo(actions.changeRefFocus, this.onChangeRefFocus.bind(this));
     // this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
     // this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
     // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
@@ -59,8 +65,28 @@ module.exports = Reflux.createStore({
       newParent.update({ // Attaches key to key-field
         key: container.key() + '/' + newParent.key()
       });
-
     }
+  },
+  onAddStoryStart(storyStart) {
+
+    var container = storiesRef.push({
+      title: storyStart.title
+    });
+    container.update({
+      key: container.key()
+    });
+
+    var containerPush = storiesRef.child(container.key());
+
+    var newParent = containerPush.push({  // Adds new post
+      title: storyStart.title,
+      txt: storyStart.txt,
+      isEnding: storyStart.isEnding
+    });
+
+    newParent.update({ // Attaches key to key-field
+      key: container.key() + '/' + newParent.key()
+    });
   },
   onEditStoryPartText(key, text) {
 
@@ -100,8 +126,9 @@ module.exports = Reflux.createStore({
       actions.destroyStoryPart(key, parentKey);
     });
   },
-  onChangeSelected(selected) {
-    this.trigger({selected: selected});
+  onChangeRefFocus(key) {
+    this.focusedRef = storiesRef.child(key);
+    this.trigger();
   },
   resetSelected() {
     this.trigger({selected:{}, focus: {}});
@@ -110,20 +137,19 @@ module.exports = Reflux.createStore({
     this.trigger({focus: {}, statusWord: 'Skriv', h3: 'Ny historia'});
   },
   onChangeFocus(focus, title) {
-
     this.trigger({focus: focus, statusWord: 'Fortsätt på', h3: title});
   },
   updateSelected(snap) {
     this.trigger({selected:(this.last = snap.val() || {})});
   },
   updateStories(snap) {
-    // console.log('VALUE');
+    // console.log("VALUE");
     // console.log(snap.val());
 
     this.trigger({stories:(this.last = snap.val() || {})});
   },
   updateStoriesChildAdded(snap) {
-    // console.log('CHILD_ADDED');
+    // console.log("CHILD_ADDED");
     // console.log(snap.val());
 
     this.getParentNode(snap.val());
@@ -131,7 +157,7 @@ module.exports = Reflux.createStore({
     this.trigger({stories:(this.last = snap.val() || {})});
   },
   updateStoriesChildRemoved(snap) {
-    // console.log('CHILD_REMOVED');
+    // console.log("CHILD_REMOVED");
     // console.log(snap.val());
 
     this.resetFocus();

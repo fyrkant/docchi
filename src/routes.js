@@ -1,27 +1,31 @@
-var React = require('react'),
-    Router = require('react-router'),
-    Route = Router.Route,
-    DefaultRoute = Router.DefaultRoute,
-    TodoApp = require('./components/todoapp'),
-    LoremPage = require('./components/lorempage'),
-    Write = require('./components/write'),
-    StoryNode = require('./components/storynode'),
-    // Wrapper = require('./components/wrapper'),
-    Home = require('./components/home'),
-    Read = require('./components/read');
+var React = require('react');
+var Router = require('react-router');
+var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
+var TodoApp = require('./components/todoapp');
+var LoremPage = require('./components/lorempage');
+var Write = require('./components/write');
+//var StoryNode = require('./components/storynode');
+//var Wrapper = require('./components/wrapper');
+var Home = require('./components/home');
+var Read = require('./components/read');
+var WriteBeta = require('./components/write-d');
+var NodePage = require('./components/nodepage');
 
 module.exports = (
 	<Route handler={Home}>
 
-    <DefaultRoute handler={Write} />
+    <DefaultRoute handler={WriteBeta} />
 
 		<Route name="todoapp" path="todo" handler={TodoApp} />
 		<Route name="lorempage" path="lorem" handler={LoremPage} />
     <Route name="write" path="write" handler={Write}>
-      <Route name="writeNew" path="new" handler={StoryNode} />
-      <Route name="writeOld" path=":key" handler={StoryNode} />
-  	  <DefaultRoute handler={Write} />
+      <Route name="writeNew" path="new" handler={Write} />
+      <Route name="writeOld" path=":key" handler={Write} />
+      <DefaultRoute handler={Write} />
     </Route>
+    <Route name="beta" path="beta" handler={WriteBeta} />
+    <Route name="nodes" path="beta/:key" handler={NodePage} />
     <Route name="read" path="read" handler={Read} />
 	</Route>
 );

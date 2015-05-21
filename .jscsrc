@@ -1,0 +1,6 @@
+{
+    "preset": "google",
+    "maximumLineLength": null,
+    "esprima": "esprima-fb",
+    "fileExtensions": [".js", ".jsx"]
+}

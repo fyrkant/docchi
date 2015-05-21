@@ -875,14 +875,14 @@ img, picture {
   bottom: 0; }
 
 /* line 58, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
-.tree ul li textarea.edit {
+textarea.edit {
   display: none; }
 
 /* line 63, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
-.tree ul li.editing label {
+div.editing p.view {
   display: none; }
 /* line 67, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
-.tree ul li.editing textarea {
+div.editing textarea {
   display: block; }
 
 /* line 72, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
@@ -985,6 +985,53 @@ h1.header-title {
     /* line 35, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 .write {
       transition: all 1s ease-in-out; }
+
+/* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+.write-home {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px; }
+  /* line 20, C:/temp/mw222rs-project/stylesheets/0-plugins/bourbon/addons/clearfix */
+  .write-home::after {
+    clear: both;
+    content: "";
+    display: table; }
+  /* line 4, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  .write-home h2 {
+    font-family: "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    font-size: 2em;
+    color: #477dca; }
+  /* line 9, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  .write-home .write-new {
+    float: left;
+    display: block;
+    margin-right: 2.357651598%;
+    width: 48.821174201%; }
+    /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+    .write-home .write-new:last-child {
+      margin-right: 0; }
+  /* line 12, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  .write-home .list-unfinished {
+    float: left;
+    display: block;
+    margin-right: 2.357651598%;
+    width: 48.821174201%; }
+    /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+    .write-home .list-unfinished:last-child {
+      margin-right: 0; }
+    /* line 15, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    .write-home .list-unfinished ul {
+      margin-top: -15px;
+      font-size: 1.2em; }
+  /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  .write-home .writer {
+    position: relative;
+    top: 0;
+    left: 0;
+    box-shadow: none;
+    border: 0;
+    margin-top: -20px; }
 
 /* line 7, C:/temp/mw222rs-project/stylesheets/style.scss */
 .hide {

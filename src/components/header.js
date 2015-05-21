@@ -1,6 +1,6 @@
-var React = require('react'),
-    Link = require('react-router').Link,
-    LoginButton = require('./loginbutton');
+var React = require('react');
+var Link = require('react-router').Link;
+var LoginButton = require('./loginbutton');
 
 var Header = React.createClass({
   render() {
@@ -17,7 +17,6 @@ var Header = React.createClass({
       </header>
     );
   }
-
 });
 
 module.exports = Header;

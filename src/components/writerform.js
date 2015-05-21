@@ -30,14 +30,14 @@ var WriterForm = React.createClass({
     return storyPart;
   },
   render: function() {
-    var storyListClass = _.isEmpty(_.filter(this.props.stories, function(s){return s.isParent;})) ? "hide" : "story-list";
+    var storyListClass = _.isEmpty(this.props.stories) ? "hide" : "story-list";
 
     return (
     <div className="writer-wrap">
       <Draggable cancel="input, textarea, button, label, ul, li" >
         <div className="writer">
           <h4>{this.props.statusWord}:</h4>
-          
+
           <h3>{this.props.h3}</h3>
           <form onSubmit={this.handleSubmit}>
 

@@ -1,41 +1,39 @@
-var React = require('react'),
-		Reflux = require('reflux'),
-		// Router = require('react-router'),
-		DocchiStore = require('../stores/docchistore'),
-		_ = require('lodash'),
-		StoryNode = require('./storynode'),
-		WriterForm = require('./writerform');
-
+var React = require('react');
+var Reflux = require('reflux');
+// var Router = require('react-router');
+var WriteStore = require('../stores/writestore');
+// var  _ = require('lodash');
+// var StoryNode = require('./storynode');
+// var WriterForm = require('./writerform');
+var LeanStoryList = require('./leanstorylist');
+var BetaWriter = require('./beta-form');
 
 var WriteApp = React.createClass({
-	mixins:[Reflux.connect(DocchiStore)],
-	getInitialState(){
-		return {
-			statusWord:"Skriv",
-			h3:"Ny historia",
-			stories: {},
-			selected:"",
-			focus:{}
-			};
-	},
-	render() {
-
-		//console.log(this.props.params.id);
-
-		var storyNodeClass = _.isEmpty(this.state.selected) ? "hide" : "";
-
-		//var selectedStory = _.find(this.props.stories, function(story){ return story.key === this.props.key; }.bind(this));
-
-		return (
-		<div>
-			<div className={storyNodeClass}>
-				<StoryNode key={this.state.selected.key} stories={this.state.stories} selected={this.state.selected} />
+  mixins:[Reflux.connect(WriteStore)],
+  getInitialState() {
+    return {
+      statusWord:'Skriv',
+      h3:'Ny historia',
+      stories: {},
+      selected:'',
+      focus:{}
+    };
+  },
+  render() {
+    return (
+    <div className="write-home">
+			<div className="write-new">
+				<h2>Skriv ny historia.</h2>
+				<BetaWriter stories={this.state.stories} />
 			</div>
 
-			<WriterForm focus={this.state.focus} h3={this.state.h3} statusWord={this.state.statusWord} stories={this.state.stories} />
+			<div className="list-unfinished">
+				<h2>Lista på oavslutade:</h2>
+				<LeanStoryList stories={this.state.stories} />
+			</div>
 		</div>
 		);
-	}
+  }
 });
 
 module.exports = WriteApp;

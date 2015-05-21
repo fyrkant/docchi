@@ -39435,11 +39435,11 @@ exports.throwIf = function(val,msg){
 };
 
 },{"eventemitter3":222,"native-promise-only":223}],241:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var Reflux = require("reflux");
+var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(["deleteTodoLine", "submitTodoLine", "login", "addStoryPart", "editStoryPartText", "changeSelected", "changeFocus", "resetFocus", "destroyStoryPart", "destroyStoryParts"]);
+module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'changeRefFocus', 'addStoryStart', 'addStoryPart', 'editStoryPartText', 'changeSelected', 'changeFocus', 'resetFocus', 'destroyStoryPart', 'destroyStoryPart']);
 
 },{"reflux":221}],242:[function(require,module,exports){
 'use strict';
@@ -39483,9 +39483,92 @@ module.exports = Accordion;
 },{"react":219}],243:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    Link = require('react-router').Link,
-    RouteHandler = require('react-router').RouteHandler;
+var React = require('react');
+//var _ = require('lodash'),
+var actions = require('../actions');
+
+var WriterForm = React.createClass({
+  displayName: 'WriterForm',
+
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var storyPart = this.populateStoryPart();
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryStart(storyPart);
+      this.emptyForm();
+    }
+  },
+  emptyForm: function emptyForm() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+    this.refs.endingCheckbox.getDOMNode().checked = false;
+  },
+  populateStoryPart: function populateStoryPart() {
+    return {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked
+    };
+  },
+  render: function render() {
+
+    return React.createElement(
+      'div',
+      { className: 'writer-wrap' },
+      React.createElement(
+        'div',
+        { className: 'writer' },
+        React.createElement(
+          'form',
+          { onSubmit: this.handleSubmit },
+          React.createElement('input', { type: 'text',
+            ref: 'title',
+            placeholder: 'Titel'
+          }),
+          React.createElement('textarea', { ref: 'txt',
+            placeholder: 'Text',
+            rows: '8'
+          }),
+          React.createElement(
+            'span',
+            { className: 'switch' },
+            React.createElement(
+              'p',
+              null,
+              React.createElement(
+                'strong',
+                null,
+                'Avslutande del?'
+              )
+            ),
+            React.createElement(
+              'label',
+              { className: 'label-switch' },
+              React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+              React.createElement('div', { className: 'checkbox' })
+            ),
+            React.createElement(
+              'button',
+              null,
+              'Spara'
+            )
+          )
+        )
+      )
+    );
+  }
+
+});
+
+module.exports = WriterForm;
+
+},{"../actions":241,"react":219}],244:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Link = require('react-router').Link;
+var RouteHandler = require('react-router').RouteHandler;
 
 var Home = React.createClass({
   displayName: 'Home',
@@ -39533,48 +39616,94 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"react":219,"react-router":32}],244:[function(require,module,exports){
+},{"react":219,"react-router":32}],245:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    Reflux = require('reflux'),
-    actions = require('../actions'),
-    TodoStore = require('../stores/todostore');
+var React = require('react');
+var _ = require('lodash');
+var actions = require('../actions');
+var Link = require('react-router').Link;
+
+var LeanStoryList = React.createClass({
+  displayName: 'LeanStoryList',
+
+  handleClick: function handleClick(key) {
+    var foundSelected = _.find(this.props.stories, function (s) {
+      return s.key === key;
+    });
+
+    actions.changeSelected(foundSelected);
+  },
+  render: function render() {
+
+    // var storyCount = _.toArray(_.filter(this.props.stories, function(s){return s.isParent;})).length;
+    // var btnTxt = storyCount === 1 ? "oavslutad" : "oavslutade";
+    //
+    // var triggerText = storyCount + " " + btnTxt;
+
+    var createItem = function createItem(story, index) {
+      return React.createElement(
+        'li',
+        { key: index, index: index },
+        React.createElement(
+          Link,
+          { to: 'nodes', params: { key: story.key } },
+          story.title
+        )
+      );
+    };
+    return React.createElement(
+      'ul',
+      null,
+      _.map(this.props.stories, createItem)
+    );
+  }
+
+});
+
+module.exports = LeanStoryList;
+
+},{"../actions":241,"lodash":3,"react":219,"react-router":32}],246:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Reflux = require('reflux');
+var actions = require('../actions');
+var TodoStore = require('../stores/todostore');
 
 var ListItem = React.createClass({
-	displayName: 'ListItem',
+		displayName: 'ListItem',
 
-	mixins: [Reflux.connect(TodoStore)],
-	handleClick: function handleClick(key) {
-		actions.deleteTodoLine(key);
-	},
-	render: function render() {
-		return React.createElement(
-			'tr',
-			null,
-			React.createElement(
-				'td',
-				null,
-				React.createElement(
-					'p',
-					{ className: 'list-text' },
-					this.props.itemText
-				),
-				React.createElement(
-					'a',
-					{ className: 'btn btn-xs btn-danger pull-right',
-						onClick: actions.deleteTodoLine.bind(this, this.props.index) },
-					'X'
-				)
-			)
-		);
-	}
-
+		mixins: [Reflux.connect(TodoStore)],
+		handleClick: function handleClick(key) {
+				actions.deleteTodoLine(key);
+		},
+		render: function render() {
+				return React.createElement(
+						'tr',
+						null,
+						React.createElement(
+								'td',
+								null,
+								React.createElement(
+										'p',
+										{ className: 'list-text' },
+										this.props.itemText
+								),
+								React.createElement(
+										'a',
+										{ className: 'btn btn-xs btn-danger pull-right',
+												onClick: actions.deleteTodoLine.bind(this, this.props.index) },
+										'X'
+								)
+						)
+				);
+		}
 });
 
 module.exports = ListItem;
 
-},{"../actions":241,"../stores/todostore":256,"react":219,"reflux":221}],245:[function(require,module,exports){
+},{"../actions":241,"../stores/todostore":261,"react":219,"reflux":221}],247:[function(require,module,exports){
 "use strict";
 
 var React = require("react");
@@ -39623,7 +39752,51 @@ var LoremPage = React.createClass({
 
 module.exports = LoremPage;
 
-},{"react":219}],246:[function(require,module,exports){
+},{"react":219}],248:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Reflux = require('reflux');
+var WriteStore = require('../stores/writestore');
+var Router = require('react-router');
+var Stories = require('./stories');
+var _ = require('lodash');
+// var actions = require('../actions');
+
+var NodePage = React.createClass({
+  displayName: 'NodePage',
+
+  mixins: [Reflux.connect(WriteStore), Router.State],
+  getInitialState: function getInitialState() {
+    return {
+      current: '',
+      stories: ''
+    };
+  },
+  componentWillMount: function componentWillMount() {
+    this.setState({
+      current: this.context.router.getCurrentParams().key
+    });
+  },
+  render: function render() {
+
+    console.log(this.state.current);
+    console.log(this.state.stories);
+    console.log(_.find(this.state.stories, (function (s) {
+      return s.key === this.state.current;
+    }).bind(this)));
+
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(Stories, null)
+    );
+  }
+});
+
+module.exports = NodePage;
+
+},{"../stores/writestore":262,"./stories":250,"lodash":3,"react":219,"react-router":32,"reflux":221}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -39647,15 +39820,169 @@ var Read = React.createClass({
 
 module.exports = Read;
 
-},{"react":219}],247:[function(require,module,exports){
+},{"react":219}],250:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    _ = require('lodash'),
-    actions = require('../actions'),
-    Accordion = require('./accordion');
+var React = require('react/addons');
+var _ = require('lodash');
+// Accordion = require('./accordion'),
+var actions = require('../actions');
 
-var Link = require('react-router').Link;
+var Stories = React.createClass({
+  displayName: 'Stories',
+
+  mixins: [React.addons.LinkedStateMixin],
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  clickSelect: function clickSelect(ev) {
+
+    actions.changeFocus(this.props.selected, this.props.selected.title);
+
+    ev.preventDefault();
+    ev.stopPropagation();
+  },
+  toBeBlownUp: [],
+  visitChildren: function visitChildren(obj) {
+
+    this.toBeBlownUp.push(obj.key);
+
+    if (!obj.children) {
+      return;
+    }
+
+    _.forEach(obj.children, (function (child) {
+      var foundChild = _.find(this.props.stories, function (s) {
+        return s.key === child.key;
+      });
+      this.visitChildren(foundChild);
+    }).bind(this));
+  },
+  storypartDestroyer: function storypartDestroyer() {
+    this.toBeBlownUp = [];
+    var parentKey = '';
+
+    _.map(this.props.stories, (function (story) {
+      if (story.children) {
+        _.forEach(story.children, (function (child) {
+          if (child.key === this.props.selected.key) {
+            parentKey = story.key;
+          }
+        }).bind(this));
+      }
+    }).bind(this));
+    if (!this.props.selected.children) {
+      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
+        actions.destroyStoryPart(this.props.selected.key, parentKey);
+      }
+    } else {
+      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
+        this.visitChildren(this.props.selected);
+        actions.destroyStoryParts(this.toBeBlownUp, parentKey);
+      }
+    }
+  },
+  showNode: function showNode(ev) {
+    ev.target.nextSibling.classList.toggle('hide');
+    ev.preventDefault();
+  },
+  handleEditStart: function handleEditStart(evt) {
+    evt.preventDefault();
+
+    this.setState({
+      isEditing: true,
+      editValue: this.props.selected.txt
+    }, function () {
+      this.refs.editInput.getDOMNode().focus();
+    });
+  },
+  handleValueChange: function handleValueChange(evt) {
+    var text = this.state.editValue;
+
+    if (evt.which === 13 && text) {
+      this.refs.editInput.getDOMNode().blur();
+    } else if (evt.which === 27) {
+      this.setState({ isEditing: false }, function () {
+        this.refs.editInput.getDOMNode().blur();
+      });
+    }
+  },
+  handleBlur: function handleBlur() {
+    var text = this.state.editValue;
+
+    if (this.state.isEditing && text) {
+      actions.editStoryPartText(this.props.selected.key, text);
+    }
+    this.setState({ isEditing: false });
+  },
+  render: function render() {
+    var editingClass = React.addons.classSet({ editing: this.state.isEditing });
+
+    return !this.props.selected ? React.createElement('div', null) : React.createElement(
+      'ul',
+      { className: 'tree' },
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#', onClick: this.showNode },
+          this.props.selected.title
+        ),
+        React.createElement(
+          'div',
+          { className: 'story-node' },
+          React.createElement(
+            'div',
+            { className: editingClass },
+            React.createElement(
+              'p',
+              { className: 'view', onDoubleClick: this.handleEditStart },
+              this.props.selected.txt
+            ),
+            React.createElement('textarea', { ref: 'editInput',
+              className: 'edit',
+              valueLink: this.linkState('editValue'),
+              onKeyUp: this.handleValueChange,
+              onBlur: this.handleBlur }),
+            React.createElement(
+              'button',
+              { onClick: this.clickSelect },
+              ' Add '
+            ),
+            React.createElement(
+              'button',
+              { onClick: this.handleEditStart },
+              ' Edit '
+            ),
+            React.createElement(
+              'button',
+              { onClick: this.storypartDestroyer },
+              ' Delete '
+            )
+          )
+        ),
+        _.map(this.props.selected.children, (function (n) {
+          return React.createElement(Stories, { key: n.key, stories: this.props.stories, selected: _.find(this.props.stories, function (s) {
+              return s.key === n.key;
+            }) });
+        }).bind(this))
+      )
+    );
+  }
+});
+
+module.exports = Stories;
+
+},{"../actions":241,"lodash":3,"react/addons":47}],251:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var _ = require('lodash');
+var actions = require('../actions');
+var Accordion = require('./accordion');
+
+// var Link = require('react-router').Link;
 
 var StoryList = React.createClass({
   displayName: 'StoryList',
@@ -39670,9 +39997,7 @@ var StoryList = React.createClass({
   render: function render() {
     var _this = this;
 
-    var storyCount = _.toArray(_.filter(this.props.stories, function (s) {
-      return s.isParent;
-    })).length;
+    var storyCount = _.toArray(this.props.stories).length;
     var btnTxt = storyCount === 1 ? 'oavslutad' : 'oavslutade';
 
     var triggerText = storyCount + ' ' + btnTxt;
@@ -39682,8 +40007,8 @@ var StoryList = React.createClass({
         'li',
         { key: index, index: index },
         React.createElement(
-          Link,
-          { to: 'writeOld', params: { key: story.key }, onClick: _this.handleClick.bind(_this, story.key) },
+          'a',
+          { onClick: _this.handleClick.bind(_this, story.key) },
           story.title
         )
       );
@@ -39691,170 +40016,168 @@ var StoryList = React.createClass({
     return React.createElement(
       Accordion,
       { triggerText: triggerText },
-      _.map(_.filter(this.props.stories, function (s) {
-        return s.isParent;
-      }), createItem)
+      _.map(this.props.stories, createItem)
     );
   }
-
 });
 
 module.exports = StoryList;
 
-},{"../actions":241,"./accordion":242,"lodash":3,"react":219,"react-router":32}],248:[function(require,module,exports){
+},{"../actions":241,"./accordion":242,"lodash":3,"react":219}],252:[function(require,module,exports){
 'use strict';
 
-var React = require('react/addons'),
-    _ = require('lodash'),
-
+var React = require('react/addons');
+var _ = require('lodash');
 // Accordion = require('./accordion'),
-actions = require('../actions');
+var actions = require('../actions');
 
 var StoryNode = React.createClass({
-	displayName: 'StoryNode',
+  displayName: 'StoryNode',
 
-	mixins: [React.addons.LinkedStateMixin],
-	getInitialState: function getInitialState() {
-		return {};
-	},
-	clickSelect: function clickSelect(ev) {
+  mixins: [React.addons.LinkedStateMixin],
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  clickSelect: function clickSelect(ev) {
 
-		actions.changeFocus(this.props.selected, this.props.selected.title);
+    actions.changeFocus(this.props.selected, this.props.selected.title);
 
-		ev.preventDefault();
-		ev.stopPropagation();
-	},
-	toBeBlownUp: [],
-	visitChildren: function visitChildren(obj) {
+    ev.preventDefault();
+    ev.stopPropagation();
+  },
+  toBeBlownUp: [],
+  visitChildren: function visitChildren(obj) {
 
-		this.toBeBlownUp.push(obj.key);
+    this.toBeBlownUp.push(obj.key);
 
-		if (!obj.children) {
-			return;
-		}
+    if (!obj.children) {
+      return;
+    }
 
-		_.forEach(obj.children, (function (child) {
-			var foundChild = _.find(this.props.stories, function (s) {
-				return s.key === child.key;
-			});
-			this.visitChildren(foundChild);
-		}).bind(this));
-	},
-	storypartDestroyer: function storypartDestroyer() {
-		this.toBeBlownUp = [];
+    _.forEach(obj.children, (function (child) {
+      var foundChild = _.find(this.props.stories, function (s) {
+        return s.key === child.key;
+      });
+      this.visitChildren(foundChild);
+    }).bind(this));
+  },
+  storypartDestroyer: function storypartDestroyer() {
+    this.toBeBlownUp = [];
+    var parentKey = '';
 
-		var parentKey = '';
+    _.map(this.props.stories, (function (story) {
+      if (story.children) {
+        _.forEach(story.children, (function (child) {
+          if (child.key === this.props.selected.key) {
+            parentKey = story.key;
+          }
+        }).bind(this));
+      }
+    }).bind(this));
+    if (!this.props.selected.children) {
+      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
+        actions.destroyStoryPart(this.props.selected.key, parentKey);
+      }
+    } else {
+      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
+        this.visitChildren(this.props.selected);
+        actions.destroyStoryParts(this.toBeBlownUp, parentKey);
+      }
+    }
+  },
+  showNode: function showNode(ev) {
+    ev.target.nextSibling.classList.toggle('hide');
+    ev.preventDefault();
+  },
+  handleEditStart: function handleEditStart(evt) {
+    evt.preventDefault();
 
-		_.map(this.props.stories, (function (story) {
-			if (story.children) {
-				_.forEach(story.children, (function (child) {
-					if (child.key === this.props.selected.key) {
-						parentKey = story.key;
-					}
-				}).bind(this));
-			}
-		}).bind(this));
+    this.setState({
+      isEditing: true,
+      editValue: this.props.selected.txt
+    }, function () {
+      this.refs.editInput.getDOMNode().focus();
+    });
+  },
+  handleValueChange: function handleValueChange(evt) {
+    var text = this.state.editValue;
 
-		if (!this.props.selected.children) {
-			if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
+    if (evt.which === 13 && text) {
+      this.refs.editInput.getDOMNode().blur();
+    } else if (evt.which === 27) {
+      this.setState({ isEditing: false }, function () {
+        this.refs.editInput.getDOMNode().blur();
+      });
+    }
+  },
+  handleBlur: function handleBlur() {
+    var text = this.state.editValue;
 
-				actions.destroyStoryPart(this.props.selected.key, parentKey);
-			}
-		} else {
-			if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
-				this.visitChildren(this.props.selected);
+    if (this.state.isEditing && text) {
+      actions.editStoryPartText(this.props.selected.key, text);
+    }
+    this.setState({ isEditing: false });
+  },
+  render: function render() {
+    var editingClass = React.addons.classSet({ editing: this.state.isEditing });
 
-				actions.destroyStoryParts(this.toBeBlownUp, parentKey);
-			}
-		}
-	},
-	showNode: function showNode(ev) {
-		ev.target.nextSibling.classList.toggle('hide');
-
-		ev.preventDefault();
-	},
-	handleEditStart: function handleEditStart(evt) {
-		evt.preventDefault();
-
-		this.setState({
-			isEditing: true,
-			editValue: this.props.selected.txt
-		}, function () {
-			this.refs.editInput.getDOMNode().focus();
-		});
-	},
-	handleValueChange: function handleValueChange(evt) {
-		var text = this.state.editValue;
-
-		if (evt.which === 13 && text) {
-			this.refs.editInput.getDOMNode().blur();
-		} else if (evt.which === 27) {
-			this.setState({ isEditing: false }, function () {
-				this.refs.editInput.getDOMNode().blur();
-			});
-		}
-	},
-	handleBlur: function handleBlur() {
-		var text = this.state.editValue;
-
-		if (this.state.isEditing && text) {
-			actions.editStoryPartText(this.props.selected.key, text);
-		}
-
-		this.setState({ isEditing: false });
-	},
-	render: function render() {
-
-		var editingClass = React.addons.classSet({ editing: this.state.isEditing });
-
-		return !this.props.selected ? React.createElement('div', null) : React.createElement(
-			'ul',
-			{ className: 'tree' },
-			React.createElement(
-				'li',
-				{ className: editingClass },
-				React.createElement(
-					'a',
-					{ href: '#', onClick: this.showNode },
-					this.props.selected.title
-				),
-				React.createElement(
-					'div',
-					{ className: 'hide story-node' },
-					React.createElement(
-						'label',
-						{ className: 'view', onDoubleClick: this.handleEditStart },
-						this.props.selected.txt
-					),
-					React.createElement('textarea', { ref: 'editInput',
-						className: 'edit',
-						valueLink: this.linkState('editValue'),
-						onKeyUp: this.handleValueChange,
-						onBlur: this.handleBlur }),
-					React.createElement(
-						'button',
-						{ onClick: this.clickSelect },
-						' + '
-					),
-					React.createElement(
-						'button',
-						{ onClick: this.storypartDestroyer },
-						' - '
-					)
-				),
-				_.map(this.props.selected.children, (function (n) {
-					return React.createElement(StoryNode, { key: n.key, stories: this.props.stories, selected: _.find(this.props.stories, function (s) {
-							return s.key === n.key;
-						}) });
-				}).bind(this))
-			)
-		);
-	}
+    return !this.props.selected ? React.createElement('div', null) : React.createElement(
+      'ul',
+      { className: 'tree' },
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#', onClick: this.showNode },
+          this.props.selected.title
+        ),
+        React.createElement(
+          'div',
+          { className: 'story-node' },
+          React.createElement(
+            'div',
+            { className: editingClass },
+            React.createElement(
+              'p',
+              { className: 'view', onDoubleClick: this.handleEditStart },
+              this.props.selected.txt
+            ),
+            React.createElement('textarea', { ref: 'editInput',
+              className: 'edit',
+              valueLink: this.linkState('editValue'),
+              onKeyUp: this.handleValueChange,
+              onBlur: this.handleBlur }),
+            React.createElement(
+              'button',
+              { onClick: this.clickSelect },
+              ' Add '
+            ),
+            React.createElement(
+              'button',
+              { onClick: this.handleEditStart },
+              ' Edit '
+            ),
+            React.createElement(
+              'button',
+              { onClick: this.storypartDestroyer },
+              ' Delete '
+            )
+          )
+        ),
+        _.map(this.props.selected.children, (function (n) {
+          return React.createElement(StoryNode, { key: n.key, stories: this.props.stories, selected: _.find(this.props.stories, function (s) {
+              return s.key === n.key;
+            }) });
+        }).bind(this))
+      )
+    );
+  }
 });
 
 module.exports = StoryNode;
 
-},{"../actions":241,"lodash":3,"react/addons":47}],249:[function(require,module,exports){
+},{"../actions":241,"lodash":3,"react/addons":47}],253:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -39924,7 +40247,7 @@ var TodoApp = React.createClass({
 
 module.exports = TodoApp;
 
-},{"../stores/todostore":256,"./todolist":250,"firebase":2,"lodash":3,"react":219,"reactfire":220,"reflux":221}],250:[function(require,module,exports){
+},{"../stores/todostore":261,"./todolist":254,"firebase":2,"lodash":3,"react":219,"reactfire":220,"reflux":221}],254:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -39962,67 +40285,135 @@ var TodoList = React.createClass({
 
 module.exports = TodoList;
 
-},{"./listitem":244,"lodash":3,"react":219}],251:[function(require,module,exports){
+},{"./listitem":246,"lodash":3,"react":219}],255:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    Reflux = require('reflux'),
-    Router = require('react-router'),
-    DocchiStore = require('../stores/docchistore'),
-
-// actions = require('../actions'),
-_ = require('lodash'),
-    StoryNode = require('./storynode'),
-    WriterForm = require('./writerform');
-
-// var RouteHandler = Router.RouteHandler;
+var React = require('react');
+var Reflux = require('reflux');
+// var Router = require('react-router');
+var WriteStore = require('../stores/writestore');
+// var  _ = require('lodash');
+// var StoryNode = require('./storynode');
+// var WriterForm = require('./writerform');
+var LeanStoryList = require('./leanstorylist');
+var BetaWriter = require('./beta-form');
 
 var WriteApp = React.createClass({
-		displayName: 'WriteApp',
+  displayName: 'WriteApp',
 
-		mixins: [Reflux.connect(DocchiStore), Router.State],
-		getInitialState: function getInitialState() {
-				return {
-						statusWord: 'Skriv',
-						h3: 'Ny historia',
-						stories: {},
-						selected: '',
-						focus: {}
-				};
-		},
-		componentDidMount: function componentDidMount() {
-				console.log(this.context.router.getCurrentParams().key);
-
-				// var key = this.context.router.getCurrentParams().key;
-				//
-				// var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
-				//
-				// actions.changeSelected(foundSelected);
-		},
-		render: function render() {
-
-				//console.log(this.props.params.id);
-
-				var storyNodeClass = _.isEmpty(this.state.selected) ? 'hide' : '';
-
-				//var selectedStory = _.find(this.props.stories, function(story){ return story.key === this.props.key; }.bind(this));
-
-				return React.createElement(
-						'div',
-						null,
-						React.createElement(
-								'div',
-								{ className: storyNodeClass },
-								React.createElement(StoryNode, { stories: this.state.stories, key: this.state.selected.key, selected: this.state.selected })
-						),
-						React.createElement(WriterForm, { focus: this.state.focus, h3: this.state.h3, statusWord: this.state.statusWord, stories: this.state.stories })
-				);
-		}
+  mixins: [Reflux.connect(WriteStore)],
+  getInitialState: function getInitialState() {
+    return {
+      statusWord: 'Skriv',
+      h3: 'Ny historia',
+      stories: {},
+      selected: '',
+      focus: {}
+    };
+  },
+  render: function render() {
+    return React.createElement(
+      'div',
+      { className: 'write-home' },
+      React.createElement(
+        'div',
+        { className: 'write-new' },
+        React.createElement(
+          'h2',
+          null,
+          'Skriv ny historia.'
+        ),
+        React.createElement(BetaWriter, { stories: this.state.stories })
+      ),
+      React.createElement(
+        'div',
+        { className: 'list-unfinished' },
+        React.createElement(
+          'h2',
+          null,
+          'Lista på oavslutade:'
+        ),
+        React.createElement(LeanStoryList, { stories: this.state.stories })
+      )
+    );
+  }
 });
 
 module.exports = WriteApp;
 
-},{"../stores/docchistore":255,"./storynode":248,"./writerform":252,"lodash":3,"react":219,"react-router":32,"reflux":221}],252:[function(require,module,exports){
+},{"../stores/writestore":262,"./beta-form":243,"./leanstorylist":245,"react":219,"reflux":221}],256:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var Reflux = require('reflux');
+var Router = require('react-router');
+var DocchiStore = require('../stores/docchistore');
+// var actions = require('../actions');
+var _ = require('lodash');
+var StoryNode = require('./storynode');
+var WriterForm = require('./writerform');
+
+var Write = React.createClass({
+  displayName: 'Write',
+
+  mixins: [Reflux.connect(DocchiStore), Router.State],
+  getInitialState: function getInitialState() {
+    return {
+      statusWord: 'Skriv',
+      h3: 'Ny historia',
+      stories: {},
+      selected: '',
+      focus: {}
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    // if (!_.isEmpty(this.context.router.getCurrentParams().key)) {
+    //
+    //   var key = this.context.router.getCurrentParams().key;
+    //   var foundSelected = _.find(this.state.stories, function(s){return s.key === key;});
+    //
+    //   console.log(foundSelected);
+    //
+    //   actions.changeSelected(foundSelected);
+    // }
+
+    if (_.isEmpty(this.state.selected)) {
+      console.log('tom');
+    } else {
+      console.log('inte tom');
+    }
+  },
+  render: function render() {
+
+    console.log(this.context.router.getCurrentPath());
+
+    var status;
+
+    switch (this.context.router.getCurrentPath()) {
+      case '/write/new':
+        status = 'I should start something new.';
+        break;
+      default:
+        status = 'Why don\'t I ever finish what I\'ve started?';
+        break;
+    }
+
+    console.log(status);
+
+    //var selectedStory = _.find(this.props.stories, function(story){ return story.key === this.props.key; }.bind(this));
+
+    return React.createElement(
+      'div',
+      null,
+      !_.isEmpty(this.state.selected) ? React.createElement(StoryNode, { stories: this.state.stories, key: this.state.selected.key, selected: this.state.selected }) : React.createElement('div', null),
+      React.createElement(WriterForm, { focus: this.state.focus, h3: this.state.h3, statusWord: this.state.statusWord, stories: this.state.stories })
+    );
+  }
+});
+
+module.exports = Write;
+
+},{"../stores/docchistore":260,"./storynode":252,"./writerform":257,"lodash":3,"react":219,"react-router":32,"reflux":221}],257:[function(require,module,exports){
 'use strict';
 
 var React = require('react'),
@@ -40059,9 +40450,7 @@ var WriterForm = React.createClass({
     return storyPart;
   },
   render: function render() {
-    var storyListClass = _.isEmpty(_.filter(this.props.stories, function (s) {
-      return s.isParent;
-    })) ? 'hide' : 'story-list';
+    var storyListClass = _.isEmpty(this.props.stories) ? 'hide' : 'story-list';
 
     return React.createElement(
       'div',
@@ -40133,57 +40522,59 @@ var WriterForm = React.createClass({
 
 module.exports = WriterForm;
 
-},{"../actions":241,"./storylist":247,"lodash":3,"react":219,"react-draggable":4}],253:[function(require,module,exports){
+},{"../actions":241,"./storylist":251,"lodash":3,"react":219,"react-draggable":4}],258:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    ReactRouter = require('react-router'),
-    routes = require('./routes');
+var React = require('react');
+var ReactRouter = require('react-router');
+var routes = require('./routes');
 
 ReactRouter.run(routes, function (Handler, state) {
-		React.render(React.createElement(Handler, { params: state.params }), document.body);
+  React.render(React.createElement(Handler, { params: state.params }), document.body);
 });
 
-},{"./routes":254,"react":219,"react-router":32}],254:[function(require,module,exports){
+},{"./routes":259,"react":219,"react-router":32}],259:[function(require,module,exports){
 'use strict';
 
-var React = require('react'),
-    Router = require('react-router'),
-    Route = Router.Route,
-    DefaultRoute = Router.DefaultRoute,
-    TodoApp = require('./components/todoapp'),
-    LoremPage = require('./components/lorempage'),
-    Write = require('./components/write'),
-    StoryNode = require('./components/storynode'),
-
-// Wrapper = require('./components/wrapper'),
-Home = require('./components/home'),
-    Read = require('./components/read');
+var React = require('react');
+var Router = require('react-router');
+var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
+var TodoApp = require('./components/todoapp');
+var LoremPage = require('./components/lorempage');
+var Write = require('./components/write');
+//var StoryNode = require('./components/storynode');
+//var Wrapper = require('./components/wrapper');
+var Home = require('./components/home');
+var Read = require('./components/read');
+var WriteBeta = require('./components/write-d');
+var NodePage = require('./components/nodepage');
 
 module.exports = React.createElement(
+  Route,
+  { handler: Home },
+  React.createElement(DefaultRoute, { handler: WriteBeta }),
+  React.createElement(Route, { name: 'todoapp', path: 'todo', handler: TodoApp }),
+  React.createElement(Route, { name: 'lorempage', path: 'lorem', handler: LoremPage }),
+  React.createElement(
     Route,
-    { handler: Home },
-    React.createElement(DefaultRoute, { handler: Write }),
-    React.createElement(Route, { name: 'todoapp', path: 'todo', handler: TodoApp }),
-    React.createElement(Route, { name: 'lorempage', path: 'lorem', handler: LoremPage }),
-    React.createElement(
-        Route,
-        { name: 'write', path: 'write', handler: Write },
-        React.createElement(Route, { name: 'writeNew', path: 'new', handler: StoryNode }),
-        React.createElement(Route, { name: 'writeOld', path: ':key', handler: StoryNode }),
-        React.createElement(DefaultRoute, { handler: Write })
-    ),
-    React.createElement(Route, { name: 'read', path: 'read', handler: Read })
+    { name: 'write', path: 'write', handler: Write },
+    React.createElement(Route, { name: 'writeNew', path: 'new', handler: Write }),
+    React.createElement(Route, { name: 'writeOld', path: ':key', handler: Write }),
+    React.createElement(DefaultRoute, { handler: Write })
+  ),
+  React.createElement(Route, { name: 'beta', path: 'beta', handler: WriteBeta }),
+  React.createElement(Route, { name: 'nodes', path: 'beta/:key', handler: NodePage }),
+  React.createElement(Route, { name: 'read', path: 'read', handler: Read })
 );
 
-},{"./components/home":243,"./components/lorempage":245,"./components/read":246,"./components/storynode":248,"./components/todoapp":249,"./components/write":251,"react":219,"react-router":32}],255:[function(require,module,exports){
+},{"./components/home":244,"./components/lorempage":247,"./components/nodepage":248,"./components/read":249,"./components/todoapp":253,"./components/write":256,"./components/write-d":255,"react":219,"react-router":32}],260:[function(require,module,exports){
 'use strict';
 
-var Reflux = require('reflux'),
-
-//_ = require('lodash'),
-actions = require('../actions'),
-    Firebase = require('firebase');
+var Reflux = require('reflux');
+// var _ = require('lodash');
+var actions = require('../actions');
+var Firebase = require('firebase');
 
 var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
 
@@ -40191,16 +40582,16 @@ module.exports = Reflux.createStore({
   init: function init() {
     storiesRef.on('value', this.updateStories.bind(this));
 
-    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
-    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
-
-    this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
-    this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
-    this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
-    this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
-    this.listenTo(actions.resetFocus, this.resetFocus);
-    this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
-    this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
+    // storiesRef.on('child_removed', this.updateStoriesChildRemoved.bind(this));
+    // storiesRef.on('child_added', this.updateStoriesChildAdded.bind(this));
+    //
+    // this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    // this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
+    // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
+    // this.listenTo(actions.resetFocus, this.resetFocus);
+    // this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
+    // this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
   },
   onAddStoryPart: function onAddStoryPart(storyPart) {
     if (storyPart.parentKey) {
@@ -40223,14 +40614,24 @@ module.exports = Reflux.createStore({
     } else {
       // if it isn't a child, then it's a parent - congrats!
 
-      var newParent = storiesRef.push({ // Adds new post
+      var container = storiesRef.push({
+        title: storyPart.title
+      });
+
+      container.update({
+        key: container.key()
+      });
+
+      var containerPush = storiesRef.child(container.key());
+
+      var newParent = containerPush.push({ // Adds new post
         title: storyPart.title,
         txt: storyPart.txt,
-        isEnding: storyPart.isEnding,
-        isParent: true
+        isEnding: storyPart.isEnding
       });
+
       newParent.update({ // Attaches key to key-field
-        key: newParent.key()
+        key: container.key() + '/' + newParent.key()
       });
     }
   },
@@ -40288,22 +40689,22 @@ module.exports = Reflux.createStore({
     this.trigger({ selected: this.last = snap.val() || {} });
   },
   updateStories: function updateStories(snap) {
-    console.log('VALUE');
-    console.log(snap.val());
+    // console.log('VALUE');
+    // console.log(snap.val());
 
     this.trigger({ stories: this.last = snap.val() || {} });
   },
   updateStoriesChildAdded: function updateStoriesChildAdded(snap) {
-    console.log('CHILD_ADDED');
-    console.log(snap.val());
+    // console.log('CHILD_ADDED');
+    // console.log(snap.val());
 
     this.getParentNode(snap.val());
 
     this.trigger({ stories: this.last = snap.val() || {} });
   },
   updateStoriesChildRemoved: function updateStoriesChildRemoved(snap) {
-    console.log('CHILD_REMOVED');
-    console.log(snap.val());
+    // console.log('CHILD_REMOVED');
+    // console.log(snap.val());
 
     this.resetFocus();
 
@@ -40326,26 +40727,212 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":241,"firebase":2,"reflux":221}],256:[function(require,module,exports){
+},{"../actions":241,"firebase":2,"reflux":221}],261:[function(require,module,exports){
 'use strict';
 
-var Reflux = require('reflux'),
-    actions = require('../actions'),
-    Firebase = require('firebase');
+var Reflux = require('reflux');
+var actions = require('../actions');
+var Firebase = require('firebase');
 
 var myFirebase = new Firebase('https://blazing-fire-8429.firebaseio.com/items/');
 
 module.exports = Reflux.createStore({
-    listenables: [actions],
-    onDeleteTodoLine: function onDeleteTodoLine(key) {
-        if (confirm('Vill du verkligen radera raden?')) {
-            myFirebase.child(key).remove(function (error) {
-                if (error) {
-                    console.log(error);
-                }
-            });
+  listenables: [actions],
+  onDeleteTodoLine: function onDeleteTodoLine(key) {
+    if (confirm('Vill du verkligen radera raden?')) {
+      myFirebase.child(key).remove(function (error) {
+        if (error) {
+          console.log(error);
         }
+      });
     }
+  }
 });
 
-},{"../actions":241,"firebase":2,"reflux":221}]},{},[253]);
+},{"../actions":241,"firebase":2,"reflux":221}],262:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux');
+var actions = require('../actions');
+var Firebase = require('firebase');
+//_ = require('lodash'),
+
+var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
+
+module.exports = Reflux.createStore({
+  focusedRef: undefined,
+  init: function init() {
+
+    this.focusedRef = storiesRef;
+
+    this.focusedRef.on('value', this.updateStories.bind(this));
+
+    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
+    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
+
+    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
+    this.listenTo(actions.changeRefFocus, this.onChangeRefFocus.bind(this));
+    // this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    // this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
+    // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
+    // this.listenTo(actions.resetFocus, this.resetFocus);
+    // this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
+    // this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
+  },
+  onAddStoryPart: function onAddStoryPart(storyPart) {
+    if (storyPart.parentKey) {
+      // If the storypart has a parent it is a child..
+
+      var newChild = storiesRef.push({ // Creates new post for child-node
+        title: storyPart.title,
+        txt: storyPart.txt,
+        isEnding: storyPart.isEnding
+      });
+      newChild.update({ // Adds the key to the newly created child-node
+        key: newChild.key()
+      });
+
+      var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
+
+      parent.set({ // And to the child-field of the parent
+        key: newChild.key()
+      });
+    } else {
+      // if it isn't a child, then it's a parent - congrats!
+
+      var container = storiesRef.push({
+        title: storyPart.title
+      });
+
+      container.update({
+        key: container.key()
+      });
+
+      var containerPush = storiesRef.child(container.key());
+
+      var newParent = containerPush.push({ // Adds new post
+        title: storyPart.title,
+        txt: storyPart.txt,
+        isEnding: storyPart.isEnding
+      });
+
+      newParent.update({ // Attaches key to key-field
+        key: container.key() + '/' + newParent.key()
+      });
+    }
+  },
+  onAddStoryStart: function onAddStoryStart(storyStart) {
+
+    var container = storiesRef.push({
+      title: storyStart.title
+    });
+    container.update({
+      key: container.key()
+    });
+
+    var containerPush = storiesRef.child(container.key());
+
+    var newParent = containerPush.push({ // Adds new post
+      title: storyStart.title,
+      txt: storyStart.txt,
+      isEnding: storyStart.isEnding
+    });
+
+    newParent.update({ // Attaches key to key-field
+      key: container.key() + '/' + newParent.key()
+    });
+  },
+  onEditStoryPartText: function onEditStoryPartText(key, text) {
+
+    var thatStoryPartRef = storiesRef.child(key);
+
+    thatStoryPartRef.update({
+      txt: text
+    });
+  },
+  onDestroyStoryPart: function onDestroyStoryPart(key, parentKey) {
+
+    var storyRef = storiesRef.child(key);
+
+    var parentRef = parentKey === '' ? '' : storiesRef.child(parentKey.toString()).child('children').child(key);
+
+    storyRef.remove(function (error) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Successfully destroyed storypart with key: ' + key);
+
+        if (parentKey !== '') {
+          parentRef.remove(function (error) {
+            if (error) {
+              console.log(error.code);
+            } else {
+              console.log('Destroyed children-field on parent.');
+            }
+          });
+        }
+      }
+    });
+  },
+  onDestroyStoryParts: function onDestroyStoryParts(array, parentKey) {
+    array.forEach(function (key) {
+      actions.destroyStoryPart(key, parentKey);
+    });
+  },
+  onChangeRefFocus: function onChangeRefFocus(key) {
+    this.focusedRef = storiesRef.child(key);
+    this.trigger();
+  },
+  resetSelected: function resetSelected() {
+    this.trigger({ selected: {}, focus: {} });
+  },
+  resetFocus: function resetFocus() {
+    this.trigger({ focus: {}, statusWord: 'Skriv', h3: 'Ny historia' });
+  },
+  onChangeFocus: function onChangeFocus(focus, title) {
+    this.trigger({ focus: focus, statusWord: 'Fortsätt på', h3: title });
+  },
+  updateSelected: function updateSelected(snap) {
+    this.trigger({ selected: this.last = snap.val() || {} });
+  },
+  updateStories: function updateStories(snap) {
+    // console.log("VALUE");
+    // console.log(snap.val());
+
+    this.trigger({ stories: this.last = snap.val() || {} });
+  },
+  updateStoriesChildAdded: function updateStoriesChildAdded(snap) {
+    // console.log("CHILD_ADDED");
+    // console.log(snap.val());
+
+    this.getParentNode(snap.val());
+
+    this.trigger({ stories: this.last = snap.val() || {} });
+  },
+  updateStoriesChildRemoved: function updateStoriesChildRemoved(snap) {
+    // console.log("CHILD_REMOVED");
+    // console.log(snap.val());
+
+    this.resetFocus();
+
+    this.trigger({ stories: this.last = snap.val() || {} });
+  },
+  getParentNode: function getParentNode(node) {
+    console.log(node);
+  },
+  getDefaultData: function getDefaultData() {
+
+    console.log('default data');
+
+    var stories;
+
+    storiesRef.on('value', function (snap) {
+      stories = snap.val();
+    });
+
+    return stories || {};
+  }
+});
+
+},{"../actions":241,"firebase":2,"reflux":221}]},{},[258]);
