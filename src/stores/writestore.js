@@ -6,18 +6,14 @@ var Firebase = require('firebase');
 var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
 
 module.exports = Reflux.createStore({
-  focusedRef: undefined,
   init() {
 
-    this.focusedRef = storiesRef;
-
-    this.focusedRef.on('value', this.updateStories.bind(this));
+    storiesRef.on('value', this.updateStories.bind(this));
 
     // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
     // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
-    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
-    this.listenTo(actions.changeRefFocus, this.onChangeRefFocus.bind(this));
+    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));    
     // this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
     // this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
     // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
@@ -76,12 +72,12 @@ module.exports = Reflux.createStore({
       key: container.key()
     });
 
-    var containerPush = storiesRef.child(container.key());
+    // var containerPush = storiesRef.child(container.key());
 
-    var newParent = containerPush.push({  // Adds new post
+    var newParent = container.child('stories').push({  // Adds new post
       title: storyStart.title,
       txt: storyStart.txt,
-      isEnding: storyStart.isEnding
+      isParent: true
     });
 
     newParent.update({ // Attaches key to key-field
@@ -143,7 +139,7 @@ module.exports = Reflux.createStore({
     this.trigger({selected:(this.last = snap.val() || {})});
   },
   updateStories(snap) {
-    // console.log("VALUE");
+    // console.log('VALUE');
     // console.log(snap.val());
 
     this.trigger({stories:(this.last = snap.val() || {})});
@@ -151,8 +147,6 @@ module.exports = Reflux.createStore({
   updateStoriesChildAdded(snap) {
     // console.log("CHILD_ADDED");
     // console.log(snap.val());
-
-    this.getParentNode(snap.val());
 
     this.trigger({stories:(this.last = snap.val() || {})});
   },
@@ -163,9 +157,6 @@ module.exports = Reflux.createStore({
     this.resetFocus();
 
     this.trigger({stories:(this.last = snap.val() || {})});
-  },
-  getParentNode(node) {
-    console.log(node);
   },
   getDefaultData() {
 

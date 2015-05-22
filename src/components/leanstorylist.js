@@ -4,11 +4,20 @@ var actions = require('../actions');
 var Link = require('react-router').Link;
 
 var LeanStoryList = React.createClass({
+  getInitialState() {
+    return {};
+  },
   handleClick:function(key) {
     var foundSelected = _.find(this.props.stories, function(s) {return s.key === key;});
 
     actions.changeSelected(foundSelected);
   },
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps);
+
+  //   this.setState({list: nextProps.stories});
+
+  // },
   render: function() {
 
     // var storyCount = _.toArray(_.filter(this.props.stories, function(s){return s.isParent;})).length;
@@ -17,13 +26,16 @@ var LeanStoryList = React.createClass({
     // var triggerText = storyCount + " " + btnTxt;
 
     var createItem = (story, index) => {
-      return <li key={index} index={index}>
-                                  <Link to="nodes" params={{key:story.key}}>
-                                      {story.title}
-                                  </Link>
-                          </li>;
+
+      var key = story.key;
+
+      return (<li key={index} index={index}><Link to="Nodes" params={{key: key}}>{story.title}</Link></li>);
     };
-    return <ul>{_.map(this.props.stories, createItem)}</ul>;
+    return (
+      <div className="list-unfinished">
+        <h2>Lista på oavslutade:</h2>
+        <ul>{_.map(this.props.stories, createItem)}</ul>
+      </div>);
 
   }
 

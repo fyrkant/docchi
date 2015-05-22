@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var _ = require('lodash');
-// Accordion = require('./accordion'),
 var actions = require('../actions');
 
 var Stories = React.createClass({
@@ -25,7 +24,7 @@ var Stories = React.createClass({
     }
 
     _.forEach(obj.children, function(child) {
-      var foundChild = _.find(this.props.stories, function(s) {return s.key === child.key;});
+      var foundChild = _.find(this.props.data, function(s) {return s.key === child.key;});
       this.visitChildren(foundChild);
     }.bind(this));
   },
@@ -33,7 +32,7 @@ var Stories = React.createClass({
     this.toBeBlownUp = [];
     var parentKey = '';
 
-    _.map(this.props.stories, function(story) {
+    _.map(this.props.data, function(story) {
       if (story.children) {
         _.forEach(story.children, function(child) {
           if (child.key === this.props.selected.key) {
@@ -89,6 +88,8 @@ var Stories = React.createClass({
   render() {
     var editingClass = React.addons.classSet({'editing': this.state.isEditing});
 
+    console.log(this.props);
+
     return !this.props.selected ? <div /> : (
 			<ul className='tree'>
 				<li>
@@ -111,7 +112,7 @@ var Stories = React.createClass({
 					</div>
 
 						{_.map(this.props.selected.children, function(n) {
-  return <Stories key={n.key} stories={this.props.stories} selected={_.find(this.props.stories, function(s) {return s.key === n.key;})} />;
+  return <Stories key={n.key} data={this.props.data} selected={_.find(this.props.data, function(s) {return s.key === n.key;})} />;
 						}.bind(this))}
 				</li>
 			</ul>

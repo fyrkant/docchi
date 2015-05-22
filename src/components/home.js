@@ -1,8 +1,11 @@
 var React = require('react');
-var Link = require('react-router').Link;
+var Reflux = require('reflux');
+var WriteStore = require('../stores/writestore');
+var Router = require('react-router');
 var RouteHandler = require('react-router').RouteHandler;
 
 var Home = React.createClass({
+  mixins:[Reflux.connect(WriteStore), Router.State],
   render: function() {
     return (
       <div className="home">
@@ -11,14 +14,14 @@ var Home = React.createClass({
 
           <h2>
             <span className="write">
-              <Link to="write">Skriv</Link>
+              <Router.Link to="beta">Skriv</Router.Link>
               </span>
             <span className="read">
-              <Link to="read">Läs</Link>
+              <Router.Link to="read">Läs</Router.Link>
             </span>
           </h2>
         </header>
-        <RouteHandler {...this.props} />
+        <RouteHandler {...this.props} stories={this.state.stories} />
       </div>
     );
   }

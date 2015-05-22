@@ -3,5 +3,6 @@ var ReactRouter = require('react-router');
 var routes = require('./routes');
 
 ReactRouter.run(routes, function(Handler, state) {
-  React.render(<Handler params={state.params} />, document.body);
+  var params = state.params;
+  React.render(<Handler params={params} />, document.body);
 });
