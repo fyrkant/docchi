@@ -24,10 +24,10 @@ module.exports = Reflux.createStore({
   },
   onAddStoryPart(storyPart) {
 
-    console.log(storyPart);
+    // console.log(storyPart);
 
     var containerKey = storyPart.parentKey.split('/');
-    console.log(containerKey);
+    // console.log(containerKey);
 
     var newChild = storiesRef.child(containerKey[0] + '/' + containerKey[1]).push({
       title: storyPart.title,
@@ -46,21 +46,6 @@ module.exports = Reflux.createStore({
     parent.set({
       key: concatKey
     });
-
-    // var newChild = storiesRef.push({ // Creates new post for child-node
-    //   title: storyPart.title,
-    //   txt: storyPart.txt,
-    //   isEnding: storyPart.isEnding
-    // });
-    // newChild.update({ // Adds the key to the newly created child-node
-    //   key: newChild.key()
-    // });
-
-    // var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
-
-    // parent.set({ // And to the child-field of the parent
-    //   key: newChild.key()
-    // });
   },
   onAddStoryStart(storyStart) {
 
@@ -85,7 +70,7 @@ module.exports = Reflux.createStore({
   },
   onEditStoryPartText(key, text) {
 
-    console.log(key);
+    // console.log(key);
 
     var thatStoryPartRef = storiesRef.child(key);
 
@@ -135,29 +120,10 @@ module.exports = Reflux.createStore({
   },
   onDestroyStoryParts(array, parentKey) {
     array.forEach(function(key, index, array) {
-      actions.destroyStoryPart(key, parentKey, index === (array.length-1));
+      actions.destroyStoryPart(key, parentKey, index === (array.length - 1));
     });
   },
-  onChangeRefFocus(key) {
-    this.focusedRef = storiesRef.child(key);
-    this.trigger();
-  },
-  resetSelected() {
-    this.trigger({selected:{}, focus: {}});
-  },
-  resetFocus() {
-    this.trigger({focus: {}, statusWord: 'Skriv', h3: 'Ny historia'});
-  },
-  onChangeFocus(focus, title) {
-    this.trigger({focus: focus, statusWord: 'Fortsätt på', h3: title});
-  },
-  updateSelected(snap) {
-    this.trigger({selected:(this.last = snap.val() || {})});
-  },
   updateStories(snap) {
-    // console.log('VALUE');
-    // console.log(snap.val());
-
     this.trigger({stories:(this.last = snap.val() || {})});
   },
   getDefaultData() {

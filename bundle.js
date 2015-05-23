@@ -40191,7 +40191,17 @@ var Stories = React.createClass({
     }
     this.setState({ isEditing: false });
   },
-  componentDidMount: function componentDidMount() {},
+  // componentDidMount() {
+  //   var allDone = _.find(this.props.data, function(story) {
+  //     return story.children === undefined && story.isEnding === false;
+  //   });
+
+  //   if (_.isUndefined(allDone)) {
+  //     this.setState({
+  //       allDone: true
+  //     });
+  //   }
+  // },
   render: function render() {
     var editingClass = this.state.isEditing ? 'editing' : '';
 
@@ -40259,6 +40269,7 @@ var Stories = React.createClass({
 });
 
 module.exports = Stories;
+/* this.state.allDone ? <div className="allDoneDiv"><div className="innerDoneDiv">Du verkar vara klar! <button>Spara till läs-sidan</button></div></div> : '' */
 
 },{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],244:[function(require,module,exports){
 'use strict';
@@ -40523,10 +40534,10 @@ module.exports = Reflux.createStore({
   },
   onAddStoryPart: function onAddStoryPart(storyPart) {
 
-    console.log(storyPart);
+    // console.log(storyPart);
 
     var containerKey = storyPart.parentKey.split('/');
-    console.log(containerKey);
+    // console.log(containerKey);
 
     var newChild = storiesRef.child(containerKey[0] + '/' + containerKey[1]).push({
       title: storyPart.title,
@@ -40545,21 +40556,6 @@ module.exports = Reflux.createStore({
     parent.set({
       key: concatKey
     });
-
-    // var newChild = storiesRef.push({ // Creates new post for child-node
-    //   title: storyPart.title,
-    //   txt: storyPart.txt,
-    //   isEnding: storyPart.isEnding
-    // });
-    // newChild.update({ // Adds the key to the newly created child-node
-    //   key: newChild.key()
-    // });
-
-    // var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
-
-    // parent.set({ // And to the child-field of the parent
-    //   key: newChild.key()
-    // });
   },
   onAddStoryStart: function onAddStoryStart(storyStart) {
 
@@ -40584,7 +40580,7 @@ module.exports = Reflux.createStore({
   },
   onEditStoryPartText: function onEditStoryPartText(key, text) {
 
-    console.log(key);
+    // console.log(key);
 
     var thatStoryPartRef = storiesRef.child(key);
 
@@ -40635,26 +40631,7 @@ module.exports = Reflux.createStore({
       actions.destroyStoryPart(key, parentKey, index === array.length - 1);
     });
   },
-  onChangeRefFocus: function onChangeRefFocus(key) {
-    this.focusedRef = storiesRef.child(key);
-    this.trigger();
-  },
-  resetSelected: function resetSelected() {
-    this.trigger({ selected: {}, focus: {} });
-  },
-  resetFocus: function resetFocus() {
-    this.trigger({ focus: {}, statusWord: 'Skriv', h3: 'Ny historia' });
-  },
-  onChangeFocus: function onChangeFocus(focus, title) {
-    this.trigger({ focus: focus, statusWord: 'Fortsätt på', h3: title });
-  },
-  updateSelected: function updateSelected(snap) {
-    this.trigger({ selected: this.last = snap.val() || {} });
-  },
   updateStories: function updateStories(snap) {
-    // console.log('VALUE');
-    // console.log(snap.val());
-
     this.trigger({ stories: this.last = snap.val() || {} });
   },
   getDefaultData: function getDefaultData() {
