@@ -7,7 +7,7 @@ var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/
 
 module.exports = Reflux.createStore({
   init() {
-    storiesRef.on('value', this.updateStories.bind(this));
+    // storiesRef.on('value', this.updateStories.bind(this));
 
     // storiesRef.on('child_removed', this.updateStoriesChildRemoved.bind(this));
     // storiesRef.on('child_added', this.updateStoriesChildAdded.bind(this));

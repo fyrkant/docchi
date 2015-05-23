@@ -1,18 +1,42 @@
 var React = require('react/addons');
 var _ = require('lodash');
 var actions = require('../actions');
+var StoryAdder = require('./storyadder');
+var marked = require('marked');
 
 var Stories = React.createClass({
   mixins:[React.addons.LinkedStateMixin],
   getInitialState() {
     return {};
   },
-  clickSelect(ev) {
+  handleAddStart(ev) {
 
-    actions.changeFocus(this.props.selected, this.props.selected.title);
+    this.state.isAdding ? this.setState({isAdding: false}) : this.setState({isAdding: true});
 
     ev.preventDefault();
     ev.stopPropagation();
+  },
+  handleSubmit:function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var storyPart = this.populateStoryPart();
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryPart(storyPart);
+      this.emptyForm();
+      this.setState({isAdding: false});
+    }
+  },
+  emptyForm:function() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+  },
+  populateStoryPart:function() {
+    return {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      parentKey: this.props.selected.key
+    };
   },
   toBeBlownUp: [],
   visitChildren(obj) {
@@ -31,6 +55,7 @@ var Stories = React.createClass({
   storypartDestroyer() {
     this.toBeBlownUp = [];
     var parentKey = '';
+    var isParent = this.props.selected.isParent;
 
     _.map(this.props.data, function(story) {
       if (story.children) {
@@ -41,14 +66,15 @@ var Stories = React.createClass({
         }.bind(this));
       }
     }.bind(this));
+
     if (!this.props.selected.children) {
       if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
-        actions.destroyStoryPart(this.props.selected.key, parentKey);
+        actions.destroyStoryPart(this.props.selected.key, parentKey, isParent);
       }
     } else {
       if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
         this.visitChildren(this.props.selected);
-        actions.destroyStoryParts(this.toBeBlownUp, parentKey);
+        actions.destroyStoryParts(this.toBeBlownUp, parentKey, isParent);
       }
     }
   },
@@ -85,19 +111,29 @@ var Stories = React.createClass({
     }
     this.setState({isEditing: false});
   },
+  componentDidMount() {
+  },
   render() {
-    var editingClass = React.addons.classSet({'editing': this.state.isEditing});
+    var editingClass = this.state.isEditing ? 'editing' : '' ;
 
-    console.log(this.props);
+    var endingClass;
+    var addingClass = this.state.isAdding ? 'adding' : '' ;
+
+    var rawMarkup;
+
+    if (!_.isUndefined(this.props.selected)) {
+      endingClass = this.props.selected.isEnding ? 'ending' : '' ;
+      rawMarkup = rawMarkup = marked(this.props.selected.txt, {sanitize: true});
+    }
 
     return !this.props.selected ? <div /> : (
 			<ul className='tree'>
 				<li>
 					<a href="#" onClick={this.showNode}>{this.props.selected.title}</a>
-					<div className={'story-node'}>
+					<div className={'story-node ' + endingClass + addingClass + editingClass}>
 						<div className={editingClass}>
 
-							<p className="view" onDoubleClick={this.handleEditStart}>{this.props.selected.txt}</p>
+							<span className="view" dangerouslySetInnerHTML={{__html: rawMarkup}} />
 
 							<textarea ref="editInput"
 								className="edit"
@@ -105,13 +141,17 @@ var Stories = React.createClass({
 								onKeyUp={this.handleValueChange}
 								onBlur={this.handleBlur} />
 
-							<button onClick={this.clickSelect}> Add </button>
-							<button onClick={this.handleEditStart}> Edit </button>
-							<button onClick={this.storypartDestroyer}> Delete </button>
+							<button className="addBtn" onClick={this.handleAddStart}> {this.state.isAdding ? 'Avbryt' : 'Lägg till fortsättning'} </button>
+
+							<button className="editBtn" onClick={this.handleEditStart}> Ändra </button>
+
+							<button className="deleteBtn" onClick={this.storypartDestroyer}> X </button>
 						</div>
 					</div>
 
-						{_.map(this.props.selected.children, function(n) {
+          { this.state.isAdding ? <StoryAdder {...this.props} handleAddStart={this.handleAddStart} /> : '' }
+
+						{ _.map(this.props.selected.children, function(n) {
   return <Stories key={n.key} data={this.props.data} selected={_.find(this.props.data, function(s) {return s.key === n.key;})} />;
 						}.bind(this))}
 				</li>

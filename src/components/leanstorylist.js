@@ -1,17 +1,8 @@
 var React = require('react');
 var _ = require('lodash');
-var actions = require('../actions');
 var Link = require('react-router').Link;
 
 var LeanStoryList = React.createClass({
-  getInitialState() {
-    return {};
-  },
-  handleClick:function(key) {
-    var foundSelected = _.find(this.props.stories, function(s) {return s.key === key;});
-
-    actions.changeSelected(foundSelected);
-  },
   // componentWillReceiveProps(nextProps) {
   //   console.log(nextProps);
 
@@ -25,11 +16,8 @@ var LeanStoryList = React.createClass({
     //
     // var triggerText = storyCount + " " + btnTxt;
 
-    var createItem = (story, index) => {
-
-      var key = story.key;
-
-      return (<li key={index} index={index}><Link to="Nodes" params={{key: key}}>{story.title}</Link></li>);
+    var createItem = function(story, index) {
+      return (<li key={index} index={index}><Link to="Nodes" params={{key: index}}>{story.title}</Link></li>);
     };
     return (
       <div className="list-unfinished">

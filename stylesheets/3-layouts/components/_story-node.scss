@@ -1,3 +1,5 @@
+$node-tree-border : 3px solid $blue;
+
 .tree {
   font-family: $georgia;
 }
@@ -24,7 +26,7 @@
   top:0;
   bottom:0;
   left:0;
-  border-left:1px solid;
+  border-left: $node-tree-border;
 }
 
 .tree li {
@@ -38,18 +40,19 @@
 .tree ul li:before {
   content:"";
   display:block;
-  width:10px; /* same with indentation */
+  width:20px; /* same with indentation */
   height:0;
-  border-top:1px solid;
+  border-top: $node-tree-border;
   margin-top:-1px; /* border top width */
   position:absolute;
   top:1em; /* (line-height/2) */
   left:0;
+  z-index:-1;
 }
 
 .tree ul li:last-child:before {
   background:white; /* same with body background */
-  height:auto;
+  height:50px;
   top:1em; /* (line-height/2) */
   bottom:0;
 }
@@ -59,13 +62,18 @@ textarea.edit {
   display: none;
 }
 
+span.view {
+  font-weight: normal;
+}
+
 div.editing{
-  p.view {
+  span.view {
     display: none;
   }
 
   textarea {
     display: block;
+    @include size(100%);
   }
 }
 
@@ -77,12 +85,96 @@ div.editing{
   display: block;
 
   padding: 5px;
-
   width: 300px;
+  min-height: 150px;
+
+  .deleteBtn {
+    padding:3px;
+    @include size(22px);
+    position: absolute;
+    top:5px;
+    right: 5px;
+    background-color: transparentize(red, 0.9);
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  .addBtn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 70%;
+    background-color: #999;
+    border-radius: 0;
+    border-bottom-right-radius: 5px;
+
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $blue;
+    }
+  }
+
+  .editBtn {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 30%;
+    background-color: #999;
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $blue;
+    }
+  }
+
 
 
   border: $base-border;
   border-radius: $base-border-radius;
+
+  &.ending {
+    background-color: transparentize(red, 0.9);
+    
+    .addBtn {
+      display: none;
+    }
+
+    &::before {
+      content: 'Avslutande del!';
+      color: transparentize(red, 0.5);
+      position: absolute;
+      bottom: 5px;
+      left:50%;      
+    }
+  }
+
+  &.adding {
+    .deleteBtn, .editBtn {
+      display: none;
+    }
+  }
+
+  &.editing {
+
+    .deleteBtn, .addBtn {
+      display: none;
+    }
+
+    .editBtn {
+      display: none;
+    }
+
+    .view:after {
+      content: 'Enter = spara, Esc = avbryt';
+      color: black;
+    }
+  }
 
 
 

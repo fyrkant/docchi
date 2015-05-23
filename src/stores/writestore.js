@@ -13,55 +13,54 @@ module.exports = Reflux.createStore({
     // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
     // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
-    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));    
-    // this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
-    // this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
+    this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
+    this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
+    this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
     // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
     // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
     // this.listenTo(actions.resetFocus, this.resetFocus);
-    // this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
-    // this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
   },
   onAddStoryPart(storyPart) {
-    if (storyPart.parentKey) { // If the storypart has a parent it is a child..
 
-      var newChild = storiesRef.push({ // Creates new post for child-node
-        title: storyPart.title,
-        txt: storyPart.txt,
-        isEnding: storyPart.isEnding
-      });
-      newChild.update({ // Adds the key to the newly created child-node
-        key: newChild.key()
-      });
+    console.log(storyPart);
 
-      var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
+    var containerKey = storyPart.parentKey.split('/');
+    console.log(containerKey);
 
-      parent.set({ // And to the child-field of the parent
-        key: newChild.key()
-      });
+    var newChild = storiesRef.child(containerKey[0] + '/' + containerKey[1]).push({
+      title: storyPart.title,
+      txt: storyPart.txt,
+      isEnding: storyPart.isEnding
+    });
 
-    } else { // if it isn't a child, then it's a parent - congrats!
+    var concatKey = containerKey[0] + '/stories/' + newChild.key();
 
-      var container = storiesRef.push({
-        title: storyPart.title
-      });
+    newChild.update({
+      key: concatKey
+    });
 
-      container.update({
-        key: container.key()
-      });
+    var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
 
-      var containerPush = storiesRef.child(container.key());
+    parent.set({
+      key: concatKey
+    });
 
-      var newParent = containerPush.push({  // Adds new post
-        title: storyPart.title,
-        txt: storyPart.txt,
-        isEnding: storyPart.isEnding
-      });
+    // var newChild = storiesRef.push({ // Creates new post for child-node
+    //   title: storyPart.title,
+    //   txt: storyPart.txt,
+    //   isEnding: storyPart.isEnding
+    // });
+    // newChild.update({ // Adds the key to the newly created child-node
+    //   key: newChild.key()
+    // });
 
-      newParent.update({ // Attaches key to key-field
-        key: container.key() + '/' + newParent.key()
-      });
-    }
+    // var parent = storiesRef.child(storyPart.parentKey).child('children').child(newChild.key());
+
+    // parent.set({ // And to the child-field of the parent
+    //   key: newChild.key()
+    // });
   },
   onAddStoryStart(storyStart) {
 
@@ -81,10 +80,12 @@ module.exports = Reflux.createStore({
     });
 
     newParent.update({ // Attaches key to key-field
-      key: container.key() + '/' + newParent.key()
+      key: container.key() + '/stories/' + newParent.key()
     });
   },
   onEditStoryPartText(key, text) {
+
+    console.log(key);
 
     var thatStoryPartRef = storiesRef.child(key);
 
@@ -93,11 +94,13 @@ module.exports = Reflux.createStore({
     });
 
   },
-  onDestroyStoryPart(key, parentKey) {
+  onDestroyStoryPart(key, parentKey, last) {
+
+    var splat = key.split('/');
 
     var storyRef = storiesRef.child(key);
 
-    var parentRef = parentKey === '' ? '' : storiesRef.child(parentKey.toString()).child('children').child(key);
+    var parentRef = parentKey === '' ? '' : storiesRef.child(parentKey.toString()).child('children').child(splat[2]);
 
     storyRef.remove(function(error) {
       if (error) {
@@ -116,10 +119,23 @@ module.exports = Reflux.createStore({
         }
       }
     });
+
+    if (parentKey === '' && last) {
+
+      var containerRef = storiesRef.child(splat[0]);
+      containerRef.remove(function(error) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Successfully destroyed container.');
+        }
+      });
+
+    }
   },
   onDestroyStoryParts(array, parentKey) {
-    array.forEach(function(key) {
-      actions.destroyStoryPart(key, parentKey);
+    array.forEach(function(key, index, array) {
+      actions.destroyStoryPart(key, parentKey, index === (array.length-1));
     });
   },
   onChangeRefFocus(key) {
@@ -141,20 +157,6 @@ module.exports = Reflux.createStore({
   updateStories(snap) {
     // console.log('VALUE');
     // console.log(snap.val());
-
-    this.trigger({stories:(this.last = snap.val() || {})});
-  },
-  updateStoriesChildAdded(snap) {
-    // console.log("CHILD_ADDED");
-    // console.log(snap.val());
-
-    this.trigger({stories:(this.last = snap.val() || {})});
-  },
-  updateStoriesChildRemoved(snap) {
-    // console.log("CHILD_REMOVED");
-    // console.log(snap.val());
-
-    this.resetFocus();
 
     this.trigger({stories:(this.last = snap.val() || {})});
   },
