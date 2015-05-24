@@ -3,14 +3,40 @@
 	top: 0
 	left:0
 
+	border-radius: 0;
+
 
 	.writer
 	    position: absolute
-	    top: 20px
-	    left: 0
+	    top: 25px
+	    left: 25px
 	    height: 300px
-	    border: 3px solid $blue
-	    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+	    border-radius: 0
+	    border: $base-border
+	    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4)
+	    +transition(all 0.2s ease-in-out)
+
+	    &:child:focus 
+	    	box-shadow: 15px 15px 5px rgba(0, 0, 0, 0.4)
+	    
+	    input
+	    	border-radius: 0
+
+	    textarea
+	    	border-radius: 0
 
 	    button
 	      float: right
+	      border-radius: 0
+
+	.writer:after		
+		content:""
+		width:10px /* same with indentation */
+		height:18px
+		border-left: 3px solid black
+		border-bottom: 3px solid black
+		margin-left:-15px /* border top width */
+		position:absolute
+		top:-6px/* (line-height/2) */		
+		z-index:-1000
+

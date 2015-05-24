@@ -3,25 +3,20 @@ var _ = require('lodash');
 var Link = require('react-router').Link;
 
 var LeanStoryList = React.createClass({
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-
-  //   this.setState({list: nextProps.stories});
-
-  // },
   render: function() {
-
-    // var storyCount = _.toArray(_.filter(this.props.stories, function(s){return s.isParent;})).length;
-    // var btnTxt = storyCount === 1 ? "oavslutad" : "oavslutade";
-    //
-    // var triggerText = storyCount + " " + btnTxt;
-
-    var createItem = function(story, index) {
-      return (<li key={index} index={index}><Link to="Nodes" params={{key: index}}>{story.title}</Link></li>);
+    var createItem = (story, index) => {
+      if (story.status === this.props.filter) {
+        return (<li key={index} index={index}><Link to={this.props.linkTo} params={{key: index}}>{story.title}</Link></li>);
+      }
     };
+
+    var divClass = !_.find(this.props.stories, {status: this.props.filter}) ? 'hide' : '';
+
     return (
-      <div className="list-unfinished">
-        <h2>Lista på oavslutade:</h2>
+      <div className={divClass}>
+        <h2>
+        {this.props.titleText +
+          ' (' + _.toArray(_.filter(this.props.stories, {status: this.props.filter})).length + ')'}</h2>
         <ul>{_.map(this.props.stories, createItem)}</ul>
       </div>);
 

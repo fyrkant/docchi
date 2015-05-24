@@ -111,17 +111,21 @@ var Stories = React.createClass({
     }
     this.setState({isEditing: false});
   },
-  // componentDidMount() {
-  //   var allDone = _.find(this.props.data, function(story) {
-  //     return story.children === undefined && story.isEnding === false;
-  //   });
+  componentWillReceiveProps(nextProps) {
+    var allDone = _.find(nextProps.data, function(story) {
+      return !story.children && !story.isEnding;
+    });
 
-  //   if (_.isUndefined(allDone)) {
-  //     this.setState({
-  //       allDone: true
-  //     });
-  //   }
-  // },
+    console.log(allDone);
+
+    if (_.isUndefined(allDone)) {
+      console.log('All done, yo!');
+      actions.setStatus(nextProps.selected.key, 'done');
+    } else {
+      console.log('You got some work to do.');
+      actions.setStatus(nextProps.selected.key, 'writing');
+    }
+  },
   render() {
     var editingClass = this.state.isEditing ? 'editing' : '' ;
 
@@ -150,15 +154,13 @@ var Stories = React.createClass({
 								onKeyUp={this.handleValueChange}
 								onBlur={this.handleBlur} />
 
-							<button className="addBtn" onClick={this.handleAddStart}> { this.state.isAdding ? 'Avbryt' : 'Lägg till fortsättning'} </button>
+							{ this.state.isEditing ? '' : <button className="addBtn" onClick={this.handleAddStart}> <i className="fa fa-plus"></i> { this.state.isAdding ? 'Avbryt' : 'Fortsätt'} </button>}
 
-							<button className="editBtn" onClick={this.handleEditStart}> Ändra </button>
+							{ this.state.isEditing ? <p className="editInfoText">Enter = spara, Esc = avbryt</p> : <button className="editBtn" onClick={this.handleEditStart}> <i className="fa fa-undo"></i> Ändra </button>}
 
-							<button className="deleteBtn" onClick={this.storypartDestroyer}> X </button>
+							{ this.state.isAdding || this.state.isEditing ? '' : <button className="deleteBtn" onClick={this.storypartDestroyer}> <i className="fa fa-trash-o fa-2"></i></button>}
 						</div>
-					</div>
-
-          {/* this.state.allDone ? <div className="allDoneDiv"><div className="innerDoneDiv">Du verkar vara klar! <button>Spara till läs-sidan</button></div></div> : '' */}
+					</div>          
 
           { this.state.isAdding ? <StoryAdder {...this.props} handleAddStart={this.handleAddStart} /> : '' }
 

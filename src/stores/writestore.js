@@ -18,6 +18,7 @@ module.exports = Reflux.createStore({
     this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    this.listenTo(actions.setStatus, this.onSetStatus.bind(this));
     // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
     // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
     // this.listenTo(actions.resetFocus, this.resetFocus);
@@ -50,7 +51,8 @@ module.exports = Reflux.createStore({
   onAddStoryStart(storyStart) {
 
     var container = storiesRef.push({
-      title: storyStart.title
+      title: storyStart.title,
+      status: 'writing'
     });
     container.update({
       key: container.key()
@@ -121,6 +123,13 @@ module.exports = Reflux.createStore({
   onDestroyStoryParts(array, parentKey) {
     array.forEach(function(key, index, array) {
       actions.destroyStoryPart(key, parentKey, index === (array.length - 1));
+    });
+  },
+  onSetStatus(key, status) {
+    var splitKey = key.split('/');
+
+    storiesRef.child(splitKey[0]).update({
+      status: status
     });
   },
   updateStories(snap) {

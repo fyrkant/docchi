@@ -39823,7 +39823,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'addStoryStart', 'addStoryPart', 'editStoryPartText', 'changeSelected', 'changeFocus', 'resetFocus', 'destroyStoryPart', 'destroyStoryParts']);
+module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPartText', 'destroyStoryPart', 'destroyStoryParts']);
 
 },{"reflux":217}],238:[function(require,module,exports){
 'use strict';
@@ -39931,7 +39931,7 @@ var Home = React.createClass({
             { className: 'write' },
             React.createElement(
               Router.Link,
-              { to: 'beta' },
+              { to: 'write' },
               'Skriv'
             )
           ),
@@ -39964,37 +39964,32 @@ var Link = require('react-router').Link;
 var LeanStoryList = React.createClass({
   displayName: 'LeanStoryList',
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-
-  //   this.setState({list: nextProps.stories});
-
-  // },
   render: function render() {
-
-    // var storyCount = _.toArray(_.filter(this.props.stories, function(s){return s.isParent;})).length;
-    // var btnTxt = storyCount === 1 ? "oavslutad" : "oavslutade";
-    //
-    // var triggerText = storyCount + " " + btnTxt;
+    var _this = this;
 
     var createItem = function createItem(story, index) {
-      return React.createElement(
-        'li',
-        { key: index, index: index },
-        React.createElement(
-          Link,
-          { to: 'Nodes', params: { key: index } },
-          story.title
-        )
-      );
+      if (story.status === _this.props.filter) {
+        return React.createElement(
+          'li',
+          { key: index, index: index },
+          React.createElement(
+            Link,
+            { to: _this.props.linkTo, params: { key: index } },
+            story.title
+          )
+        );
+      }
     };
+
+    var divClass = !_.find(this.props.stories, { status: this.props.filter }) ? 'hide' : '';
+
     return React.createElement(
       'div',
-      { className: 'list-unfinished' },
+      { className: divClass },
       React.createElement(
         'h2',
         null,
-        'Lista på oavslutade:'
+        this.props.titleText + ' (' + _.toArray(_.filter(this.props.stories, { status: this.props.filter })).length + ')'
       ),
       React.createElement(
         'ul',
@@ -40034,6 +40029,9 @@ var NodePage = React.createClass({
 
     var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
     var foundParent = _.find(foundStories, { isParent: true });
+    var status = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'status');
+
+    console.log(status);
 
     return React.createElement(
       'div',
@@ -40048,7 +40046,10 @@ module.exports = NodePage;
 },{"./stories":243,"lodash":3,"react":216}],242:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
+var LeanStoryList = require('./leanstorylist');
 
 var Read = React.createClass({
   displayName: 'Read',
@@ -40056,12 +40057,8 @@ var Read = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      null,
-      React.createElement(
-        'p',
-        null,
-        'READ!'
-      )
+      { className: 'write-home' },
+      React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på avslutade', filter: 'done', linkTo: 'readnodes' }))
     );
   }
 
@@ -40069,7 +40066,7 @@ var Read = React.createClass({
 
 module.exports = Read;
 
-},{"react":216}],243:[function(require,module,exports){
+},{"./leanstorylist":240,"react":216}],243:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40191,17 +40188,21 @@ var Stories = React.createClass({
     }
     this.setState({ isEditing: false });
   },
-  // componentDidMount() {
-  //   var allDone = _.find(this.props.data, function(story) {
-  //     return story.children === undefined && story.isEnding === false;
-  //   });
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var allDone = _.find(nextProps.data, function (story) {
+      return !story.children && !story.isEnding;
+    });
 
-  //   if (_.isUndefined(allDone)) {
-  //     this.setState({
-  //       allDone: true
-  //     });
-  //   }
-  // },
+    console.log(allDone);
+
+    if (_.isUndefined(allDone)) {
+      console.log('All done, yo!');
+      actions.setStatus(nextProps.selected.key, 'done');
+    } else {
+      console.log('You got some work to do.');
+      actions.setStatus(nextProps.selected.key, 'writing');
+    }
+  },
   render: function render() {
     var editingClass = this.state.isEditing ? 'editing' : '';
 
@@ -40238,22 +40239,31 @@ var Stories = React.createClass({
               valueLink: this.linkState('editValue'),
               onKeyUp: this.handleValueChange,
               onBlur: this.handleBlur }),
-            React.createElement(
+            this.state.isEditing ? '' : React.createElement(
               'button',
               { className: 'addBtn', onClick: this.handleAddStart },
               ' ',
-              this.state.isAdding ? 'Avbryt' : 'Lägg till fortsättning',
+              React.createElement('i', { className: 'fa fa-plus' }),
+              ' ',
+              this.state.isAdding ? 'Avbryt' : 'Fortsätt',
               ' '
             ),
-            React.createElement(
+            this.state.isEditing ? React.createElement(
+              'p',
+              { className: 'editInfoText' },
+              'Enter = spara, Esc = avbryt'
+            ) : React.createElement(
               'button',
               { className: 'editBtn', onClick: this.handleEditStart },
+              ' ',
+              React.createElement('i', { className: 'fa fa-undo' }),
               ' Ändra '
             ),
-            React.createElement(
+            this.state.isAdding || this.state.isEditing ? '' : React.createElement(
               'button',
               { className: 'deleteBtn', onClick: this.storypartDestroyer },
-              ' X '
+              ' ',
+              React.createElement('i', { className: 'fa fa-trash-o fa-2' })
             )
           )
         ),
@@ -40269,7 +40279,6 @@ var Stories = React.createClass({
 });
 
 module.exports = Stories;
-/* this.state.allDone ? <div className="allDoneDiv"><div className="innerDoneDiv">Du verkar vara klar! <button>Spara till läs-sidan</button></div></div> : '' */
 
 },{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],244:[function(require,module,exports){
 'use strict';
@@ -40427,6 +40436,8 @@ module.exports = WriteApp;
 },{"react":216,"react-router":29}],246:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
 var Reflux = require('reflux');
 var Router = require('react-router');
@@ -40446,7 +40457,13 @@ var WriteHome = React.createClass({
       'div',
       null,
       React.createElement(BetaForm, this.props),
-      React.createElement(LeanStoryList, this.props)
+      React.createElement(
+        'div',
+        { className: 'list-unfinished' },
+        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på oavslutade', filter: 'writing', linkTo: 'writenodes' })),
+        React.createElement('hr', null),
+        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på avslutade', filter: 'done', linkTo: 'writenodes' }))
+      )
     );
   }
 });
@@ -40491,13 +40508,17 @@ module.exports = React.createElement(
   React.createElement(DefaultRoute, { handler: WriteBeta }),
   React.createElement(
     Route,
-    { name: 'beta', path: 'beta', handler: WriteBeta },
+    { name: 'write', path: 'write', handler: WriteBeta },
     React.createElement(Route, { name: 'WriteNew', path: 'new', handler: BetaWriter }),
     React.createElement(Route, { name: 'List', path: 'list', handler: LeanStoryList }),
-    React.createElement(Route, { name: 'Nodes', path: ':key', handler: NodePage }),
+    React.createElement(Route, { name: 'writenodes', path: ':key', handler: NodePage }),
     React.createElement(DefaultRoute, { handler: WriteHome })
   ),
-  React.createElement(Route, { name: 'read', path: 'read', handler: Read })
+  React.createElement(
+    Route,
+    { name: 'read', path: 'read', handler: Read },
+    React.createElement(Route, { name: 'readnodes', path: ':key', handler: Read })
+  )
 );
 /*<Route name="write" path="write" handler={Write}>
      <Route name="writeNew" path="new" handler={Write} />
@@ -40528,6 +40549,7 @@ module.exports = Reflux.createStore({
     this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
+    this.listenTo(actions.setStatus, this.onSetStatus.bind(this));
     // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
     // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
     // this.listenTo(actions.resetFocus, this.resetFocus);
@@ -40560,7 +40582,8 @@ module.exports = Reflux.createStore({
   onAddStoryStart: function onAddStoryStart(storyStart) {
 
     var container = storiesRef.push({
-      title: storyStart.title
+      title: storyStart.title,
+      status: 'writing'
     });
     container.update({
       key: container.key()
@@ -40629,6 +40652,13 @@ module.exports = Reflux.createStore({
   onDestroyStoryParts: function onDestroyStoryParts(array, parentKey) {
     array.forEach(function (key, index, array) {
       actions.destroyStoryPart(key, parentKey, index === array.length - 1);
+    });
+  },
+  onSetStatus: function onSetStatus(key, status) {
+    var splitKey = key.split('/');
+
+    storiesRef.child(splitKey[0]).update({
+      status: status
     });
   },
   updateStories: function updateStories(snap) {

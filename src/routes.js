@@ -24,12 +24,14 @@ module.exports = (
           <Route name="writeOld" path=":key" handler={Write} />
           <DefaultRoute handler={Write} />
         </Route>*/}
-    <Route name="beta" path="beta" handler={WriteBeta}>
+    <Route name="write" path="write" handler={WriteBeta}>
       <Route name="WriteNew" path="new" handler={BetaWriter} />
       <Route name="List" path="list" handler={LeanStoryList} />
-      <Route name="Nodes" path=":key" handler={NodePage} />
+      <Route name="writenodes" path=":key" handler={NodePage} />
       <DefaultRoute handler={WriteHome} />
     </Route>
-    <Route name="read" path="read" handler={Read} />
+    <Route name="read" path="read" handler={Read}>
+      <Route name="readnodes" path=":key" handler={Read} />
+    </Route>
 	</Route>
 );

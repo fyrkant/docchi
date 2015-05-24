@@ -14,7 +14,7 @@ var Home = React.createClass({
 
           <h2>
             <span className="write">
-              <Router.Link to="beta">Skriv</Router.Link>
+              <Router.Link to="write">Skriv</Router.Link>
               </span>
             <span className="read">
               <Router.Link to="read">Läs</Router.Link>

@@ -19,6 +19,9 @@ var NodePage = React.createClass({
 
     var foundStories = _.result(_.find(this.props.stories, {key: this.props.params.key}), 'stories');
     var foundParent = _.find(foundStories, {isParent: true});
+    var status = _.result(_.find(this.props.stories, {key: this.props.params.key}), 'status');
+
+    console.log(status);
 
     return (
 			<div><Stories data={foundStories} selected={foundParent} /></div>

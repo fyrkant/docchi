@@ -4,12 +4,10 @@ module.exports = Reflux.createActions([
     'deleteTodoLine',
     'submitTodoLine',
     'login',
+    'setStatus',
     'addStoryStart',
     'addStoryPart',
     'editStoryPartText',
-    'changeSelected',
-    'changeFocus',
-    'resetFocus',
     'destroyStoryPart',
     'destroyStoryParts'
 ]);

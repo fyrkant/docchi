@@ -14,7 +14,14 @@ var WriteHome = React.createClass({
     return (
       <div>
         <BetaForm {...this.props} />
-        <LeanStoryList {...this.props} />
+
+        <div className="list-unfinished">
+            <LeanStoryList {...this.props} titleText="Lista på oavslutade" filter="writing" linkTo="writenodes" />
+
+            <hr />
+
+            <LeanStoryList {...this.props} titleText="Lista på avslutade" filter="done" linkTo="writenodes" />
+        </div>
       </div>);
   }
 });

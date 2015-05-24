@@ -1,5 +1,7 @@
 .write-home
   +outer-container
+
+
   padding-top: 20px
   h2
     font-family: $georgia
@@ -7,9 +9,14 @@
 
   .write-new
     +span-columns(6)
+    border-right: 3px solid $light-gray
+    height: 100%
 
   .list-unfinished
     +span-columns(6)
+    height: 100%
+    display: flex
+    flex-direction: column    
 
     ul
       margin-top: -15px
@@ -24,5 +31,9 @@
     border: 0
     margin-top: -20px
 
+    input, textarea 
+      border-radius: 0
+
     button
       float: right
+      border-radius: 0
