@@ -1069,31 +1069,36 @@ h1.header-title {
           flex-direction: row;
   -webkit-align-items: center;
       -ms-flex-align: center;
-          align-items: center; }
-  /* line 14, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+          align-items: center;
+  border-bottom: 3px solid #3367b0; }
+  /* line 15, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h1 {
     margin: 10px;
     font-size: 4em;
     color: rgba(255, 255, 255, 0.5);
     transition: all 0.5s ease-in-out; }
-    /* line 21, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 22, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h1:hover {
       color: white; }
-  /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 27, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h2 {
     padding: 0 20px;
     margin-top: auto;
     font-family: "Georgia", "Cambria", "Times New Roman", "Times", serif;
     width: 50%;
     font-size: 2.5em; }
-    /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 35, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 a {
       padding: 0 20px;
-      color: white; }
-    /* line 39, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header h2 .write {
-      transition: all 1s ease-in-out; }
-/* line 45, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      color: rgba(255, 255, 255, 0.5);
+      transition: all 0.2s ease-in-out; }
+      /* line 40, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header h2 a:hover {
+        color: white; }
+      /* line 44, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header h2 a.active {
+        color: white; }
+/* line 51, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home .write-home {
   margin-top: 100px; }
 
@@ -1123,7 +1128,16 @@ h1.header-title {
     /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
     .write-home .write-new:last-child {
       margin-right: 0; }
-  /* line 15, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    @media screen and (max-width: 850px) {
+      .write-home .write-new {
+        float: left;
+        display: block;
+        margin-right: 2.357651598%;
+        width: 100%; }
+        /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+        .write-home .write-new:last-child {
+          margin-right: 0; } }
+  /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
   .write-home .list-unfinished {
     float: left;
     display: block;
@@ -1139,11 +1153,21 @@ h1.header-title {
     /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
     .write-home .list-unfinished:last-child {
       margin-right: 0; }
-    /* line 21, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    @media screen and (max-width: 850px) {
+      .write-home .list-unfinished {
+        float: left;
+        display: block;
+        margin-right: 2.357651598%;
+        width: 100%;
+        margin-top: 30px; }
+        /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+        .write-home .list-unfinished:last-child {
+          margin-right: 0; } }
+    /* line 30, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .list-unfinished ul {
       margin-top: -15px;
       font-size: 1.2em; }
-  /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
   .write-home .writer {
     position: relative;
     top: 20px;
@@ -1151,10 +1175,13 @@ h1.header-title {
     box-shadow: none;
     border: 0;
     margin-top: -20px; }
-    /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    @media screen and (max-width: 850px) {
+      .write-home .writer {
+        width: 100%; } }
+    /* line 48, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .writer input, .write-home .writer textarea {
       border-radius: 0; }
-    /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    /* line 51, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .writer button {
       float: right;
       border-radius: 0; }
@@ -1202,6 +1229,26 @@ h1.header-title {
     top: -6px;
     /* (line-height/2) */
     z-index: -1000; }
+
+/* line 3, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
+.page-transition-enter {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+  position: absolute; }
+
+/* line 8, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
+.page-transition-enter.page-transition-enter-active {
+  opacity: 1; }
+
+/* line 11, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
+.page-transition-leave {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  position: absolute; }
+
+/* line 16, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
+.page-transition-leave.page-transition-leave-active {
+  opacity: 0; }
 
 /* line 7, C:/temp/mw222rs-project/stylesheets/style.scss */
 .hide {

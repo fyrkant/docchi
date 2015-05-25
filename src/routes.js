@@ -7,31 +7,22 @@ var DefaultRoute = Router.DefaultRoute;
 // var Write = require('./components/write');
 //var StoryNode = require('./components/storynode');
 //var Wrapper = require('./components/wrapper');
-var Home = require('./components/home');
-var Read = require('./components/read');
-var WriteBeta = require('./components/write-d');
-var NodePage = require('./components/nodepage');
-var LeanStoryList = require('./components/leanstorylist');
-var BetaWriter = require('./components/beta-form');
+var Wrap = require('./components/wrap');
+var MultiRoute = require('./components/multiroute');
 var WriteHome = require('./components/writehome');
+var WriteNodePage = require('./components/writenodepage');
+var ReadHome = require('./components/readhome');
+var ReadNodePage = require('./components/readnodepage');
 
 module.exports = (
-	<Route handler={Home}>
-
-    <DefaultRoute handler={WriteBeta} />
-    {/*<Route name="write" path="write" handler={Write}>
-          <Route name="writeNew" path="new" handler={Write} />
-          <Route name="writeOld" path=":key" handler={Write} />
-          <DefaultRoute handler={Write} />
-        </Route>*/}
-    <Route name="write" path="write" handler={WriteBeta}>
-      <Route name="WriteNew" path="new" handler={BetaWriter} />
-      <Route name="List" path="list" handler={LeanStoryList} />
-      <Route name="writenodes" path=":key" handler={NodePage} />
+	<Route path="/" handler={Wrap}>
+    <Route name="write" path="write" handler={MultiRoute}>
+      <Route name="writenodepage" path=":key" handler={WriteNodePage} />
       <DefaultRoute handler={WriteHome} />
     </Route>
-    <Route name="read" path="read" handler={Read}>
-      <Route name="readnodes" path=":key" handler={Read} />
+    <Route name="read" path="read" handler={MultiRoute}>
+      <Route name="readnodes" path=":key" handler={ReadNodePage} />
+      <DefaultRoute handler={ReadHome} />
     </Route>
 	</Route>
 );

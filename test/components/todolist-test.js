@@ -3,7 +3,7 @@ var React = require('react/addons'),
     TodoList = require('../../src/components/todolist'),
     TestUtils = React.addons.TestUtils;
 
-describe('Todolist component', function(){
+describe('Todolist component', function() {
   before('render and locate element', function() {
     var func = function(){
       return null;

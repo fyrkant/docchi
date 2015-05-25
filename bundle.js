@@ -39899,64 +39899,6 @@ module.exports = WriterForm;
 },{"../actions":237,"react":216}],239:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var React = require('react');
-var Reflux = require('reflux');
-var WriteStore = require('../stores/writestore');
-var Router = require('react-router');
-var RouteHandler = require('react-router').RouteHandler;
-
-var Home = React.createClass({
-  displayName: 'Home',
-
-  mixins: [Reflux.connect(WriteStore), Router.State],
-  render: function render() {
-    return React.createElement(
-      'div',
-      { className: 'home' },
-      React.createElement(
-        'header',
-        null,
-        React.createElement(
-          'h1',
-          null,
-          'Docchi'
-        ),
-        React.createElement(
-          'h2',
-          null,
-          React.createElement(
-            'span',
-            { className: 'write' },
-            React.createElement(
-              Router.Link,
-              { to: 'write' },
-              'Skriv'
-            )
-          ),
-          React.createElement(
-            'span',
-            { className: 'read' },
-            React.createElement(
-              Router.Link,
-              { to: 'read' },
-              'Läs'
-            )
-          )
-        )
-      ),
-      React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories }))
-    );
-  }
-
-});
-
-module.exports = Home;
-
-},{"../stores/writestore":249,"react":216,"react-router":29,"reflux":217}],240:[function(require,module,exports){
-'use strict';
-
 var React = require('react');
 var _ = require('lodash');
 var Link = require('react-router').Link;
@@ -40003,47 +39945,23 @@ var LeanStoryList = React.createClass({
 
 module.exports = LeanStoryList;
 
-},{"lodash":3,"react":216,"react-router":29}],241:[function(require,module,exports){
+},{"lodash":3,"react":216,"react-router":29}],240:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-// var Router = require('react-router');
-var Stories = require('./stories');
-var _ = require('lodash');
-// var actions = require('../actions');
+var React = require('react/addons');
+var Router = require('react-router');
 
-var NodePage = React.createClass({
-  displayName: 'NodePage',
+var MultiRoute = React.createClass({
+  displayName: 'MultiRoute',
 
-  // componentDidMount() {
-
-  //   console.log(this.props.params.key);
-  //   console.log(this.props.stories);
-
-  //   var filteredStories = _.find(this.props.stories, {key: this.props.params.key}, 'stories');
-
-  //   console.log(filteredStories);
-
-  // },
   render: function render() {
-
-    var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
-    var foundParent = _.find(foundStories, { isParent: true });
-    var status = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'status');
-
-    console.log(status);
-
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(Stories, { data: foundStories, selected: foundParent })
-    );
+    return React.createElement(Router.RouteHandler, this.props);
   }
 });
 
-module.exports = NodePage;
+module.exports = MultiRoute;
 
-},{"./stories":243,"lodash":3,"react":216}],242:[function(require,module,exports){
+},{"react-router":29,"react/addons":44}],241:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40051,22 +39969,22 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var React = require('react');
 var LeanStoryList = require('./leanstorylist');
 
-var Read = React.createClass({
-  displayName: 'Read',
+var ReadHome = React.createClass({
+  displayName: 'ReadHome',
 
   render: function render() {
     return React.createElement(
       'div',
-      { className: 'write-home' },
-      React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på avslutade', filter: 'done', linkTo: 'readnodes' }))
+      null,
+      React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Färdigställda historier ', filter: 'done', linkTo: 'readnodes' }))
     );
   }
 
 });
 
-module.exports = Read;
+module.exports = ReadHome;
 
-},{"./leanstorylist":240,"react":216}],243:[function(require,module,exports){
+},{"./leanstorylist":239,"react":216}],242:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40077,8 +39995,8 @@ var actions = require('../actions');
 var StoryAdder = require('./storyadder');
 var marked = require('marked');
 
-var Stories = React.createClass({
-  displayName: 'Stories',
+var ReadNode = React.createClass({
+  displayName: 'ReadNode',
 
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function getInitialState() {
@@ -40193,13 +40111,13 @@ var Stories = React.createClass({
       return !story.children && !story.isEnding;
     });
 
-    console.log(allDone);
+    // console.log(allDone);
 
     if (_.isUndefined(allDone)) {
-      console.log('All done, yo!');
+      // console.log('All done, yo!');
       actions.setStatus(nextProps.selected.key, 'done');
     } else {
-      console.log('You got some work to do.');
+      // console.log('You got some work to do.');
       actions.setStatus(nextProps.selected.key, 'writing');
     }
   },
@@ -40269,7 +40187,7 @@ var Stories = React.createClass({
         ),
         this.state.isAdding ? React.createElement(StoryAdder, _extends({}, this.props, { handleAddStart: this.handleAddStart })) : '',
         _.map(this.props.selected.children, (function (n) {
-          return React.createElement(Stories, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
+          return React.createElement(ReadNode, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
               return s.key === n.key;
             }) });
         }).bind(this))
@@ -40278,9 +40196,34 @@ var Stories = React.createClass({
   }
 });
 
-module.exports = Stories;
+module.exports = ReadNode;
 
-},{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],244:[function(require,module,exports){
+},{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],243:[function(require,module,exports){
+'use strict';
+
+var React = require('react/addons');
+var _ = require('lodash');
+var ReadNode = require('./readnode');
+
+var ReadNodePage = React.createClass({
+    displayName: 'ReadNodePage',
+
+    render: function render() {
+
+        var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
+        var foundParent = _.find(foundStories, { isParent: true });
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(ReadNode, { data: foundStories, selected: foundParent })
+        );
+    }
+});
+
+module.exports = ReadNodePage;
+
+},{"./readnode":242,"lodash":3,"react/addons":44}],244:[function(require,module,exports){
 'use strict';
 
 var React = require('react/addons');
@@ -40413,35 +40356,71 @@ module.exports = StoryAdder;
 },{"../actions":237,"lodash":3,"react/addons":44}],245:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
+var Reflux = require('reflux');
+var WriteStore = require('../stores/writestore');
 var Router = require('react-router');
-// var  _ = require('lodash');
-// var StoryNode = require('./storynode');
-// var WriterForm = require('./writerform');
+var RouteHandler = require('react-router').RouteHandler;
 
-var WriteApp = React.createClass({
-  displayName: 'WriteApp',
+var Home = React.createClass({
+  displayName: 'Home',
 
+  mixins: [Reflux.connect(WriteStore), Router.State],
   render: function render() {
     return React.createElement(
       'div',
-      { className: 'write-home' },
-      React.createElement(Router.RouteHandler, this.props)
+      { className: 'home' },
+      React.createElement(
+        'header',
+        null,
+        React.createElement(
+          'h1',
+          null,
+          'Docchi'
+        ),
+        React.createElement(
+          'h2',
+          null,
+          React.createElement(
+            'span',
+            { className: 'write' },
+            React.createElement(
+              Router.Link,
+              { to: 'write' },
+              'Skriv'
+            )
+          ),
+          React.createElement(
+            'span',
+            { className: 'read' },
+            React.createElement(
+              Router.Link,
+              { to: 'read' },
+              'Läs'
+            )
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'write-home' },
+        React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories }))
+      )
     );
   }
+
 });
 
-module.exports = WriteApp;
+module.exports = Home;
 
-},{"react":216,"react-router":29}],246:[function(require,module,exports){
+},{"../stores/writestore":251,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
-var Reflux = require('reflux');
-var Router = require('react-router');
-var WriteStore = require('../stores/writestore');
 var LeanStoryList = require('./leanstorylist');
 var BetaForm = require('./beta-form');
 // var  _ = require('lodash');
@@ -40451,7 +40430,6 @@ var BetaForm = require('./beta-form');
 var WriteHome = React.createClass({
   displayName: 'WriteHome',
 
-  mixins: [Reflux.connect(WriteStore), Router.State],
   render: function render() {
     return React.createElement(
       'div',
@@ -40460,9 +40438,9 @@ var WriteHome = React.createClass({
       React.createElement(
         'div',
         { className: 'list-unfinished' },
-        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på oavslutade', filter: 'writing', linkTo: 'writenodes' })),
+        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på oavslutade', filter: 'writing', linkTo: 'writenodepage' })),
         React.createElement('hr', null),
-        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på avslutade', filter: 'done', linkTo: 'writenodes' }))
+        React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Lista på avslutade', filter: 'done', linkTo: 'writenodepage' }))
       )
     );
   }
@@ -40470,7 +40448,248 @@ var WriteHome = React.createClass({
 
 module.exports = WriteHome;
 
-},{"../stores/writestore":249,"./beta-form":238,"./leanstorylist":240,"react":216,"react-router":29,"reflux":217}],247:[function(require,module,exports){
+},{"./beta-form":238,"./leanstorylist":239,"react":216}],247:[function(require,module,exports){
+'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var React = require('react/addons');
+var _ = require('lodash');
+var actions = require('../actions');
+var StoryAdder = require('./storyadder');
+var marked = require('marked');
+
+var WriteNode = React.createClass({
+  displayName: 'WriteNode',
+
+  mixins: [React.addons.LinkedStateMixin],
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  handleAddStart: function handleAddStart(ev) {
+
+    this.state.isAdding ? this.setState({ isAdding: false }) : this.setState({ isAdding: true });
+
+    ev.preventDefault();
+    ev.stopPropagation();
+  },
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var storyPart = this.populateStoryPart();
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryPart(storyPart);
+      this.emptyForm();
+      this.setState({ isAdding: false });
+    }
+  },
+  emptyForm: function emptyForm() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+  },
+  populateStoryPart: function populateStoryPart() {
+    return {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      parentKey: this.props.selected.key
+    };
+  },
+  toBeBlownUp: [],
+  visitChildren: function visitChildren(obj) {
+
+    this.toBeBlownUp.push(obj.key);
+
+    if (!obj.children) {
+      return;
+    }
+
+    _.forEach(obj.children, (function (child) {
+      var foundChild = _.find(this.props.data, function (s) {
+        return s.key === child.key;
+      });
+      this.visitChildren(foundChild);
+    }).bind(this));
+  },
+  storypartDestroyer: function storypartDestroyer() {
+    this.toBeBlownUp = [];
+    var parentKey = '';
+    var isParent = this.props.selected.isParent;
+
+    _.map(this.props.data, (function (story) {
+      if (story.children) {
+        _.forEach(story.children, (function (child) {
+          if (child.key === this.props.selected.key) {
+            parentKey = story.key;
+          }
+        }).bind(this));
+      }
+    }).bind(this));
+
+    if (!this.props.selected.children) {
+      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
+        actions.destroyStoryPart(this.props.selected.key, parentKey, isParent);
+      }
+    } else {
+      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
+        this.visitChildren(this.props.selected);
+        actions.destroyStoryParts(this.toBeBlownUp, parentKey, isParent);
+      }
+    }
+  },
+  showNode: function showNode(ev) {
+    ev.target.nextSibling.classList.toggle('hide');
+    ev.preventDefault();
+  },
+  handleEditStart: function handleEditStart(evt) {
+    evt.preventDefault();
+
+    this.setState({
+      isEditing: true,
+      editValue: this.props.selected.txt
+    }, function () {
+      this.refs.editInput.getDOMNode().focus();
+    });
+  },
+  handleValueChange: function handleValueChange(evt) {
+    var text = this.state.editValue;
+
+    if (evt.which === 13 && text) {
+      this.refs.editInput.getDOMNode().blur();
+    } else if (evt.which === 27) {
+      this.setState({ isEditing: false }, function () {
+        this.refs.editInput.getDOMNode().blur();
+      });
+    }
+  },
+  handleBlur: function handleBlur() {
+    var text = this.state.editValue;
+
+    if (this.state.isEditing && text) {
+      actions.editStoryPartText(this.props.selected.key, text);
+    }
+    this.setState({ isEditing: false });
+  },
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var allDone = _.find(nextProps.data, function (story) {
+      return !story.children && !story.isEnding;
+    });
+
+    // console.log(allDone);
+
+    if (_.isUndefined(allDone)) {
+      // console.log('All done, yo!');
+      actions.setStatus(nextProps.selected.key, 'done');
+    } else {
+      // console.log('You got some work to do.');
+      actions.setStatus(nextProps.selected.key, 'writing');
+    }
+  },
+  render: function render() {
+    var editingClass = this.state.isEditing ? 'editing' : '';
+
+    var endingClass;
+    var addingClass = this.state.isAdding ? 'adding' : '';
+
+    var rawMarkup;
+
+    if (!_.isUndefined(this.props.selected)) {
+      endingClass = this.props.selected.isEnding ? 'ending' : '';
+      rawMarkup = rawMarkup = marked(this.props.selected.txt, { sanitize: true });
+    }
+
+    return !this.props.selected ? React.createElement('div', null) : React.createElement(
+      'ul',
+      { className: 'tree' },
+      React.createElement(
+        'li',
+        null,
+        React.createElement(
+          'a',
+          { href: '#', onClick: this.showNode },
+          this.props.selected.title
+        ),
+        React.createElement(
+          'div',
+          { className: 'story-node ' + endingClass + addingClass + editingClass },
+          React.createElement(
+            'div',
+            { className: editingClass },
+            React.createElement('span', { className: 'view', dangerouslySetInnerHTML: { __html: rawMarkup } }),
+            React.createElement('textarea', { ref: 'editInput',
+              className: 'edit',
+              valueLink: this.linkState('editValue'),
+              onKeyUp: this.handleValueChange,
+              onBlur: this.handleBlur }),
+            this.state.isEditing ? '' : React.createElement(
+              'button',
+              { className: 'addBtn', onClick: this.handleAddStart },
+              ' ',
+              React.createElement('i', { className: 'fa fa-plus' }),
+              ' ',
+              this.state.isAdding ? 'Avbryt' : 'Fortsätt',
+              ' '
+            ),
+            this.state.isEditing ? React.createElement(
+              'p',
+              { className: 'editInfoText' },
+              'Enter = spara, Esc = avbryt'
+            ) : React.createElement(
+              'button',
+              { className: 'editBtn', onClick: this.handleEditStart },
+              ' ',
+              React.createElement('i', { className: 'fa fa-undo' }),
+              ' Ändra '
+            ),
+            this.state.isAdding || this.state.isEditing ? '' : React.createElement(
+              'button',
+              { className: 'deleteBtn', onClick: this.storypartDestroyer },
+              ' ',
+              React.createElement('i', { className: 'fa fa-trash-o fa-2' })
+            )
+          )
+        ),
+        this.state.isAdding ? React.createElement(StoryAdder, _extends({}, this.props, { handleAddStart: this.handleAddStart })) : '',
+        _.map(this.props.selected.children, (function (n) {
+          return React.createElement(WriteNode, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
+              return s.key === n.key;
+            }) });
+        }).bind(this))
+      )
+    );
+  }
+});
+
+module.exports = WriteNode;
+
+},{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],248:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+// var Router = require('react-router');
+var WriteNode = require('./writenode');
+var _ = require('lodash');
+// var actions = require('../actions');
+
+var WriteNodePage = React.createClass({
+    displayName: 'WriteNodePage',
+
+    render: function render() {
+
+        var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
+        var foundParent = _.find(foundStories, { isParent: true });
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(WriteNode, { data: foundStories, selected: foundParent })
+        );
+    }
+});
+
+module.exports = WriteNodePage;
+
+},{"./writenode":247,"lodash":3,"react":216}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -40482,7 +40701,7 @@ ReactRouter.run(routes, function (Handler, state) {
   React.render(React.createElement(Handler, { params: params }), document.body);
 });
 
-},{"./routes":248,"react":216,"react-router":29}],248:[function(require,module,exports){
+},{"./routes":250,"react":216,"react-router":29}],250:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -40494,39 +40713,31 @@ var DefaultRoute = Router.DefaultRoute;
 // var Write = require('./components/write');
 //var StoryNode = require('./components/storynode');
 //var Wrapper = require('./components/wrapper');
-var Home = require('./components/home');
-var Read = require('./components/read');
-var WriteBeta = require('./components/write-d');
-var NodePage = require('./components/nodepage');
-var LeanStoryList = require('./components/leanstorylist');
-var BetaWriter = require('./components/beta-form');
+var Wrap = require('./components/wrap');
+var MultiRoute = require('./components/multiroute');
 var WriteHome = require('./components/writehome');
+var WriteNodePage = require('./components/writenodepage');
+var ReadHome = require('./components/readhome');
+var ReadNodePage = require('./components/readnodepage');
 
 module.exports = React.createElement(
   Route,
-  { handler: Home },
-  React.createElement(DefaultRoute, { handler: WriteBeta }),
+  { path: '/', handler: Wrap },
   React.createElement(
     Route,
-    { name: 'write', path: 'write', handler: WriteBeta },
-    React.createElement(Route, { name: 'WriteNew', path: 'new', handler: BetaWriter }),
-    React.createElement(Route, { name: 'List', path: 'list', handler: LeanStoryList }),
-    React.createElement(Route, { name: 'writenodes', path: ':key', handler: NodePage }),
+    { name: 'write', path: 'write', handler: MultiRoute },
+    React.createElement(Route, { name: 'writenodepage', path: ':key', handler: WriteNodePage }),
     React.createElement(DefaultRoute, { handler: WriteHome })
   ),
   React.createElement(
     Route,
-    { name: 'read', path: 'read', handler: Read },
-    React.createElement(Route, { name: 'readnodes', path: ':key', handler: Read })
+    { name: 'read', path: 'read', handler: MultiRoute },
+    React.createElement(Route, { name: 'readnodes', path: ':key', handler: ReadNodePage }),
+    React.createElement(DefaultRoute, { handler: ReadHome })
   )
 );
-/*<Route name="write" path="write" handler={Write}>
-     <Route name="writeNew" path="new" handler={Write} />
-     <Route name="writeOld" path=":key" handler={Write} />
-     <DefaultRoute handler={Write} />
-   </Route>*/
 
-},{"./components/beta-form":238,"./components/home":239,"./components/leanstorylist":240,"./components/nodepage":241,"./components/read":242,"./components/write-d":245,"./components/writehome":246,"react":216,"react-router":29}],249:[function(require,module,exports){
+},{"./components/multiroute":240,"./components/readhome":241,"./components/readnodepage":243,"./components/wrap":245,"./components/writehome":246,"./components/writenodepage":248,"react":216,"react-router":29}],251:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux');
@@ -40678,4 +40889,4 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":237,"firebase":2,"reflux":217}]},{},[247]);
+},{"../actions":237,"firebase":2,"reflux":217}]},{},[249]);

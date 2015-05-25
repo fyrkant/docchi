@@ -1,7 +1,4 @@
 var React = require('react');
-var Reflux = require('reflux');
-var Router = require('react-router');
-var WriteStore = require('../stores/writestore');
 var LeanStoryList = require('./leanstorylist');
 var BetaForm = require('./beta-form');
 // var  _ = require('lodash');
@@ -9,18 +6,17 @@ var BetaForm = require('./beta-form');
 // var WriterForm = require('./writerform');
 
 var WriteHome = React.createClass({
-  mixins:[Reflux.connect(WriteStore), Router.State],
   render() {
     return (
       <div>
         <BetaForm {...this.props} />
 
         <div className="list-unfinished">
-            <LeanStoryList {...this.props} titleText="Lista på oavslutade" filter="writing" linkTo="writenodes" />
+            <LeanStoryList {...this.props} titleText="Lista på oavslutade" filter="writing" linkTo="writenodepage" />
 
             <hr />
 
-            <LeanStoryList {...this.props} titleText="Lista på avslutade" filter="done" linkTo="writenodes" />
+            <LeanStoryList {...this.props} titleText="Lista på avslutade" filter="done" linkTo="writenodepage" />
         </div>
       </div>);
   }
