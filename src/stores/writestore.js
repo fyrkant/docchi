@@ -14,7 +14,7 @@ module.exports = Reflux.createStore({
     // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
-    this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
     this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
@@ -70,14 +70,16 @@ module.exports = Reflux.createStore({
       key: container.key() + '/stories/' + newParent.key()
     });
   },
-  onEditStoryPartText(key, text) {
+  onEditStoryPart(key, edited) {
 
     // console.log(key);
 
     var thatStoryPartRef = storiesRef.child(key);
 
     thatStoryPartRef.update({
-      txt: text
+      title:edited.title,
+      txt: edited.txt,
+      isEnding: edited.isEnding
     });
 
   },

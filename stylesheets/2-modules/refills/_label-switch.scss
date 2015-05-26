@@ -49,7 +49,7 @@
 
       &:after {
         @include position(absolute, 2px 0 0 2px);
-        @include transition(all 0.3s ease);
+        @include transition(all 0.3s ease-in-out);
         @include size($knob-size);
         background: $switch-background;
         border-radius: $knob-radius;

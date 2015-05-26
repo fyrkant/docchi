@@ -56,22 +56,3 @@
   }
 
 }
-.switch {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  p {
-    order: 1;
-    margin-top:5px;
-  }
-  label {
-    order: 1;
-    align-self: center;
-    margin-right: 30%;
-
-  }
-  button {
-    order: 3;
-  }
-}

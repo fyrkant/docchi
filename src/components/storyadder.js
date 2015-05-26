@@ -81,20 +81,17 @@ var StoryAdder = React.createClass({
                   placeholder="Titel"
                 />
                 <textarea ref="txt"
-                  placeholder="Text"
-                  rows="8"
-                  />
+                  placeholder="Text"/>
+                  
                 <span className="switch">
-                  <p><strong>Avslutande del?</strong></p>
-                  <label className="label-switch">
-                    <input type="checkbox" name="isEnding" ref="endingCheckbox" />
-                    <div className="checkbox"></div>
-                  </label>
+                  <p>Avslutande del?</p>
+                  <input type="checkbox" name="isEnding" ref="endingCheckbox" />
+                  <div className="checkbox"></div>
                   <button>Spara</button>
                 </span>
               </form>
             </div>
-          </div> );
+          </div>);
   }
 });
 

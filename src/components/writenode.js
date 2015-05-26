@@ -87,29 +87,33 @@ var WriteNode = React.createClass({
 
     this.setState({
       isEditing: true,
-      editValue: this.props.selected.txt
+      titleEditValue: this.props.selected.title,
+      textareaEditValue: this.props.selected.txt,
+      checkboxEditValue: this.props.selected.isEnding
     }, function() {
-      this.refs.editInput.getDOMNode().focus();
+      this.refs.editTitleInput.getDOMNode().focus();
     });
   },
-  handleValueChange(evt) {
-    var text = this.state.editValue;
+  handleEditSubmit () {
+    var title = this.state.titleEditValue;
+    var text = this.state.textareaEditValue;
+    var isEnding = this.state.checkboxEditValue;
 
-    if (evt.which === 13 && text) {
-      this.refs.editInput.getDOMNode().blur();
-    } else if (evt.which === 27) {
-      this.setState({isEditing: false}, function() {
-        this.refs.editInput.getDOMNode().blur();
-      });
-    }
-  },
-  handleBlur() {
-    var text = this.state.editValue;
+    var edited = {
+      title: this.state.titleEditValue,
+      txt: this.state.textareaEditValue,
+      isEnding: this.state.checkboxEditValue !== undefined ? this.state.checkboxEditValue : false
+    };
 
     if (this.state.isEditing && text) {
-      actions.editStoryPartText(this.props.selected.key, text);
+      actions.editStoryPart(this.props.selected.key, edited);
     }
     this.setState({isEditing: false});
+  },
+  handleCancelEdit() {
+    this.setState({isEditing: false}, function() {
+        this.refs.editInput.getDOMNode().blur();
+      });
   },
   componentWillReceiveProps(nextProps) {
     var allDone = _.find(nextProps.data, function(story) {
@@ -136,13 +140,16 @@ var WriteNode = React.createClass({
 
     if (!_.isUndefined(this.props.selected)) {
       endingClass = this.props.selected.isEnding ? 'ending' : '' ;
-      rawMarkup = rawMarkup = marked(this.props.selected.txt, {sanitize: true});
+      rawMarkup = marked(this.props.selected.txt, {sanitize: true});
     }
 
     return !this.props.selected ? <div /> : (
 			<ul className='tree'>
 				<li>
-					<a href="#" onClick={this.showNode}>{this.props.selected.title}</a>
+					<a href="#" className={this.state.isEditing ? 'hide' : 'viewTitle'} onClick={this.showNode}>{this.props.selected.title}</a>
+          <input ref="editTitleInput"
+            className={this.state.isEditing ? 'editTitle' : 'hide'}
+            valueLink={this.linkState('titleEditValue')} />
 					<div className={'story-node ' + endingClass + addingClass + editingClass}>
 						<div className={editingClass}>
 
@@ -150,17 +157,29 @@ var WriteNode = React.createClass({
 
 							<textarea ref="editInput"
 								className="edit"
-								valueLink={this.linkState('editValue')}
-								onKeyUp={this.handleValueChange}
-								onBlur={this.handleBlur} />
+								valueLink={this.linkState('textareaEditValue')} />
 
-							{ this.state.isEditing ? '' : <button className="addBtn" onClick={this.handleAddStart}> <i className="fa fa-plus"></i> { this.state.isAdding ? 'Avbryt' : 'Fortsätt'} </button>}
+							{ this.state.isEditing ? '' :
+              <button className="addBtn" onClick={this.handleAddStart}>
+                <i className="fa fa-plus"></i>
+                { this.state.isAdding ? 'Avbryt' : 'Fortsätt'}
+              </button>}
 
-							{ this.state.isEditing ? <p className="editInfoText">Enter = spara, Esc = avbryt</p> : <button className="editBtn" onClick={this.handleEditStart}> <i className="fa fa-undo"></i> Ändra </button>}
+							{ this.state.isEditing ?
+                <span className="editingBtnGroup">
+                  { !this.props.selected.children ? <div><p>Avslutande del?</p>
+                  <input type="checkbox" checkedLink={this.linkState('checkboxEditValue')} /></div> : ''}
+                  <button className="save" onClick={this.handleEditSubmit}>Spara</button>
+                  <button className="cancel" onClick={this.handleCancelEdit}>Avbryt</button>
+                </span> :
+                <button className="editBtn" onClick={this.handleEditStart}> <i className="fa fa-undo"></i> Ändra </button>}
 
-							{ this.state.isAdding || this.state.isEditing ? '' : <button className="deleteBtn" onClick={this.storypartDestroyer}> <i className="fa fa-trash-o fa-2"></i></button>}
+							{ this.state.isAdding || this.state.isEditing ? '' :
+                <button className="deleteBtn" onClick={this.storypartDestroyer}>
+                  <i className="fa fa-trash-o fa-2"></i>
+                </button>}
 						</div>
-					</div>          
+					</div>
 
           { this.state.isAdding ? <StoryAdder {...this.props} handleAddStart={this.handleAddStart} /> : '' }
 

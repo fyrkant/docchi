@@ -480,7 +480,7 @@ img, picture {
         right: 0;
         bottom: 0;
         left: 2px;
-        transition: all 0.3s ease;
+        transition: all 0.3s ease-in-out;
         height: 28px;
         width: 28px;
         background: #fff;
@@ -843,41 +843,6 @@ article.type-system-traditional {
     top: 5px;
     right: 5px; }
 
-/* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
-.switch {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-align-items: baseline;
-      -ms-flex-align: baseline;
-          align-items: baseline;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-  /* line 64, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
-  .switch p {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    margin-top: 5px; }
-  /* line 68, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
-  .switch label {
-    -webkit-order: 1;
-        -ms-flex-order: 1;
-            order: 1;
-    -webkit-align-self: center;
-        -ms-flex-item-align: center;
-            align-self: center;
-    margin-right: 30%; }
-  /* line 74, C:/temp/mw222rs-project/stylesheets/3-layouts/components/writerform */
-  .switch button {
-    -webkit-order: 3;
-        -ms-flex-order: 3;
-            order: 3; }
-
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/lorem-page */
 .lorem-page {
   max-width: 68em;
@@ -929,7 +894,6 @@ article.type-system-traditional {
 
 /* line 3, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .tree {
-  font-family: "Georgia", "Cambria", "Times New Roman", "Times", serif;
   margin-top: 500px; }
 
 /* line 9, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
@@ -960,7 +924,7 @@ article.type-system-traditional {
   left: 0;
   border-left: 3px solid #333; }
 
-/* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 33, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .tree li {
   margin: 0;
   padding: 0 1.5em;
@@ -970,18 +934,19 @@ article.type-system-traditional {
   font-weight: bold;
   position: relative; }
 
-/* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 41, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .tree ul li:before {
   content: "";
   display: block;
   width: 20px;
   /* same with indentation */
-  height: 100px;
-  border-top: 3px solid #333;
+  height: 30px;
+  border-left: 3px solid #333;
+  border-bottom: 3px solid #333;
   margin-top: -1px;
   /* border top width */
   position: absolute;
-  top: 1em;
+  top: -10px;
   /* (line-height/2) */
   left: 0;
   z-index: -1; }
@@ -1000,7 +965,7 @@ article.type-system-traditional {
 /* line 66, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .tree li a {
   color: black;
-  font-size: 1.3em;
+  font-size: 1.4em;
   text-shadow: 5px 5px 2px #ddd; }
 
 /* line 73, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
@@ -1008,31 +973,91 @@ textarea.edit {
   display: none;
   height: 100%; }
 
-/* line 78, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 77, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+input.editTitle {
+  margin: 10px 0;
+  width: 350px;
+  padding: 3px;
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4); }
+  /* line 84, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  input.editTitle:after {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: -20px;
+    height: 20px;
+    width: 20px;
+    background: pink; }
+
+/* line 95, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 span.view {
   font-weight: normal; }
 
-/* line 83, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
-div.editing span {
+/* line 101, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing .viewTitle {
   display: none; }
-/* line 87, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 105, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.view {
+  display: none; }
+/* line 111, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.editingBtnGroup button {
+  border-radius: 0;
+  padding: 9px; }
+/* line 116, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.editingBtnGroup p {
+  font-weight: normal;
+  display: inline;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 5px;
+  bottom: 0px; }
+/* line 125, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.editingBtnGroup input[type=checkbox] {
+  position: absolute;
+  left: 120px;
+  bottom: 7px; }
+/* line 131, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.editingBtnGroup .save {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 80px;
+  background-color: #00b053;
+  transition: all 0.2s ease-in-out; }
+  /* line 139, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  div.editing span.editingBtnGroup .save:hover {
+    background-color: #00E36B; }
+/* line 143, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+div.editing span.editingBtnGroup .cancel {
+  position: absolute;
+  right: 79px;
+  bottom: -1px;
+  width: 80px;
+  background-color: #cc0000;
+  transition: all 0.2s ease-in-out; }
+  /* line 151, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  div.editing span.editingBtnGroup .cancel:hover {
+    background-color: red; }
+/* line 157, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 div.editing textarea {
   display: block;
   padding: 5px;
   margin: -5px;
-  width: 350px;
+  width: 349px;
   resize: none;
   height: 130px;
   border-radius: 0;
   box-shadow: none; }
-/* line 98, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 168, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 div.editing .editInfoText {
   color: #ddd;
   padding: 0;
   text-align: center;
   margin: 0; }
 
-/* line 106, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 176, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .story-node {
   position: relative;
   transition: all 0.5s ease-in-out;
@@ -1043,7 +1068,7 @@ div.editing .editInfoText {
   width: 350px;
   min-height: 165px;
   border: 1px solid #ddd; }
-  /* line 118, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 188, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node .deleteBtn {
     padding: 0;
     height: 26px;
@@ -1055,11 +1080,11 @@ div.editing .editInfoText {
     background: none;
     color: red;
     transition: all 0.2s ease-in-out; }
-    /* line 129, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 199, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node .deleteBtn:hover {
       background-color: red;
       color: white; }
-  /* line 135, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 205, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node .addBtn {
     position: absolute;
     right: 0;
@@ -1070,10 +1095,10 @@ div.editing .editInfoText {
     border-bottom-right-radius: 5px;
     transition: all 0.1s ease-in-out;
     color: #999; }
-    /* line 146, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 216, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node .addBtn:hover {
       color: #333; }
-  /* line 151, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 221, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node .editBtn {
     position: absolute;
     left: 0;
@@ -1084,38 +1109,38 @@ div.editing .editInfoText {
     border-bottom-left-radius: 5px;
     transition: all 0.1s ease-in-out;
     color: #999; }
-    /* line 162, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 232, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node .editBtn:hover {
       color: #333; }
-  /* line 169, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 239, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node.ending {
     background-color: rgba(255, 0, 0, 0.1); }
-    /* line 172, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 242, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node.ending .addBtn {
       display: none; }
-    /* line 176, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 246, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node.ending::before {
       content: 'Avslutande del!';
       color: rgba(255, 0, 0, 0.5);
       position: absolute;
       bottom: 0;
       left: 50%; }
-  /* line 186, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 256, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node.adding .deleteBtn, .story-node.adding .editBtn {
     display: none; }
-  /* line 192, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 262, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node h3 {
     font-size: 1.2em;
     padding-top: 5px; }
-  /* line 196, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 266, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node hr {
     padding: 0;
     margin: 3px; }
-  /* line 201, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 271, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node button {
     padding: 5px; }
 
-/* line 207, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 277, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .allDoneDiv {
   position: relative;
   top: 0;
@@ -1124,16 +1149,16 @@ div.editing .editInfoText {
   left: 0;
   z-index: 10000;
   transition: all 0.5s ease-in-out; }
-  /* line 217, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 287, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .allDoneDiv button {
     background-color: green;
     color: #d3f7c3;
     transition: all 0.2s ease-in-out; }
-    /* line 222, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 292, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .allDoneDiv button:hover {
       background-color: #d3f7c3;
       color: green; }
-  /* line 227, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 297, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .allDoneDiv .innerDoneDiv {
     position: absolute;
     padding: 10px;
@@ -1316,25 +1341,54 @@ h1.header-title {
     position: absolute;
     top: 25px;
     left: 25px;
-    height: 300px;
+    height: 280px;
     border-radius: 0;
     border: 1px solid #ddd;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     transition: all 0.2s ease-in-out; }
-    /* line 19, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
     .story-adder .writer:child:focus {
       box-shadow: 15px 15px 5px rgba(0, 0, 0, 0.4); }
-    /* line 22, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    /* line 23, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
     .story-adder .writer input {
       border-radius: 0; }
-    /* line 25, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
     .story-adder .writer textarea {
-      border-radius: 0; }
-    /* line 28, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+      border-radius: 0;
+      height: 180px;
+      margin-bottom: -5px; }
+    /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
     .story-adder .writer button {
       float: right;
+      padding: 9px;
       border-radius: 0; }
-  /* line 32, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    .story-adder .writer .switch p {
+      font-weight: normal;
+      display: inline; }
+    /* line 41, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    .story-adder .writer .switch input[type=checkbox] {
+      display: inline;
+      -webkit-transform: scale(1.3);
+          -ms-transform: scale(1.3);
+              transform: scale(1.3);
+      margin-top: 3px;
+      margin-left: 10px; }
+    /* line 47, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    .story-adder .writer .switch button {
+      position: absolute;
+      width: 80px;
+      padding: 9px;
+      right: 5px;
+      bottom: 5px;
+      display: inline;
+      background-color: #00b053;
+      background-color-transition: all 0.2s ease-in-out; }
+    /* line 57, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
+    .story-adder .writer .switch :hover {
+      background: #00E36B;
+      transition: all 0.2s ease-in-out; }
+  /* line 63, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
   .story-adder .writer:after {
     content: "";
     width: 10px;

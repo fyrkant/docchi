@@ -39823,7 +39823,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPartText', 'destroyStoryPart', 'destroyStoryParts']);
+module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPart', 'destroyStoryPart', 'destroyStoryParts']);
 
 },{"reflux":217}],238:[function(require,module,exports){
 'use strict';
@@ -39987,218 +39987,48 @@ module.exports = ReadHome;
 },{"./leanstorylist":239,"react":216}],242:[function(require,module,exports){
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var React = require('react/addons');
 var _ = require('lodash');
-var actions = require('../actions');
-var StoryAdder = require('./storyadder');
 var marked = require('marked');
 
 var ReadNode = React.createClass({
-  displayName: 'ReadNode',
+    displayName: 'ReadNode',
 
-  mixins: [React.addons.LinkedStateMixin],
-  getInitialState: function getInitialState() {
-    return {};
-  },
-  handleAddStart: function handleAddStart(ev) {
+    render: function render() {
 
-    this.state.isAdding ? this.setState({ isAdding: false }) : this.setState({ isAdding: true });
+        var rawMarkup;
 
-    ev.preventDefault();
-    ev.stopPropagation();
-  },
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var storyPart = this.populateStoryPart();
-    if (storyPart.title !== '' && storyPart.txt !== '') {
-      actions.addStoryPart(storyPart);
-      this.emptyForm();
-      this.setState({ isAdding: false });
-    }
-  },
-  emptyForm: function emptyForm() {
-    this.refs.title.getDOMNode().value = '';
-    this.refs.txt.getDOMNode().value = '';
-  },
-  populateStoryPart: function populateStoryPart() {
-    return {
-      title: this.refs.title.getDOMNode().value,
-      txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
-      parentKey: this.props.selected.key
-    };
-  },
-  toBeBlownUp: [],
-  visitChildren: function visitChildren(obj) {
+        if (!_.isUndefined(this.props.selected)) {
+            rawMarkup = rawMarkup = marked(this.props.selected.txt, { sanitize: true });
+        }
 
-    this.toBeBlownUp.push(obj.key);
-
-    if (!obj.children) {
-      return;
-    }
-
-    _.forEach(obj.children, (function (child) {
-      var foundChild = _.find(this.props.data, function (s) {
-        return s.key === child.key;
-      });
-      this.visitChildren(foundChild);
-    }).bind(this));
-  },
-  storypartDestroyer: function storypartDestroyer() {
-    this.toBeBlownUp = [];
-    var parentKey = '';
-    var isParent = this.props.selected.isParent;
-
-    _.map(this.props.data, (function (story) {
-      if (story.children) {
-        _.forEach(story.children, (function (child) {
-          if (child.key === this.props.selected.key) {
-            parentKey = story.key;
-          }
-        }).bind(this));
-      }
-    }).bind(this));
-
-    if (!this.props.selected.children) {
-      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
-        actions.destroyStoryPart(this.props.selected.key, parentKey, isParent);
-      }
-    } else {
-      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
-        this.visitChildren(this.props.selected);
-        actions.destroyStoryParts(this.toBeBlownUp, parentKey, isParent);
-      }
-    }
-  },
-  showNode: function showNode(ev) {
-    ev.target.nextSibling.classList.toggle('hide');
-    ev.preventDefault();
-  },
-  handleEditStart: function handleEditStart(evt) {
-    evt.preventDefault();
-
-    this.setState({
-      isEditing: true,
-      editValue: this.props.selected.txt
-    }, function () {
-      this.refs.editInput.getDOMNode().focus();
-    });
-  },
-  handleValueChange: function handleValueChange(evt) {
-    var text = this.state.editValue;
-
-    if (evt.which === 13 && text) {
-      this.refs.editInput.getDOMNode().blur();
-    } else if (evt.which === 27) {
-      this.setState({ isEditing: false }, function () {
-        this.refs.editInput.getDOMNode().blur();
-      });
-    }
-  },
-  handleBlur: function handleBlur() {
-    var text = this.state.editValue;
-
-    if (this.state.isEditing && text) {
-      actions.editStoryPartText(this.props.selected.key, text);
-    }
-    this.setState({ isEditing: false });
-  },
-  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    var allDone = _.find(nextProps.data, function (story) {
-      return !story.children && !story.isEnding;
-    });
-
-    // console.log(allDone);
-
-    if (_.isUndefined(allDone)) {
-      // console.log('All done, yo!');
-      actions.setStatus(nextProps.selected.key, 'done');
-    } else {
-      // console.log('You got some work to do.');
-      actions.setStatus(nextProps.selected.key, 'writing');
-    }
-  },
-  render: function render() {
-    var editingClass = this.state.isEditing ? 'editing' : '';
-
-    var endingClass;
-    var addingClass = this.state.isAdding ? 'adding' : '';
-
-    var rawMarkup;
-
-    if (!_.isUndefined(this.props.selected)) {
-      endingClass = this.props.selected.isEnding ? 'ending' : '';
-      rawMarkup = rawMarkup = marked(this.props.selected.txt, { sanitize: true });
-    }
-
-    return !this.props.selected ? React.createElement('div', null) : React.createElement(
-      'ul',
-      { className: 'tree' },
-      React.createElement(
-        'li',
-        null,
-        React.createElement(
-          'a',
-          { href: '#', onClick: this.showNode },
-          this.props.selected.title
-        ),
-        React.createElement(
-          'div',
-          { className: 'story-node ' + endingClass + addingClass + editingClass },
-          React.createElement(
-            'div',
-            { className: editingClass },
-            React.createElement('span', { className: 'view', dangerouslySetInnerHTML: { __html: rawMarkup } }),
-            React.createElement('textarea', { ref: 'editInput',
-              className: 'edit',
-              valueLink: this.linkState('editValue'),
-              onKeyUp: this.handleValueChange,
-              onBlur: this.handleBlur }),
-            this.state.isEditing ? '' : React.createElement(
-              'button',
-              { className: 'addBtn', onClick: this.handleAddStart },
-              ' ',
-              React.createElement('i', { className: 'fa fa-plus' }),
-              ' ',
-              this.state.isAdding ? 'Avbryt' : 'Fortsätt',
-              ' '
+        return !this.props.selected ? React.createElement('div', null) : React.createElement(
+            'article',
+            { className: 'type-system-traditional' },
+            React.createElement(
+                'h1',
+                null,
+                this.props.selected.title
             ),
-            this.state.isEditing ? React.createElement(
-              'p',
-              { className: 'editInfoText' },
-              'Enter = spara, Esc = avbryt'
-            ) : React.createElement(
-              'button',
-              { className: 'editBtn', onClick: this.handleEditStart },
-              ' ',
-              React.createElement('i', { className: 'fa fa-undo' }),
-              ' Ändra '
-            ),
-            this.state.isAdding || this.state.isEditing ? '' : React.createElement(
-              'button',
-              { className: 'deleteBtn', onClick: this.storypartDestroyer },
-              ' ',
-              React.createElement('i', { className: 'fa fa-trash-o fa-2' })
-            )
-          )
-        ),
-        this.state.isAdding ? React.createElement(StoryAdder, _extends({}, this.props, { handleAddStart: this.handleAddStart })) : '',
-        _.map(this.props.selected.children, (function (n) {
-          return React.createElement(ReadNode, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
-              return s.key === n.key;
-            }) });
-        }).bind(this))
-      )
-    );
-  }
+            React.createElement('p', { dangerouslySetInnerHTML: { __html: rawMarkup } }),
+            _.map(this.props.selected.children, (function (n) {
+                var foundChild = _.find(this.props.data, function (s) {
+                    return s.key === n.key;
+                });
+
+                return React.createElement(
+                    'p',
+                    null,
+                    foundChild.title
+                );
+            }).bind(this))
+        );
+    }
 });
 
 module.exports = ReadNode;
 
-},{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],243:[function(require,module,exports){
+},{"lodash":3,"marked":4,"react/addons":44}],243:[function(require,module,exports){
 'use strict';
 
 var React = require('react/addons');
@@ -40318,27 +40148,17 @@ var StoryAdder = React.createClass({
             placeholder: 'Titel'
           }),
           React.createElement('textarea', { ref: 'txt',
-            placeholder: 'Text',
-            rows: '8'
-          }),
+            placeholder: 'Text' }),
           React.createElement(
             'span',
             { className: 'switch' },
             React.createElement(
               'p',
               null,
-              React.createElement(
-                'strong',
-                null,
-                'Avslutande del?'
-              )
+              'Avslutande del?'
             ),
-            React.createElement(
-              'label',
-              { className: 'label-switch' },
-              React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
-              React.createElement('div', { className: 'checkbox' })
-            ),
+            React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+            React.createElement('div', { className: 'checkbox' }),
             React.createElement(
               'button',
               null,
@@ -40546,29 +40366,33 @@ var WriteNode = React.createClass({
 
     this.setState({
       isEditing: true,
-      editValue: this.props.selected.txt
+      titleEditValue: this.props.selected.title,
+      textareaEditValue: this.props.selected.txt,
+      checkboxEditValue: this.props.selected.isEnding
     }, function () {
-      this.refs.editInput.getDOMNode().focus();
+      this.refs.editTitleInput.getDOMNode().focus();
     });
   },
-  handleValueChange: function handleValueChange(evt) {
-    var text = this.state.editValue;
+  handleEditSubmit: function handleEditSubmit() {
+    var title = this.state.titleEditValue;
+    var text = this.state.textareaEditValue;
+    var isEnding = this.state.checkboxEditValue;
 
-    if (evt.which === 13 && text) {
-      this.refs.editInput.getDOMNode().blur();
-    } else if (evt.which === 27) {
-      this.setState({ isEditing: false }, function () {
-        this.refs.editInput.getDOMNode().blur();
-      });
-    }
-  },
-  handleBlur: function handleBlur() {
-    var text = this.state.editValue;
+    var edited = {
+      title: this.state.titleEditValue,
+      txt: this.state.textareaEditValue,
+      isEnding: this.state.checkboxEditValue !== undefined ? this.state.checkboxEditValue : false
+    };
 
     if (this.state.isEditing && text) {
-      actions.editStoryPartText(this.props.selected.key, text);
+      actions.editStoryPart(this.props.selected.key, edited);
     }
     this.setState({ isEditing: false });
+  },
+  handleCancelEdit: function handleCancelEdit() {
+    this.setState({ isEditing: false }, function () {
+      this.refs.editInput.getDOMNode().blur();
+    });
   },
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var allDone = _.find(nextProps.data, function (story) {
@@ -40595,7 +40419,7 @@ var WriteNode = React.createClass({
 
     if (!_.isUndefined(this.props.selected)) {
       endingClass = this.props.selected.isEnding ? 'ending' : '';
-      rawMarkup = rawMarkup = marked(this.props.selected.txt, { sanitize: true });
+      rawMarkup = marked(this.props.selected.txt, { sanitize: true });
     }
 
     return !this.props.selected ? React.createElement('div', null) : React.createElement(
@@ -40606,9 +40430,12 @@ var WriteNode = React.createClass({
         null,
         React.createElement(
           'a',
-          { href: '#', onClick: this.showNode },
+          { href: '#', className: this.state.isEditing ? 'hide' : 'viewTitle', onClick: this.showNode },
           this.props.selected.title
         ),
+        React.createElement('input', { ref: 'editTitleInput',
+          className: this.state.isEditing ? 'editTitle' : 'hide',
+          valueLink: this.linkState('titleEditValue') }),
         React.createElement(
           'div',
           { className: 'story-node ' + endingClass + addingClass + editingClass },
@@ -40618,22 +40445,36 @@ var WriteNode = React.createClass({
             React.createElement('span', { className: 'view', dangerouslySetInnerHTML: { __html: rawMarkup } }),
             React.createElement('textarea', { ref: 'editInput',
               className: 'edit',
-              valueLink: this.linkState('editValue'),
-              onKeyUp: this.handleValueChange,
-              onBlur: this.handleBlur }),
+              valueLink: this.linkState('textareaEditValue') }),
             this.state.isEditing ? '' : React.createElement(
               'button',
               { className: 'addBtn', onClick: this.handleAddStart },
-              ' ',
               React.createElement('i', { className: 'fa fa-plus' }),
-              ' ',
-              this.state.isAdding ? 'Avbryt' : 'Fortsätt',
-              ' '
+              this.state.isAdding ? 'Avbryt' : 'Fortsätt'
             ),
             this.state.isEditing ? React.createElement(
-              'p',
-              { className: 'editInfoText' },
-              'Enter = spara, Esc = avbryt'
+              'span',
+              { className: 'editingBtnGroup' },
+              !this.props.selected.children ? React.createElement(
+                'div',
+                null,
+                React.createElement(
+                  'p',
+                  null,
+                  'Avslutande del?'
+                ),
+                React.createElement('input', { type: 'checkbox', checkedLink: this.linkState('checkboxEditValue') })
+              ) : '',
+              React.createElement(
+                'button',
+                { className: 'save', onClick: this.handleEditSubmit },
+                'Spara'
+              ),
+              React.createElement(
+                'button',
+                { className: 'cancel', onClick: this.handleCancelEdit },
+                'Avbryt'
+              )
             ) : React.createElement(
               'button',
               { className: 'editBtn', onClick: this.handleEditStart },
@@ -40644,7 +40485,6 @@ var WriteNode = React.createClass({
             this.state.isAdding || this.state.isEditing ? '' : React.createElement(
               'button',
               { className: 'deleteBtn', onClick: this.storypartDestroyer },
-              ' ',
               React.createElement('i', { className: 'fa fa-trash-o fa-2' })
             )
           )
@@ -40756,7 +40596,7 @@ module.exports = Reflux.createStore({
     // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
-    this.listenTo(actions.editStoryPartText, this.onEditStoryPartText.bind(this));
+    this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
     this.listenTo(actions.destroyStoryPart, this.onDestroyStoryPart.bind(this));
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
@@ -40812,14 +40652,16 @@ module.exports = Reflux.createStore({
       key: container.key() + '/stories/' + newParent.key()
     });
   },
-  onEditStoryPartText: function onEditStoryPartText(key, text) {
+  onEditStoryPart: function onEditStoryPart(key, edited) {
 
     // console.log(key);
 
     var thatStoryPartRef = storiesRef.child(key);
 
     thatStoryPartRef.update({
-      txt: text
+      title: edited.title,
+      txt: edited.txt,
+      isEnding: edited.isEnding
     });
   },
   onDestroyStoryPart: function onDestroyStoryPart(key, parentKey, last) {
