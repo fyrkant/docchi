@@ -39917,7 +39917,7 @@ var LeanStoryList = React.createClass({
           React.createElement(
             Link,
             { to: _this.props.linkTo, params: { key: index } },
-            story.title
+            _.result(_.find(story.stories, { isParent: true }), 'title')
           )
         );
       }
@@ -40004,7 +40004,7 @@ var ReadNode = React.createClass({
 
         return !this.props.selected ? React.createElement('div', null) : React.createElement(
             'article',
-            { className: 'type-system-traditional' },
+            { key: Math.random(), className: 'type-system-traditional' },
             React.createElement(
                 'h1',
                 null,
@@ -40358,7 +40358,7 @@ var WriteNode = React.createClass({
     }
   },
   showNode: function showNode(ev) {
-    ev.target.nextSibling.classList.toggle('hide');
+    ev.target.nextSibling.nextSibling.classList.toggle('hide');
     ev.preventDefault();
   },
   handleEditStart: function handleEditStart(evt) {
@@ -40376,7 +40376,7 @@ var WriteNode = React.createClass({
   handleEditSubmit: function handleEditSubmit() {
     var title = this.state.titleEditValue;
     var text = this.state.textareaEditValue;
-    var isEnding = this.state.checkboxEditValue;
+    // var isEnding = this.state.checkboxEditValue;
 
     var edited = {
       title: this.state.titleEditValue,
@@ -40384,7 +40384,7 @@ var WriteNode = React.createClass({
       isEnding: this.state.checkboxEditValue !== undefined ? this.state.checkboxEditValue : false
     };
 
-    if (this.state.isEditing && text) {
+    if (this.state.isEditing && _.trim(text) && _.trim(title)) {
       actions.editStoryPart(this.props.selected.key, edited);
     }
     this.setState({ isEditing: false });
@@ -40430,7 +40430,7 @@ var WriteNode = React.createClass({
         null,
         React.createElement(
           'a',
-          { href: '#', className: this.state.isEditing ? 'hide' : 'viewTitle', onClick: this.showNode },
+          { href: '#', className: (this.state.isEditing ? 'hide' : 'viewTitle') + endingClass, onClick: this.showNode },
           this.props.selected.title
         ),
         React.createElement('input', { ref: 'editTitleInput',

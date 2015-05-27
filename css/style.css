@@ -1114,33 +1114,34 @@ div.editing .editInfoText {
       color: #333; }
   /* line 239, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node.ending {
-    background-color: rgba(255, 0, 0, 0.1); }
-    /* line 242, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    box-shadow: none;
+    background: #ddd; }
+    /* line 243, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node.ending .addBtn {
       display: none; }
-    /* line 246, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 247, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .story-node.ending::before {
       content: 'Avslutande del!';
       color: rgba(255, 0, 0, 0.5);
       position: absolute;
       bottom: 0;
       left: 50%; }
-  /* line 256, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 257, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node.adding .deleteBtn, .story-node.adding .editBtn {
     display: none; }
-  /* line 262, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 263, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node h3 {
     font-size: 1.2em;
     padding-top: 5px; }
-  /* line 266, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 267, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node hr {
     padding: 0;
     margin: 3px; }
-  /* line 271, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 272, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .story-node button {
     padding: 5px; }
 
-/* line 277, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+/* line 278, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .allDoneDiv {
   position: relative;
   top: 0;
@@ -1149,16 +1150,16 @@ div.editing .editInfoText {
   left: 0;
   z-index: 10000;
   transition: all 0.5s ease-in-out; }
-  /* line 287, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 288, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .allDoneDiv button {
     background-color: green;
     color: #d3f7c3;
     transition: all 0.2s ease-in-out; }
-    /* line 292, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+    /* line 293, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
     .allDoneDiv button:hover {
       background-color: #d3f7c3;
       color: green; }
-  /* line 297, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
+  /* line 298, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
   .allDoneDiv .innerDoneDiv {
     position: absolute;
     padding: 10px;

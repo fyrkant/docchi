@@ -6,7 +6,12 @@ var LeanStoryList = React.createClass({
   render: function() {
     var createItem = (story, index) => {
       if (story.status === this.props.filter) {
-        return (<li key={index} index={index}><Link to={this.props.linkTo} params={{key: index}}>{story.title}</Link></li>);
+        return (
+          <li key={index} index={index}>
+            <Link to={this.props.linkTo} params={{key: index}}>
+              {_.result(_.find(story.stories, {isParent:true}), 'title')}
+            </Link>
+          </li>);
       }
     };
 

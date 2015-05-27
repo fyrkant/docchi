@@ -79,7 +79,7 @@ var WriteNode = React.createClass({
     }
   },
   showNode(ev) {
-    ev.target.nextSibling.classList.toggle('hide');
+    ev.target.nextSibling.nextSibling.classList.toggle('hide');
     ev.preventDefault();
   },
   handleEditStart(evt) {
@@ -97,7 +97,7 @@ var WriteNode = React.createClass({
   handleEditSubmit () {
     var title = this.state.titleEditValue;
     var text = this.state.textareaEditValue;
-    var isEnding = this.state.checkboxEditValue;
+    // var isEnding = this.state.checkboxEditValue;
 
     var edited = {
       title: this.state.titleEditValue,
@@ -105,7 +105,7 @@ var WriteNode = React.createClass({
       isEnding: this.state.checkboxEditValue !== undefined ? this.state.checkboxEditValue : false
     };
 
-    if (this.state.isEditing && text) {
+    if (this.state.isEditing && _.trim(text) && _.trim(title)) {
       actions.editStoryPart(this.props.selected.key, edited);
     }
     this.setState({isEditing: false});
@@ -146,7 +146,7 @@ var WriteNode = React.createClass({
     return !this.props.selected ? <div /> : (
 			<ul className='tree'>
 				<li>
-					<a href="#" className={this.state.isEditing ? 'hide' : 'viewTitle'} onClick={this.showNode}>{this.props.selected.title}</a>
+					<a href="#" className={(this.state.isEditing ? 'hide' : 'viewTitle') + endingClass} onClick={this.showNode}>{this.props.selected.title}</a>
           <input ref="editTitleInput"
             className={this.state.isEditing ? 'editTitle' : 'hide'}
             valueLink={this.linkState('titleEditValue')} />

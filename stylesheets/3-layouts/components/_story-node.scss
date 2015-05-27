@@ -237,7 +237,8 @@ div.editing{
   border: $base-border;
 
   &.ending {
-    background-color: transparentize(red, 0.9);
+    box-shadow: none;
+    background: $light-gray;
     
     .addBtn {
       display: none;

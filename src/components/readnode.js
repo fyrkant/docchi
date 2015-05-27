@@ -12,7 +12,7 @@ var ReadNode = React.createClass({
     }
 
     return !this.props.selected ? <div /> : (
-			<article className="type-system-traditional">
+			<article key={Math.random()} className="type-system-traditional">
 				<h1>{this.props.selected.title}</h1>
 				<p dangerouslySetInnerHTML={{__html: rawMarkup}} />
 
