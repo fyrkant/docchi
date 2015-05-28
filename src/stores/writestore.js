@@ -128,10 +128,7 @@ module.exports = Reflux.createStore({
     });
   },
   onSetStatus(key, status) {
-    debugger;
-
     var exists;
-
     storiesRef.child(key).once('value', function(snapshot) {
       exists = (snapshot.val() !== null);
     }, function() {
@@ -143,11 +140,7 @@ module.exports = Reflux.createStore({
         status: status
       });
       return true;
-    } else {
-      console.log('nothing there');
-      return false;
     }
-
   },
   updateStories(snap) {
     this.trigger({stories:(this.last = snap.val() || {})});

@@ -21,9 +21,7 @@ var Home = React.createClass({
             </span>
           </h2>
         </header>
-        <div className="write-home">
-          <RouteHandler {...this.props} stories={this.state.stories} />
-        </div>
+        <RouteHandler {...this.props} stories={this.state.stories} />
       </div>
     );
   }

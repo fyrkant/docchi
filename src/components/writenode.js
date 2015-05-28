@@ -119,18 +119,11 @@ var WriteNode = React.createClass({
     var status;
 
     if (_.isUndefined(allDone)) {
-      // console.log('All done, yo!');
-      debugger;
       status = 'done';
     } else {
-      // console.log('You got some work to do.');
-      debugger;
       status = 'writing';
     }
-    var shouldIStay = actions.setStatus(this.props.params.key, status);
-
-    console.log(shouldIStay);
-
+    actions.setStatus(this.props.params.key, status);
   },
   render() {
     var editingClass = this.state.isEditing ? 'editing' : '' ;
@@ -161,10 +154,10 @@ var WriteNode = React.createClass({
 								className="edit"
 								valueLink={this.linkState('textareaEditValue')} />
 
-							{ this.state.isEditing ? '' :
+							{ this.state.isEditing || this.state.isAdding ? '' :
               <button className="addBtn" onClick={this.handleAddStart}>
                 <i className="fa fa-plus"></i>
-                { this.state.isAdding ? 'Avbryt' : 'Fortsätt'}
+                Fortsätt
               </button>}
 
 							{ this.state.isEditing ?
@@ -178,7 +171,7 @@ var WriteNode = React.createClass({
 
 							{ this.state.isAdding || this.state.isEditing ? '' :
                 <button className="deleteBtn" onClick={this.storypartDestroyer}>
-                  <i className="fa fa-trash-o fa-2"></i>
+                  <i className="fa fa-close fa-2"></i>
                 </button>}
 						</div>
 					</div>

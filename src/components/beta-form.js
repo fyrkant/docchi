@@ -27,7 +27,7 @@ var WriterForm = React.createClass({
     return (
   <div className="write-new">
     <h2>Skriv ny historia.</h2>
-      <div className="writer-wrap">
+      <div className="story-starter">
         <div className="writer">
           <form onSubmit={this.handleSubmit}>
 
@@ -41,7 +41,7 @@ var WriterForm = React.createClass({
                 rows="8"
                 />
 
-              <button>Spara</button>
+              <button className="save">Spara</button>
             </form>
         </div>
       </div>

@@ -39866,7 +39866,7 @@ var WriterForm = React.createClass({
       ),
       React.createElement(
         'div',
-        { className: 'writer-wrap' },
+        { className: 'story-starter' },
         React.createElement(
           'div',
           { className: 'writer' },
@@ -39883,7 +39883,7 @@ var WriterForm = React.createClass({
             }),
             React.createElement(
               'button',
-              null,
+              { className: 'save' },
               'Spara'
             )
           )
@@ -39975,7 +39975,7 @@ var ReadHome = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      null,
+      { className: 'write-home' },
       React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Färdigställda historier ', filter: 'done', linkTo: 'readnodes' }))
     );
   }
@@ -40045,7 +40045,7 @@ var ReadNodePage = React.createClass({
 
         return React.createElement(
             'div',
-            null,
+            { className: 'write-home' },
             React.createElement(ReadNode, { data: foundStories, selected: foundParent })
         );
     }
@@ -40066,6 +40066,12 @@ var StoryAdder = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function getInitialState() {
     return {};
+  },
+  handleCancel: function handleCancel(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.props.handleAddStart();
   },
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
@@ -40161,6 +40167,11 @@ var StoryAdder = React.createClass({
             React.createElement('div', { className: 'checkbox' }),
             React.createElement(
               'button',
+              { className: 'addBtn cancelAdd', onClick: this.handleCancel },
+              'Avbryt'
+            ),
+            React.createElement(
+              'button',
               null,
               'Spara'
             )
@@ -40223,11 +40234,7 @@ var Home = React.createClass({
           )
         )
       ),
-      React.createElement(
-        'div',
-        { className: 'write-home' },
-        React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories }))
-      )
+      React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories }))
     );
   }
 
@@ -40253,7 +40260,7 @@ var WriteHome = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      null,
+      { className: 'write-home' },
       React.createElement(BetaForm, this.props),
       React.createElement(
         'div',
@@ -40398,17 +40405,11 @@ var WriteNode = React.createClass({
     var status;
 
     if (_.isUndefined(allDone)) {
-      // console.log('All done, yo!');
-      debugger;
       status = 'done';
     } else {
-      // console.log('You got some work to do.');
-      debugger;
       status = 'writing';
     }
-    var shouldIStay = actions.setStatus(this.props.params.key, status);
-
-    console.log(shouldIStay);
+    actions.setStatus(this.props.params.key, status);
   },
   render: function render() {
     var editingClass = this.state.isEditing ? 'editing' : '';
@@ -40447,11 +40448,11 @@ var WriteNode = React.createClass({
             React.createElement('textarea', { ref: 'editInput',
               className: 'edit',
               valueLink: this.linkState('textareaEditValue') }),
-            this.state.isEditing ? '' : React.createElement(
+            this.state.isEditing || this.state.isAdding ? '' : React.createElement(
               'button',
               { className: 'addBtn', onClick: this.handleAddStart },
               React.createElement('i', { className: 'fa fa-plus' }),
-              this.state.isAdding ? 'Avbryt' : 'Fortsätt'
+              'Fortsätt'
             ),
             this.state.isEditing ? React.createElement(
               'span',
@@ -40486,7 +40487,7 @@ var WriteNode = React.createClass({
             this.state.isAdding || this.state.isEditing ? '' : React.createElement(
               'button',
               { className: 'deleteBtn', onClick: this.storypartDestroyer },
-              React.createElement('i', { className: 'fa fa-trash-o fa-2' })
+              React.createElement('i', { className: 'fa fa-close fa-2' })
             )
           )
         ),
@@ -40522,7 +40523,11 @@ var WriteNodePage = React.createClass({
     var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
     var foundParent = _.find(foundStories, { isParent: true });
 
-    return React.createElement(WriteNode, _extends({}, this.props, { data: foundStories, selected: foundParent }));
+    return React.createElement(
+      'section',
+      { className: 'writer-wrap' },
+      React.createElement(WriteNode, _extends({}, this.props, { data: foundStories, selected: foundParent }))
+    );
   }
 });
 
@@ -40707,10 +40712,7 @@ module.exports = Reflux.createStore({
     });
   },
   onSetStatus: function onSetStatus(key, status) {
-    debugger;
-
     var exists;
-
     storiesRef.child(key).once('value', function (snapshot) {
       exists = snapshot.val() !== null;
     }, function () {
@@ -40722,9 +40724,6 @@ module.exports = Reflux.createStore({
         status: status
       });
       return true;
-    } else {
-      console.log('nothing there');
-      return false;
     }
   },
   updateStories: function updateStories(snap) {

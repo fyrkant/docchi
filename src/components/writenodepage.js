@@ -10,7 +10,10 @@ var WriteNodePage = React.createClass({
     var foundStories = _.result(_.find(this.props.stories, {key: this.props.params.key}), 'stories');
     var foundParent = _.find(foundStories, {isParent: true});
 
-    return <WriteNode {...this.props} data={foundStories} selected={foundParent} />;
+    return (
+        <section className="writer-wrap">
+          <WriteNode {...this.props} data={foundStories} selected={foundParent} />
+        </section>);
   }
 });
 

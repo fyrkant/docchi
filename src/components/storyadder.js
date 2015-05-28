@@ -7,6 +7,12 @@ var StoryAdder = React.createClass({
   getInitialState() {
     return {};
   },
+  handleCancel(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.props.handleAddStart();
+  },
   handleSubmit:function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -82,11 +88,12 @@ var StoryAdder = React.createClass({
                 />
                 <textarea ref="txt"
                   placeholder="Text"/>
-                  
+
                 <span className="switch">
                   <p>Avslutande del?</p>
                   <input type="checkbox" name="isEnding" ref="endingCheckbox" />
                   <div className="checkbox"></div>
+                  <button className="addBtn cancelAdd" onClick={this.handleCancel}>Avbryt</button>
                   <button>Spara</button>
                 </span>
               </form>

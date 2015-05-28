@@ -8,7 +8,7 @@ var BetaForm = require('./beta-form');
 var WriteHome = React.createClass({
   render() {
     return (
-      <div>
+      <div className="write-home">
         <BetaForm {...this.props} />
 
         <div className="list-unfinished">

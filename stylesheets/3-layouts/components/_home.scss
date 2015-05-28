@@ -33,9 +33,10 @@
       font-size: 2.5em;
 
       a {
+        position: relative; 
         padding: 0 20px;
         color: transparentize(white, 0.5);
-        transition: all 0.2s ease-in-out;
+        transition: all .3s $ease-in-quad;        
 
         &:hover {
           color: white;
@@ -43,6 +44,10 @@
 
         &.active {
           color: white;
+          text-decoration: none;
+          box-shadow: inset 0 -4px 0 yellow;
+
+          
         }
       }      
     }
@@ -51,4 +56,18 @@
   .write-home {
     margin-top: 100px;
   }
+}
+button.save {
+  background-color: darken(#00E36B, 10%);
+  transition: all 0.2s ease-in-out;
+
+  &:hover{
+            background: #00E36B
+  }
+}
+
+
+button:hover {
+  box-shadow: inset 0 -4px 0 yellow;
+  transition: all .2s ease-in-out;  
 }

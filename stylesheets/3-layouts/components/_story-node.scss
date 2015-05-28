@@ -1,7 +1,6 @@
 $node-tree-border : 3px solid $dark-gray;
 
 .tree { 
-  margin-top: 500px;
 
 }
 
@@ -187,18 +186,21 @@ div.editing{
 
   .deleteBtn {
     padding:0;
-    @include size(26px);
+    margin-top: -1px;
+    @include size(24px);
     font-size: 1.3em;
     position: absolute;
     top:5px;
     right: 5px;
     background: none;
-    color: red;
+    color: darken(red, 5%);    
     transition: all 0.2s ease-in-out;
+    border-radius: 0;
 
-    &:hover {
-      background-color: red;
-      color: white;
+    &:hover {      
+      color: red;
+      transform: scale(1.08);
+      box-shadow: none;
     }
   }
 
@@ -209,12 +211,21 @@ div.editing{
     width: 50%;
     background: none;
     border-radius: 0;
-    border-bottom-right-radius: 5px;
-    transition: all 0.1s ease-in-out;
     color: $medium-gray;
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       color: $dark-gray;
+    }
+
+    &.cancelAdd {
+      color: white;
+      background-color: darken(red, 10%);
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        background-color: red;
+      }
     }
   }
 
@@ -225,9 +236,8 @@ div.editing{
     width: 50%;
     background: none;
     border-radius: 0;
-    border-bottom-left-radius: 5px;
-    transition: all 0.1s ease-in-out;
-    color: $medium-gray;
+    color: $medium-gray;    
+    transition: all 0.2s ease-in-out;
 
     &:hover {
       color: $dark-gray;
@@ -275,35 +285,7 @@ div.editing{
 
 
 }
-.allDoneDiv {
 
-  position: relative;
-  top: 0;
-  bottom:0;
-  right: 0;
-  left: 0;
-  z-index: 10000;
-  transition: all 0.5s ease-in-out;
-
-  button {
-    background-color: green;
-    color: #d3f7c3;
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-      background-color: #d3f7c3;
-      color: green;
-    }
-  }
-  .innerDoneDiv {
-    position: absolute;
-    padding: 10px;
-    border-radius: 5px;
-    border: $base-border;
-    height: auto;
-    width: 200px;
-    top: 50%;
-    left: 50%;
-    background-color: white;    
-  }
+.writer-wrap {
+  margin-top: 100px;
 }
