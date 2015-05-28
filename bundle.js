@@ -40286,12 +40286,8 @@ var WriteNode = React.createClass({
   getInitialState: function getInitialState() {
     return {};
   },
-  handleAddStart: function handleAddStart(ev) {
-
+  handleAddStart: function handleAddStart() {
     this.state.isAdding ? this.setState({ isAdding: false }) : this.setState({ isAdding: true });
-
-    ev.preventDefault();
-    ev.stopPropagation();
   },
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
@@ -40399,15 +40395,20 @@ var WriteNode = React.createClass({
       return !story.children && !story.isEnding;
     });
 
-    // console.log(allDone);
+    var status;
 
     if (_.isUndefined(allDone)) {
       // console.log('All done, yo!');
-      actions.setStatus(nextProps.selected.key, 'done');
+      debugger;
+      status = 'done';
     } else {
       // console.log('You got some work to do.');
-      actions.setStatus(nextProps.selected.key, 'writing');
+      debugger;
+      status = 'writing';
     }
+    var shouldIStay = actions.setStatus(this.props.params.key, status);
+
+    console.log(shouldIStay);
   },
   render: function render() {
     var editingClass = this.state.isEditing ? 'editing' : '';
@@ -40491,9 +40492,9 @@ var WriteNode = React.createClass({
         ),
         this.state.isAdding ? React.createElement(StoryAdder, _extends({}, this.props, { handleAddStart: this.handleAddStart })) : '',
         _.map(this.props.selected.children, (function (n) {
-          return React.createElement(WriteNode, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
+          return React.createElement(WriteNode, _extends({}, this.props, { key: n.key, data: this.props.data, selected: _.find(this.props.data, function (s) {
               return s.key === n.key;
-            }) });
+            }) }));
         }).bind(this))
       )
     );
@@ -40505,6 +40506,8 @@ module.exports = WriteNode;
 },{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],248:[function(require,module,exports){
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var React = require('react');
 // var Router = require('react-router');
 var WriteNode = require('./writenode');
@@ -40512,19 +40515,15 @@ var _ = require('lodash');
 // var actions = require('../actions');
 
 var WriteNodePage = React.createClass({
-    displayName: 'WriteNodePage',
+  displayName: 'WriteNodePage',
 
-    render: function render() {
+  render: function render() {
 
-        var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
-        var foundParent = _.find(foundStories, { isParent: true });
+    var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
+    var foundParent = _.find(foundStories, { isParent: true });
 
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(WriteNode, { data: foundStories, selected: foundParent })
-        );
-    }
+    return React.createElement(WriteNode, _extends({}, this.props, { data: foundStories, selected: foundParent }));
+  }
 });
 
 module.exports = WriteNodePage;
@@ -40708,11 +40707,25 @@ module.exports = Reflux.createStore({
     });
   },
   onSetStatus: function onSetStatus(key, status) {
-    var splitKey = key.split('/');
+    debugger;
 
-    storiesRef.child(splitKey[0]).update({
-      status: status
+    var exists;
+
+    storiesRef.child(key).once('value', function (snapshot) {
+      exists = snapshot.val() !== null;
+    }, function () {
+      exists = false;
     });
+
+    if (exists) {
+      storiesRef.child(key).update({
+        status: status
+      });
+      return true;
+    } else {
+      console.log('nothing there');
+      return false;
+    }
   },
   updateStories: function updateStories(snap) {
     this.trigger({ stories: this.last = snap.val() || {} });

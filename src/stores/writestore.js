@@ -128,11 +128,26 @@ module.exports = Reflux.createStore({
     });
   },
   onSetStatus(key, status) {
-    var splitKey = key.split('/');
+    debugger;
 
-    storiesRef.child(splitKey[0]).update({
-      status: status
+    var exists;
+
+    storiesRef.child(key).once('value', function(snapshot) {
+      exists = (snapshot.val() !== null);
+    }, function() {
+      exists = false;
     });
+
+    if (exists) {
+      storiesRef.child(key).update({
+        status: status
+      });
+      return true;
+    } else {
+      console.log('nothing there');
+      return false;
+    }
+
   },
   updateStories(snap) {
     this.trigger({stories:(this.last = snap.val() || {})});

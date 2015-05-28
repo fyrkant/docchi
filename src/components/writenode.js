@@ -9,12 +9,8 @@ var WriteNode = React.createClass({
   getInitialState() {
     return {};
   },
-  handleAddStart(ev) {
-
+  handleAddStart() {
     this.state.isAdding ? this.setState({isAdding: false}) : this.setState({isAdding: true});
-
-    ev.preventDefault();
-    ev.stopPropagation();
   },
   handleSubmit:function(e) {
     e.preventDefault();
@@ -120,15 +116,21 @@ var WriteNode = React.createClass({
       return !story.children && !story.isEnding;
     });
 
-    // console.log(allDone);
+    var status;
 
     if (_.isUndefined(allDone)) {
       // console.log('All done, yo!');
-      actions.setStatus(nextProps.selected.key, 'done');
+      debugger;
+      status = 'done';
     } else {
       // console.log('You got some work to do.');
-      actions.setStatus(nextProps.selected.key, 'writing');
+      debugger;
+      status = 'writing';
     }
+    var shouldIStay = actions.setStatus(this.props.params.key, status);
+
+    console.log(shouldIStay);
+
   },
   render() {
     var editingClass = this.state.isEditing ? 'editing' : '' ;
@@ -184,7 +186,7 @@ var WriteNode = React.createClass({
           { this.state.isAdding ? <StoryAdder {...this.props} handleAddStart={this.handleAddStart} /> : '' }
 
 						{ _.map(this.props.selected.children, function(n) {
-  return <WriteNode key={n.key} data={this.props.data} selected={_.find(this.props.data, function(s) {return s.key === n.key;})} />;
+  return <WriteNode {...this.props} key={n.key} data={this.props.data} selected={_.find(this.props.data, function(s) {return s.key === n.key;})} />;
 						}.bind(this))}
 				</li>
 			</ul>
