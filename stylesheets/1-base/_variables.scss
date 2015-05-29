@@ -17,9 +17,19 @@ $base-z-index: 0;
 
 // Colors
 $blue: #477dca;
+$yellow: yellow;
 $dark-gray: #333;
 $medium-gray: #999;
 $light-gray: #ddd;
+$button-save: darken(#00E36B, 10%);
+$button-save-hover: #00E36B;
+$button-cancel: darken(#f0ad4e, 5%);
+$button-cancel-hover: #f0ad4e;
+$button-delete: darken(red, 5%);
+$button-delete-hover: red;
+
+// Transitions
+$button-transition: all .2s ease-in-out;
 
 // Font Colors
 $base-background-color: #fff;
@@ -33,3 +43,6 @@ $base-border: 1px solid $base-border-color;
 // Forms
 $form-box-shadow: inset 0 1px 3px rgba(#000, 0.06);
 $form-box-shadow-focus: $form-box-shadow, 0 0 5px adjust-color($action-color, $lightness: -5%, $alpha: -0.3);
+
+// Shadows
+$standard-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);

@@ -33,6 +33,7 @@
 	      float: right
 	      padding: 9px
 	      border-radius: 0
+	      transition: $button-transition
 
 	    button
 
@@ -54,20 +55,20 @@
 	    		right: 5px
 	    		bottom: 5px
 	    		display: inline
-	    		background-color: darken(#00E36B, 10%)
-      			transition: all 0.2s ease-in-out
+	    		background-color: $button-save
+      			transition: $button-transition
 
   				:hover 
-  					background: #00E36B
+  					background: $button-save-hover
 
   				.cancelAdd
 			    	margin-right: 85px
 			    	color: white
-			    	background-color: darken(red, 10%)
-			    	transition: all 0.2s ease-in-out
+			    	background-color: $button-cancel
+			    	transition: all 0.2s $button-transition
 
 			    	&:hover
-			    		background-color: red				
+			    		background-color: $button-cancel-hover				
 
       			
 

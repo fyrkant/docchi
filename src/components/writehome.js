@@ -1,6 +1,6 @@
 var React = require('react');
 var LeanStoryList = require('./leanstorylist');
-var BetaForm = require('./beta-form');
+var StartForm = require('./writestartform');
 // var  _ = require('lodash');
 // var StoryNode = require('./storynode');
 // var WriterForm = require('./writerform');
@@ -9,7 +9,7 @@ var WriteHome = React.createClass({
   render() {
     return (
       <div className="write-home">
-        <BetaForm {...this.props} />
+        <StartForm {...this.props} />
 
         <div className="list-unfinished">
             <LeanStoryList {...this.props} titleText="Lista på oavslutade" filter="writing" linkTo="writenodepage" />

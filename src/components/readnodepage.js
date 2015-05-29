@@ -9,7 +9,7 @@ var ReadNodePage = React.createClass({
     var foundParent = _.find(foundStories, {isParent: true});
 
     return (
-			<div className="write-home"><ReadNode data={foundStories} selected={foundParent} /></div>
+			<div className="write-home"><ReadNode {...this.props} data={foundStories} selected={foundParent} /></div>
 		);
   }
 });

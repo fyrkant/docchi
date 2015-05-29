@@ -45,7 +45,7 @@
         &.active {
           color: white;
           text-decoration: none;
-          box-shadow: inset 0 -4px 0 yellow;
+          box-shadow: inset 0 -4px 0 $yellow;
 
           
         }
@@ -57,17 +57,33 @@
     margin-top: 100px;
   }
 }
-button.save {
-  background-color: darken(#00E36B, 10%);
-  transition: all 0.2s ease-in-out;
+button {
+  &.save {
+    position: absolute;
+    right: 5px;
+    bottom: -25px;
+    background-color: darken(#00E36B, 10%);
+    transition: $button-transition;
 
-  &:hover{
-            background: #00E36B
+    &:hover{
+             background: #00E36B
+    }
+  }
+  &.cancel {
+    position: absolute;
+    right: 90px;
+    bottom: -25px;
+    background-color: $button-cancel;
+    transition: $button-transition;
+
+    &:hover {
+      background: $button-cancel-hover;
+    }
   }
 }
 
 
 button:hover {
-  box-shadow: inset 0 -4px 0 yellow;
+  box-shadow: inset 0 -4px 0 $yellow;
   transition: all .2s ease-in-out;  
 }

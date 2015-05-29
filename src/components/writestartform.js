@@ -1,12 +1,11 @@
 var React = require('react');
-//var _ = require('lodash'),
 var actions = require('../actions');
 
-var WriterForm = React.createClass({
+var StartForm = React.createClass({
   handleSubmit:function(e) {
     e.preventDefault();
     e.stopPropagation();
-    var storyPart = this.populateStoryPart();
+    var storyPart = this.populateStoryStart();
     if (storyPart.title !== '' && storyPart.txt !== '') {
       actions.addStoryStart(storyPart);
       this.emptyForm();
@@ -16,7 +15,7 @@ var WriterForm = React.createClass({
     this.refs.title.getDOMNode().value = '';
     this.refs.txt.getDOMNode().value = '';
   },
-  populateStoryPart:function() {
+  populateStoryStart:function() {
     return {
       title: this.refs.title.getDOMNode().value,
       txt: this.refs.txt.getDOMNode().value
@@ -41,6 +40,7 @@ var WriterForm = React.createClass({
                 rows="8"
                 />
 
+              <button className="cancel">Avbryt</button>
               <button className="save">Spara</button>
             </form>
         </div>
@@ -51,4 +51,4 @@ var WriterForm = React.createClass({
 
 });
 
-module.exports = WriterForm;
+module.exports = StartForm;

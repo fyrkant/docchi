@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var _ = require('lodash');
 var actions = require('../actions');
-var StoryAdder = require('./storyadder');
+var StoryAdder = require('./writestoryadder');
 var marked = require('marked');
 
 var WriteNode = React.createClass({
@@ -148,7 +148,9 @@ var WriteNode = React.createClass({
 					<div className={'story-node ' + endingClass + addingClass + editingClass}>
 						<div className={editingClass}>
 
-							<span className="view" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+							<div className="text-scroller">
+                <span className="view" dangerouslySetInnerHTML={{__html: rawMarkup}} />
+              </div>
 
 							<textarea ref="editInput"
 								className="edit"

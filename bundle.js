@@ -39829,77 +39829,6 @@ module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'logi
 'use strict';
 
 var React = require('react');
-//var _ = require('lodash'),
-var actions = require('../actions');
-
-var WriterForm = React.createClass({
-  displayName: 'WriterForm',
-
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var storyPart = this.populateStoryPart();
-    if (storyPart.title !== '' && storyPart.txt !== '') {
-      actions.addStoryStart(storyPart);
-      this.emptyForm();
-    }
-  },
-  emptyForm: function emptyForm() {
-    this.refs.title.getDOMNode().value = '';
-    this.refs.txt.getDOMNode().value = '';
-  },
-  populateStoryPart: function populateStoryPart() {
-    return {
-      title: this.refs.title.getDOMNode().value,
-      txt: this.refs.txt.getDOMNode().value
-    };
-  },
-  render: function render() {
-
-    return React.createElement(
-      'div',
-      { className: 'write-new' },
-      React.createElement(
-        'h2',
-        null,
-        'Skriv ny historia.'
-      ),
-      React.createElement(
-        'div',
-        { className: 'story-starter' },
-        React.createElement(
-          'div',
-          { className: 'writer' },
-          React.createElement(
-            'form',
-            { onSubmit: this.handleSubmit },
-            React.createElement('input', { type: 'text',
-              ref: 'title',
-              placeholder: 'Titel'
-            }),
-            React.createElement('textarea', { ref: 'txt',
-              placeholder: 'Text',
-              rows: '8'
-            }),
-            React.createElement(
-              'button',
-              { className: 'save' },
-              'Spara'
-            )
-          )
-        )
-      )
-    );
-  }
-
-});
-
-module.exports = WriterForm;
-
-},{"../actions":237,"react":216}],239:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
 var _ = require('lodash');
 var Link = require('react-router').Link;
 
@@ -39945,7 +39874,7 @@ var LeanStoryList = React.createClass({
 
 module.exports = LeanStoryList;
 
-},{"lodash":3,"react":216,"react-router":29}],240:[function(require,module,exports){
+},{"lodash":3,"react":216,"react-router":29}],239:[function(require,module,exports){
 'use strict';
 
 var React = require('react/addons');
@@ -39961,7 +39890,7 @@ var MultiRoute = React.createClass({
 
 module.exports = MultiRoute;
 
-},{"react-router":29,"react/addons":44}],241:[function(require,module,exports){
+},{"react-router":29,"react/addons":44}],240:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -39984,52 +39913,115 @@ var ReadHome = React.createClass({
 
 module.exports = ReadHome;
 
-},{"./leanstorylist":239,"react":216}],242:[function(require,module,exports){
+},{"./leanstorylist":238,"react":216}],241:[function(require,module,exports){
 'use strict';
 
 var React = require('react/addons');
 var _ = require('lodash');
 var marked = require('marked');
+var Link = require('react-router').Link;
 
 var ReadNode = React.createClass({
-    displayName: 'ReadNode',
+  displayName: 'ReadNode',
 
-    render: function render() {
-
-        var rawMarkup;
-
-        if (!_.isUndefined(this.props.selected)) {
-            rawMarkup = rawMarkup = marked(this.props.selected.txt, { sanitize: true });
-        }
-
-        return !this.props.selected ? React.createElement('div', null) : React.createElement(
-            'article',
-            { key: Math.random(), className: 'type-system-traditional' },
-            React.createElement(
-                'h1',
-                null,
-                this.props.selected.title
-            ),
-            React.createElement('p', { dangerouslySetInnerHTML: { __html: rawMarkup } }),
-            _.map(this.props.selected.children, (function (n) {
-                var foundChild = _.find(this.props.data, function (s) {
-                    return s.key === n.key;
-                });
-
-                return React.createElement(
-                    'p',
-                    null,
-                    foundChild.title
-                );
-            }).bind(this))
-        );
+  handleChoice: function handleChoice(story) {
+    console.log(story);
+  },
+  componentWillUpdate: function componentWillUpdate() {
+    var node = this.getDOMNode();
+    this.shouldScrollToBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+  },
+  componentDidUpdate: function componentDidUpdate() {
+    if (this.shouldScrollToBottom) {
+      var node = this.getDOMNode();
+      node.scrollTop = node.scrollHeight;
     }
+  },
+  render: function render() {
+    debugger;
+
+    var arrayedData = _.toArray(this.props.data);
+
+    var chosenPath = this.props.params.choice ? this.props.params.choice : null;
+
+    if (chosenPath) {
+      console.log(chosenPath.split(''));
+    }
+
+    var rawMarkup = _.isUndefined(this.props.selected) ? '' : marked(this.props.selected.txt, { sanitize: true });
+
+    return !this.props.selected ? React.createElement('div', null) : React.createElement(
+      'article',
+      { className: 'type-system-traditional' },
+      React.createElement(
+        'div',
+        { key: Math.random() },
+        React.createElement(
+          'h1',
+          null,
+          this.props.selected.title
+        ),
+        React.createElement('p', { dangerouslySetInnerHTML: { __html: rawMarkup } })
+      ),
+      this.props.params.choice ? _.map(this.props.params.choice.split('-'), (function (number, index, array) {
+        console.log(array);
+        return React.createElement(
+          'div',
+          { key: Math.random() },
+          React.createElement(
+            'h2',
+            { className: 'segway' },
+            arrayedData[number].title
+          ),
+          React.createElement('p', { dangerouslySetInnerHTML: { __html: marked(arrayedData[number].txt, { sanitize: true }) } }),
+          arrayedData[number].isEnding ? React.createElement(
+            'strong',
+            null,
+            'SLUT'
+          ) : '',
+          index !== array.length - 1 ? '' : _.map(arrayedData[number].children, (function (child) {
+            var foundChild = _.find(this.props.data, function (s) {
+              return s.key === child.key;
+            });
+            var arrayKey = _.findIndex(arrayedData, { key: foundChild.key });
+
+            return React.createElement(
+              'h2',
+              { key: arrayKey },
+              React.createElement(
+                Link,
+                { to: 'choicenodes', params: { key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey } },
+                foundChild.title
+              )
+            );
+          }).bind(this))
+        );
+      }).bind(this)) : _.map(this.props.selected.children, (function (child) {
+        var foundChild = _.find(this.props.data, function (s) {
+          return s.key === child.key;
+        });
+        var arrayKey = _.findIndex(arrayedData, { key: foundChild.key });
+
+        return React.createElement(
+          'h2',
+          { key: arrayKey },
+          React.createElement(
+            Link,
+            { to: 'choicenodes', params: { key: this.props.params.key, choice: arrayKey } },
+            foundChild.title
+          )
+        );
+      }).bind(this))
+    );
+  }
 });
 
 module.exports = ReadNode;
 
-},{"lodash":3,"marked":4,"react/addons":44}],243:[function(require,module,exports){
+},{"lodash":3,"marked":4,"react-router":29,"react/addons":44}],242:[function(require,module,exports){
 'use strict';
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react/addons');
 var _ = require('lodash');
@@ -40046,145 +40038,14 @@ var ReadNodePage = React.createClass({
         return React.createElement(
             'div',
             { className: 'write-home' },
-            React.createElement(ReadNode, { data: foundStories, selected: foundParent })
+            React.createElement(ReadNode, _extends({}, this.props, { data: foundStories, selected: foundParent }))
         );
     }
 });
 
 module.exports = ReadNodePage;
 
-},{"./readnode":242,"lodash":3,"react/addons":44}],244:[function(require,module,exports){
-'use strict';
-
-var React = require('react/addons');
-var _ = require('lodash');
-var actions = require('../actions');
-
-var StoryAdder = React.createClass({
-  displayName: 'StoryAdder',
-
-  mixins: [React.addons.LinkedStateMixin],
-  getInitialState: function getInitialState() {
-    return {};
-  },
-  handleCancel: function handleCancel(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.props.handleAddStart();
-  },
-  handleSubmit: function handleSubmit(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    var storyPart = this.populateStoryPart();
-    if (storyPart.title !== '' && storyPart.txt !== '') {
-      actions.addStoryPart(storyPart);
-      this.emptyForm();
-      this.props.handleAddStart();
-    }
-  },
-  emptyForm: function emptyForm() {
-    this.refs.title.getDOMNode().value = '';
-    this.refs.txt.getDOMNode().value = '';
-  },
-  populateStoryPart: function populateStoryPart() {
-    return {
-      title: this.refs.title.getDOMNode().value,
-      txt: this.refs.txt.getDOMNode().value,
-      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
-      parentKey: this.props.selected.key
-    };
-  },
-  toBeBlownUp: [],
-  visitChildren: function visitChildren(obj) {
-
-    console.log('visiting' + obj.title);
-    this.toBeBlownUp.push(obj.key);
-
-    if (!obj.children) {
-      return;
-    }
-
-    _.forEach(obj.children, (function (child) {
-      var foundChild = _.find(this.props.data, function (s) {
-        return s.key === child.key;
-      });
-      this.visitChildren(foundChild);
-    }).bind(this));
-  },
-  storypartDestroyer: function storypartDestroyer() {
-    this.toBeBlownUp = [];
-    var parentKey = '';
-
-    _.map(this.props.data, (function (story) {
-      if (story.children) {
-        _.forEach(story.children, (function (child) {
-          if (child.key === this.props.selected.key) {
-            parentKey = story.key;
-          }
-        }).bind(this));
-      }
-    }).bind(this));
-
-    console.log(parentKey);
-
-    if (!this.props.selected.children) {
-      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
-        actions.destroyStoryPart(this.props.selected.key, parentKey);
-      }
-    } else {
-      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
-        this.visitChildren(this.props.selected);
-        actions.destroyStoryParts(this.toBeBlownUp, parentKey);
-      }
-    }
-  },
-  render: function render() {
-    return React.createElement(
-      'div',
-      { className: 'story-adder' },
-      React.createElement(
-        'div',
-        { className: 'writer' },
-        React.createElement(
-          'form',
-          { onSubmit: this.handleSubmit },
-          React.createElement('input', { type: 'text',
-            ref: 'title',
-            placeholder: 'Titel'
-          }),
-          React.createElement('textarea', { ref: 'txt',
-            placeholder: 'Text' }),
-          React.createElement(
-            'span',
-            { className: 'switch' },
-            React.createElement(
-              'p',
-              null,
-              'Avslutande del?'
-            ),
-            React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
-            React.createElement('div', { className: 'checkbox' }),
-            React.createElement(
-              'button',
-              { className: 'addBtn cancelAdd', onClick: this.handleCancel },
-              'Avbryt'
-            ),
-            React.createElement(
-              'button',
-              null,
-              'Spara'
-            )
-          )
-        )
-      )
-    );
-  }
-});
-
-module.exports = StoryAdder;
-
-},{"../actions":237,"lodash":3,"react/addons":44}],245:[function(require,module,exports){
+},{"./readnode":241,"lodash":3,"react/addons":44}],243:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40242,14 +40103,14 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"../stores/writestore":251,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
+},{"../stores/writestore":251,"react":216,"react-router":29,"reflux":217}],244:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
 var LeanStoryList = require('./leanstorylist');
-var BetaForm = require('./beta-form');
+var StartForm = require('./writestartform');
 // var  _ = require('lodash');
 // var StoryNode = require('./storynode');
 // var WriterForm = require('./writerform');
@@ -40261,7 +40122,7 @@ var WriteHome = React.createClass({
     return React.createElement(
       'div',
       { className: 'write-home' },
-      React.createElement(BetaForm, this.props),
+      React.createElement(StartForm, this.props),
       React.createElement(
         'div',
         { className: 'list-unfinished' },
@@ -40275,7 +40136,7 @@ var WriteHome = React.createClass({
 
 module.exports = WriteHome;
 
-},{"./beta-form":238,"./leanstorylist":239,"react":216}],247:[function(require,module,exports){
+},{"./leanstorylist":238,"./writestartform":247,"react":216}],245:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40283,7 +40144,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var React = require('react/addons');
 var _ = require('lodash');
 var actions = require('../actions');
-var StoryAdder = require('./storyadder');
+var StoryAdder = require('./writestoryadder');
 var marked = require('marked');
 
 var WriteNode = React.createClass({
@@ -40444,7 +40305,11 @@ var WriteNode = React.createClass({
           React.createElement(
             'div',
             { className: editingClass },
-            React.createElement('span', { className: 'view', dangerouslySetInnerHTML: { __html: rawMarkup } }),
+            React.createElement(
+              'div',
+              { className: 'text-scroller' },
+              React.createElement('span', { className: 'view', dangerouslySetInnerHTML: { __html: rawMarkup } })
+            ),
             React.createElement('textarea', { ref: 'editInput',
               className: 'edit',
               valueLink: this.linkState('textareaEditValue') }),
@@ -40504,7 +40369,7 @@ var WriteNode = React.createClass({
 
 module.exports = WriteNode;
 
-},{"../actions":237,"./storyadder":244,"lodash":3,"marked":4,"react/addons":44}],248:[function(require,module,exports){
+},{"../actions":237,"./writestoryadder":248,"lodash":3,"marked":4,"react/addons":44}],246:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40533,7 +40398,213 @@ var WriteNodePage = React.createClass({
 
 module.exports = WriteNodePage;
 
-},{"./writenode":247,"lodash":3,"react":216}],249:[function(require,module,exports){
+},{"./writenode":245,"lodash":3,"react":216}],247:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var actions = require('../actions');
+
+var StartForm = React.createClass({
+  displayName: 'StartForm',
+
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var storyPart = this.populateStoryStart();
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryStart(storyPart);
+      this.emptyForm();
+    }
+  },
+  emptyForm: function emptyForm() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+  },
+  populateStoryStart: function populateStoryStart() {
+    return {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value
+    };
+  },
+  render: function render() {
+
+    return React.createElement(
+      'div',
+      { className: 'write-new' },
+      React.createElement(
+        'h2',
+        null,
+        'Skriv ny historia.'
+      ),
+      React.createElement(
+        'div',
+        { className: 'story-starter' },
+        React.createElement(
+          'div',
+          { className: 'writer' },
+          React.createElement(
+            'form',
+            { onSubmit: this.handleSubmit },
+            React.createElement('input', { type: 'text',
+              ref: 'title',
+              placeholder: 'Titel'
+            }),
+            React.createElement('textarea', { ref: 'txt',
+              placeholder: 'Text',
+              rows: '8'
+            }),
+            React.createElement(
+              'button',
+              { className: 'cancel' },
+              'Avbryt'
+            ),
+            React.createElement(
+              'button',
+              { className: 'save' },
+              'Spara'
+            )
+          )
+        )
+      )
+    );
+  }
+
+});
+
+module.exports = StartForm;
+
+},{"../actions":237,"react":216}],248:[function(require,module,exports){
+'use strict';
+
+var React = require('react/addons');
+var _ = require('lodash');
+var actions = require('../actions');
+
+var StoryAdder = React.createClass({
+  displayName: 'StoryAdder',
+
+  mixins: [React.addons.LinkedStateMixin],
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  handleCancel: function handleCancel(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.props.handleAddStart();
+  },
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var storyPart = this.populateStoryPart();
+    if (storyPart.title !== '' && storyPart.txt !== '') {
+      actions.addStoryPart(storyPart);
+      this.emptyForm();
+      this.props.handleAddStart();
+    }
+  },
+  emptyForm: function emptyForm() {
+    this.refs.title.getDOMNode().value = '';
+    this.refs.txt.getDOMNode().value = '';
+  },
+  populateStoryPart: function populateStoryPart() {
+    return {
+      title: this.refs.title.getDOMNode().value,
+      txt: this.refs.txt.getDOMNode().value,
+      isEnding: this.refs.endingCheckbox.getDOMNode().checked,
+      parentKey: this.props.selected.key
+    };
+  },
+  toBeBlownUp: [],
+  visitChildren: function visitChildren(obj) {
+
+    console.log('visiting' + obj.title);
+    this.toBeBlownUp.push(obj.key);
+
+    if (!obj.children) {
+      return;
+    }
+
+    _.forEach(obj.children, (function (child) {
+      var foundChild = _.find(this.props.data, function (s) {
+        return s.key === child.key;
+      });
+      this.visitChildren(foundChild);
+    }).bind(this));
+  },
+  storypartDestroyer: function storypartDestroyer() {
+    this.toBeBlownUp = [];
+    var parentKey = '';
+
+    _.map(this.props.data, (function (story) {
+      if (story.children) {
+        _.forEach(story.children, (function (child) {
+          if (child.key === this.props.selected.key) {
+            parentKey = story.key;
+          }
+        }).bind(this));
+      }
+    }).bind(this));
+
+    console.log(parentKey);
+
+    if (!this.props.selected.children) {
+      if (confirm('Vill du verkligen radera historiadelen med titel ' + this.props.selected.title + ' ?')) {
+        actions.destroyStoryPart(this.props.selected.key, parentKey);
+      }
+    } else {
+      if (confirm('VARNING! Historiedelen du vill radera har barn som också kommer att raderas, är du säker på att du vill detta?')) {
+        this.visitChildren(this.props.selected);
+        actions.destroyStoryParts(this.toBeBlownUp, parentKey);
+      }
+    }
+  },
+  render: function render() {
+    return React.createElement(
+      'div',
+      { className: 'story-adder' },
+      React.createElement(
+        'div',
+        { className: 'writer' },
+        React.createElement(
+          'form',
+          { onSubmit: this.handleSubmit },
+          React.createElement('input', { type: 'text',
+            ref: 'title',
+            placeholder: 'Titel'
+          }),
+          React.createElement('textarea', { ref: 'txt',
+            placeholder: 'Text' }),
+          React.createElement(
+            'span',
+            { className: 'switch' },
+            React.createElement(
+              'p',
+              null,
+              'Avslutande del?'
+            ),
+            React.createElement('input', { type: 'checkbox', name: 'isEnding', ref: 'endingCheckbox' }),
+            React.createElement('div', { className: 'checkbox' }),
+            React.createElement(
+              'button',
+              { className: 'addBtn cancelAdd', onClick: this.handleCancel },
+              'Avbryt'
+            ),
+            React.createElement(
+              'button',
+              null,
+              'Spara'
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+module.exports = StoryAdder;
+
+},{"../actions":237,"lodash":3,"react/addons":44}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -40576,12 +40647,16 @@ module.exports = React.createElement(
   React.createElement(
     Route,
     { name: 'read', path: 'read', handler: MultiRoute },
-    React.createElement(Route, { name: 'readnodes', path: ':key', handler: ReadNodePage }),
+    React.createElement(
+      Route,
+      { name: 'readnodes', path: ':key', handler: ReadNodePage },
+      React.createElement(Route, { name: 'choicenodes', path: ':choice', handler: ReadNodePage })
+    ),
     React.createElement(DefaultRoute, { handler: ReadHome })
   )
 );
 
-},{"./components/multiroute":240,"./components/readhome":241,"./components/readnodepage":243,"./components/wrap":245,"./components/writehome":246,"./components/writenodepage":248,"react":216,"react-router":29}],251:[function(require,module,exports){
+},{"./components/multiroute":239,"./components/readhome":240,"./components/readnodepage":242,"./components/wrap":243,"./components/writehome":244,"./components/writenodepage":246,"react":216,"react-router":29}],251:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux');
