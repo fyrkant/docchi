@@ -1,6 +1,12 @@
-$node-tree-border : 3px solid $dark-gray;
+$node-tree-border : 3px solid $medium-gray;
 
-.tree { 
+.tree {
+  h2 {
+    font-size: 1.5em;
+    line-height: 1em;
+    margin: 10px 0;
+    text-shadow: 5px 5px 2px $light-gray;  
+  }
 
 }
 
@@ -112,7 +118,7 @@ div.editing{
 
     button {
       border-radius: 0;
-      padding: 9px;
+      padding: 6px;
     }
 
     p {      
@@ -126,15 +132,15 @@ div.editing{
     }
     input[type=checkbox] {
       position: absolute;
-      left: 120px;
-      bottom: 7px;
+      left: 130px;
+      bottom: 0;
     }
 
     .save {
       position: absolute;      
-      right: -1px;
-      bottom: -1px;
-      width: 80px;
+      right: 0;
+      bottom: 0;
+      width: 25%;
       background-color: $button-save;
       transition: $button-transition;
 
@@ -144,9 +150,9 @@ div.editing{
     }
     .cancel {
       position:absolute;
-      right: 79px;
-      bottom: -1px;
-      width: 80px;
+      right: 25%;
+      bottom: 0;
+      width: 25%;
       background-color: $button-cancel;
       transition: $button-transition;
 
@@ -162,7 +168,7 @@ div.editing{
     margin: -5px;
     width: 349px;
     resize: none;
-    height: 130px;
+    height: 135px;
     border-radius: 0;
     box-shadow: none;  
     
@@ -177,11 +183,9 @@ div.editing{
 
 .story-node {
   position: relative;
-  line-height: 1.2em;
-  font-family: $helvetica;
-  font-size: 0.8em;
+  line-height: 1.2em;  
   @include transition(all 0.5s ease-in-out);
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.4);
 
   background: white;
   display: block;
@@ -223,24 +227,26 @@ div.editing{
     right: 0;
     bottom: 0;
     width: 50%;
-    background: white;
+    background: $light-gray;
     border-radius: 0;
     color: $medium-gray;
     transition: $button-transition;
 
-    &:hover {
-      color: $dark-gray;
-    }
-
-    &.cancelAdd {
-      color: white;
-      background-color: darken(red, 10%);
+    .fa {
+      color: $button-save-hover;
+      padding: 0 5px;
       transition: $button-transition;
-
-      &:hover {
-        background-color: red;
-      }
     }
+
+    &:hover {
+      color: #fff;
+      background-color: $button-save-hover;
+
+    .fa {
+      color: #fff;
+    }
+
+    }    
   }
 
   .editBtn {
@@ -248,13 +254,24 @@ div.editing{
     left: 0;
     bottom: 0;
     width: 50%;
-    background: none;
+    background: $light-gray;
     border-radius: 0;
     color: $medium-gray;    
     transition: all 0.2s ease-in-out;
 
+    .fa {
+      color: $button-cancel-hover;
+      padding: 0 5px;
+      transition: $button-transition;
+    }
+
     &:hover {
-      color: $dark-gray;
+      color: #FFF;
+      background-color: $button-cancel-hover;
+
+      .fa {
+        color: #fff;
+      }
     }
   }
 
@@ -269,10 +286,10 @@ div.editing{
     }
 
     &::before {
-      content: 'Avslutande del!';
-      color: transparentize(red, 0.5);
+      content: 'Avslutande del';
+      color: red;
       position: absolute;
-      bottom: 0;
+      bottom: 3px;
       left:50%;      
     }
   }

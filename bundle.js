@@ -39920,25 +39920,25 @@ var React = require('react/addons');
 var _ = require('lodash');
 var marked = require('marked');
 var Link = require('react-router').Link;
+var Router = require('react-router');
 
 var ReadNode = React.createClass({
   displayName: 'ReadNode',
 
+  mixins: [Router.Navigation],
   handleChoice: function handleChoice(story) {
     console.log(story);
   },
   componentWillUpdate: function componentWillUpdate() {
     var node = this.getDOMNode();
+    console.log(node);
     this.shouldScrollToBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
   },
   componentDidUpdate: function componentDidUpdate() {
-    if (this.shouldScrollToBottom) {
-      var node = this.getDOMNode();
-      node.scrollTop = node.scrollHeight;
-    }
+    var node = this.getDOMNode();
+    node.scrollBottom = node.scrollHeight;
   },
   render: function render() {
-    debugger;
 
     var arrayedData = _.toArray(this.props.data);
 
@@ -39964,12 +39964,11 @@ var ReadNode = React.createClass({
         React.createElement('p', { dangerouslySetInnerHTML: { __html: rawMarkup } })
       ),
       this.props.params.choice ? _.map(this.props.params.choice.split('-'), (function (number, index, array) {
-        console.log(array);
         return React.createElement(
           'div',
           { key: Math.random() },
           React.createElement(
-            'h2',
+            'h3',
             { className: 'segway' },
             arrayedData[number].title
           ),
@@ -39980,34 +39979,42 @@ var ReadNode = React.createClass({
             'SLUT'
           ) : '',
           index !== array.length - 1 ? '' : _.map(arrayedData[number].children, (function (child) {
+            var _this = this;
+
             var foundChild = _.find(this.props.data, function (s) {
               return s.key === child.key;
             });
             var arrayKey = _.findIndex(arrayedData, { key: foundChild.key });
 
             return React.createElement(
-              'h2',
+              'h3',
               { key: arrayKey },
               React.createElement(
-                Link,
-                { to: 'choicenodes', params: { key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey } },
+                'a',
+                { onClick: function () {
+                    return _this.context.router.replaceWith('choicenodes', { key: _this.props.params.key, choice: _this.props.params.choice + '-' + arrayKey });
+                  } },
                 foundChild.title
               )
             );
           }).bind(this))
         );
       }).bind(this)) : _.map(this.props.selected.children, (function (child) {
+        var _this2 = this;
+
         var foundChild = _.find(this.props.data, function (s) {
           return s.key === child.key;
         });
         var arrayKey = _.findIndex(arrayedData, { key: foundChild.key });
 
         return React.createElement(
-          'h2',
+          'h3',
           { key: arrayKey },
           React.createElement(
-            Link,
-            { to: 'choicenodes', params: { key: this.props.params.key, choice: arrayKey } },
+            'a',
+            { onClick: function () {
+                return _this2.context.router.replaceWith('choicenodes', { key: _this2.props.params.key, choice: arrayKey });
+              } },
             foundChild.title
           )
         );
@@ -40292,8 +40299,8 @@ var WriteNode = React.createClass({
         'li',
         null,
         React.createElement(
-          'a',
-          { href: '#', className: (this.state.isEditing ? 'hide' : 'viewTitle') + endingClass, onClick: this.showNode },
+          'h2',
+          { className: (this.state.isEditing ? 'hide' : 'viewTitle') + endingClass, onClick: this.showNode },
           this.props.selected.title
         ),
         React.createElement('input', { ref: 'editTitleInput',

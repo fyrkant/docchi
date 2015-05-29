@@ -2,23 +2,23 @@ var React = require('react/addons');
 var _ = require('lodash');
 var marked = require('marked');
 var Link = require('react-router').Link;
+var Router = require('react-router');
 
 var ReadNode = React.createClass({
+  mixins: [Router.Navigation],
   handleChoice(story) {
     console.log(story);
   },
   componentWillUpdate() {
     var node = this.getDOMNode();
+    console.log(node);
     this.shouldScrollToBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
   },
   componentDidUpdate() {
-    if (this.shouldScrollToBottom) {
-      var node = this.getDOMNode();
-      node.scrollTop = node.scrollHeight;
-    }
+    var node = this.getDOMNode();
+    node.scrollBottom = node.scrollHeight;
   },
   render() {
-    debugger;
 
     var arrayedData = _.toArray(this.props.data);
 
@@ -34,22 +34,26 @@ var ReadNode = React.createClass({
 			<article className="type-system-traditional">
 				<div key={Math.random()}>
           <h1>{this.props.selected.title}</h1>
-				  <p dangerouslySetInnerHTML={{__html: rawMarkup}} />
+          <p dangerouslySetInnerHTML={{__html: rawMarkup}} />
         </div>
 
 				{ this.props.params.choice ?
           _.map(this.props.params.choice.split('-'), function(number, index, array) {
-            console.log(array);
             return (
                 <div key={Math.random()}>
-                  <h2 className="segway">{arrayedData[number].title}</h2>
+                  <h3 className="segway">{arrayedData[number].title}</h3>
                   <p dangerouslySetInnerHTML={{__html: marked(arrayedData[number].txt, {sanitize: true})}} />
                   {arrayedData[number].isEnding ? <strong>SLUT</strong> : ''}
                   { index !== (array.length - 1) ? '' :  _.map(arrayedData[number].children, function(child) {
                     var foundChild = _.find(this.props.data, function(s) {return s.key === child.key;});
                     var arrayKey = _.findIndex(arrayedData, {key: foundChild.key});
 
-                    return <h2 key={arrayKey}><Link to="choicenodes" params={{key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey}}>{foundChild.title}</Link></h2>;
+                    return (
+                    <h3 key={arrayKey}>
+                      <a onClick={() => this.context.router.replaceWith('choicenodes', {key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey})}>
+                        {foundChild.title}
+                      </a>
+                    </h3>);
                   }.bind(this))}
                 </div>);
           }.bind(this)) :
@@ -57,7 +61,12 @@ var ReadNode = React.createClass({
             var foundChild = _.find(this.props.data, function(s) {return s.key === child.key;});
             var arrayKey = _.findIndex(arrayedData, {key: foundChild.key});
 
-            return <h2 key={arrayKey}><Link to="choicenodes" params={{key: this.props.params.key, choice: arrayKey}}>{foundChild.title}</Link></h2>;
+            return (
+              <h3 key={arrayKey}>
+                <a onClick={() => this.context.router.replaceWith('choicenodes', {key: this.props.params.key, choice: arrayKey})}>
+                  {foundChild.title}
+                </a>
+              </h3>);
           }.bind(this)) }
 			</article>
 			);

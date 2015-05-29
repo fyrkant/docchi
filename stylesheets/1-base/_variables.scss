@@ -1,6 +1,8 @@
 // Typography
-$base-font-family: $helvetica;
-$heading-font-family: $base-font-family;
+$sans-serif: 'Noto Sans', sans-serif;
+$serif: 'Radley', serif;
+$base-font-family: $sans-serif;
+$heading-font-family: $serif;
 
 // Font Sizes
 $base-font-size: 1em;

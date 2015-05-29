@@ -141,7 +141,9 @@ var WriteNode = React.createClass({
     return !this.props.selected ? <div /> : (
 			<ul className='tree'>
 				<li>
-					<a href="#" className={(this.state.isEditing ? 'hide' : 'viewTitle') + endingClass} onClick={this.showNode}>{this.props.selected.title}</a>
+					<h2 className={(this.state.isEditing ? 'hide' : 'viewTitle') + endingClass} onClick={this.showNode}>
+            {this.props.selected.title}
+          </h2>
           <input ref="editTitleInput"
             className={this.state.isEditing ? 'editTitle' : 'hide'}
             valueLink={this.linkState('titleEditValue')} />
