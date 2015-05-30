@@ -39848,17 +39848,16 @@ var Home = React.createClass({
           'Välkommen till Docchi'
         ),
         React.createElement(
-          'a',
-          { className: 'login', onClick: actions.login },
-          'Logga in'
-        ),
-        ' för att kunna skriva din egen historia, eller ',
-        React.createElement(
-          Link,
-          { to: 'read' },
-          'läs någon av de redan skapade'
-        ),
-        '.'
+          'p',
+          null,
+          'Logga in för att kunna skriva din egen historia, eller ',
+          React.createElement(
+            Link,
+            { to: 'read' },
+            'läs någon av de redan skapade'
+          ),
+          '.'
+        )
       )
     );
   }
@@ -39980,7 +39979,7 @@ var LoginButton = React.createClass({
       'a',
       { onClick: this.handleLogin },
       'Logga in med ',
-      this.props.provider
+      React.createElement('i', { className: 'fa fa-' + this.props.provider })
     );
   }
 });
@@ -40039,16 +40038,17 @@ var ReadNode = React.createClass({
   displayName: 'ReadNode',
 
   mixins: [Router.Navigation],
-  componentWillUpdate: function componentWillUpdate() {
-    var node = this.getDOMNode();
-    console.log(node);
-    this.shouldScrollToBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
-  },
-  componentDidUpdate: function componentDidUpdate() {
-    var node = this.getDOMNode();
-    node.scrollTop = node.scrollHeight;
-    window.scrollBy(node.height, 0);
-  },
+  // componentWillUpdate() {
+  //   var node = this.getDOMNode();
+  //   console.log(node);
+  //   this.shouldScrollToBottom =
+  //     (node.scrollTop + node.offsetHeight) === node.scrollHeight;
+  // },
+  // componentDidUpdate() {
+  //   var node = this.getDOMNode();
+  //   node.scrollTop = node.scrollHeight;
+  //   window.scrollBy(node.height, 0);
+  // },
   render: function render() {
 
     var arrayedData = _.toArray(this.props.data);
@@ -40150,7 +40150,7 @@ var ReadNodePage = React.createClass({
         return React.createElement(
             'div',
             { className: 'write-home' },
-            React.createElement(ReadNode, _extends({}, this.props, { data: foundStories, selected: foundParent }))
+            React.createElement(ReadNode, _extends({}, this.props, { data: foundStories, selected: foundParent, key: this.props.params.key }))
         );
     }
 });
@@ -40789,8 +40789,8 @@ module.exports = React.createElement(
     { name: 'read', path: 'read', handler: MultiRoute },
     React.createElement(
       Route,
-      { name: 'readnodes', path: ':key', handler: ReadNodePage },
-      React.createElement(Route, { name: 'choicenodes', path: ':choice', handler: ReadNodePage })
+      { name: 'readnodes', path: ':key', handler: ReadNodePage, ignoreScrollBehavior: true },
+      React.createElement(Route, { name: 'choicenodes', path: ':choice', handler: ReadNodePage, ignoreScrollBehavior: true })
     ),
     React.createElement(DefaultRoute, { handler: ReadHome })
   )

@@ -9,7 +9,7 @@ var Home = React.createClass({
     <article className="type-system-traditional">
       <h1>Välkommen till Docchi</h1>
 
-      <a className="login" onClick={actions.login}>Logga in</a> för att kunna skriva din egen historia, eller <Link to="read">läs någon av de redan skapade</Link>.
+      <p>Logga in för att kunna skriva din egen historia, eller <Link to="read">läs någon av de redan skapade</Link>.</p>
     </article>
   </div>);
   }

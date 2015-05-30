@@ -1264,28 +1264,25 @@ h1.header-title {
   /* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h2 {
     font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
-    font-weight: 700;
-    padding: 0 20px;
-    margin-top: auto;
-    font-weight: 300;
+    margin: 15px 5px 5px 5px;
+    font-weight: 100;
     font-style: normal;
-    font-size: 2em; }
-    /* line 51, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    font-size: 3em; }
+    /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 a {
       position: relative;
       padding: 0 20px;
       color: rgba(255, 255, 255, 0.5);
       transition: all 0.3s ease-out; }
-      /* line 57, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 55, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a:hover {
         color: white; }
-      /* line 61, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a.active {
         font-size: 1em;
         color: white;
-        text-decoration: none;
-        box-shadow: inset 0 -4px 0 yellow; }
-  /* line 72, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        text-decoration: none; }
+  /* line 70, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .write.hidden {
     visibility: hidden; }
   @media screen and (max-width: 850px) {
@@ -1294,25 +1291,28 @@ h1.header-title {
           -ms-flex-direction: column;
               flex-direction: column;
       self-align: end; } }
-  /* line 83, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 81, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .login {
     width: 250px; }
-    /* line 85, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 83, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login p {
       display: inline;
       padding: 0 0.5em; }
-    /* line 90, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 88, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login i {
       position: relative;
       top: 0.1em;
-      font-size: 2em; }
-    /* line 96, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      font-size: 1.5em; }
+    /* line 94, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login a {
       display: block;
       color: white;
       cursor: pointer;
       transition: all 0.2s ease-in-out; }
-/* line 106, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 101, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header .login a:hover i {
+        color: white; }
+/* line 110, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home .write-home {
   margin-top: 100px; }
   @media screen and (max-width: 850px) {
@@ -1320,32 +1320,32 @@ h1.header-title {
       margin-top: 280px;
       padding: 0 10px; } }
 
-/* line 116, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 120, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.save {
   position: absolute;
   right: 5px;
   bottom: -25px;
   background-color: #00b053;
   transition: all 0.2s ease-in-out; }
-  /* line 123, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 127, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.save:hover {
     background: #00E36B; }
-/* line 127, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 131, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.cancel {
   position: absolute;
   right: 90px;
   bottom: -25px;
   background-color: #eea236;
   transition: all 0.2s ease-in-out; }
-  /* line 134, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 138, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.cancel:hover {
     background: #f0ad4e; }
 
-/* line 141, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 145, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button:hover {
   transition: all 0.2s ease-in-out; }
 
-/* line 145, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 149, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 a.login {
   cursor: pointer; }
 

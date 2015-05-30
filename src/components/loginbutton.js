@@ -24,7 +24,7 @@ var LoginButton = React.createClass({
         </a>
       </span> :
       <a onClick={this.handleLogin}>
-        Logga in med {this.props.provider}
+        Logga in med <i className={'fa fa-' + this.props.provider}></i>
       </a>;
   }
 });

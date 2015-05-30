@@ -18,8 +18,8 @@ module.exports = (
       <DefaultRoute handler={WriteHome} />
     </Route>
     <Route name="read" path="read" handler={MultiRoute}>
-      <Route name="readnodes" path=":key" handler={ReadNodePage}>
-        <Route name="choicenodes" path=":choice" handler={ReadNodePage} />
+      <Route name="readnodes" path=":key" handler={ReadNodePage} ignoreScrollBehavior>
+        <Route name="choicenodes" path=":choice" handler={ReadNodePage} ignoreScrollBehavior />
       </Route>
       <DefaultRoute handler={ReadHome} />
     </Route>

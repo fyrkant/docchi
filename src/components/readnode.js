@@ -6,17 +6,17 @@ var Router = require('react-router');
 
 var ReadNode = React.createClass({
   mixins: [Router.Navigation],
-  componentWillUpdate() {
-    var node = this.getDOMNode();
-    console.log(node);
-    this.shouldScrollToBottom =
-      (node.scrollTop + node.offsetHeight) === node.scrollHeight;
-  },
-  componentDidUpdate() {
-    var node = this.getDOMNode();
-    node.scrollTop = node.scrollHeight;
-    window.scrollBy(node.height, 0);
-  },
+  // componentWillUpdate() {
+  //   var node = this.getDOMNode();
+  //   console.log(node);
+  //   this.shouldScrollToBottom =
+  //     (node.scrollTop + node.offsetHeight) === node.scrollHeight;
+  // },
+  // componentDidUpdate() {
+  //   var node = this.getDOMNode();
+  //   node.scrollTop = node.scrollHeight;
+  //   window.scrollBy(node.height, 0);
+  // },
   render() {
 
     var arrayedData = _.toArray(this.props.data);
