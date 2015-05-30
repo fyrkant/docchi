@@ -1231,6 +1231,9 @@ h1.header-title {
     -webkit-flex-direction: row;
         -ms-flex-direction: row;
             flex-direction: row;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center; }
@@ -1239,71 +1242,109 @@ h1.header-title {
       clear: both;
       content: "";
       display: table; }
-  /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    @media screen and (max-width: 850px) {
+      .home header .header-items {
+        -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column; } }
+  /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h1 {
-    font-family: "lust-script";
+    font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     margin: 15px 5px 5px 5px;
     line-height: 1em;
     font-size: 4em;
-    color: rgba(255, 255, 255, 0.5);
-    transition: all 0.5s ease-in-out; }
-    /* line 29, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header h1:hover {
+    color: white; }
+    /* line 33, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header h1 a {
       color: white; }
-  /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header h1 a .active {
+        color: white;
+        text-decoration: none; }
+  /* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h2 {
     padding: 0 20px;
     margin-top: auto;
     font-weight: 300;
     font-style: normal;
-    width: 50%;
     font-size: 2em; }
-    /* line 43, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 a {
       position: relative;
       padding: 0 20px;
       color: rgba(255, 255, 255, 0.5);
       transition: all 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53); }
-      /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 55, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a:hover {
         color: white; }
-      /* line 53, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a.active {
+        font-size: 1.3em;
         color: white;
         text-decoration: none;
         box-shadow: inset 0 -4px 0 yellow; }
-  /* line 62, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 70, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  .home header .write.hidden {
+    visibility: hidden; }
+  @media screen and (max-width: 850px) {
+    .home header .write, .home header .read {
+      -webkit-flex-direction: column;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      self-align: end; } }
+  /* line 81, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .login {
-    color: white;
-    cursor: pointer; }
-/* line 68, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    width: 250px; }
+    /* line 83, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .login p {
+      display: inline;
+      padding: 0 0.5em; }
+    /* line 88, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .login i {
+      position: relative;
+      top: 0.1em;
+      font-size: 2em; }
+    /* line 94, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .login a {
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out; }
+/* line 103, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home .write-home {
   margin-top: 100px; }
+  @media screen and (max-width: 850px) {
+    .home .write-home {
+      margin-top: 280px;
+      padding: 0 10px; } }
 
-/* line 73, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 113, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.save {
   position: absolute;
   right: 5px;
   bottom: -25px;
   background-color: #00b053;
   transition: all 0.2s ease-in-out; }
-  /* line 80, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 120, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.save:hover {
     background: #00E36B; }
-/* line 84, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 124, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.cancel {
   position: absolute;
   right: 90px;
   bottom: -25px;
   background-color: #eea236;
   transition: all 0.2s ease-in-out; }
-  /* line 91, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 131, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.cancel:hover {
     background: #f0ad4e; }
 
-/* line 98, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 138, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button:hover {
   transition: all 0.2s ease-in-out; }
+
+/* line 142, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+a.login {
+  cursor: pointer; }
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
 .write-home {
@@ -1335,11 +1376,12 @@ button:hover {
         float: left;
         display: block;
         margin-right: 2.357651598%;
-        width: 100%; }
+        width: 100%;
+        border: 0; }
         /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
         .write-home .write-new:last-child {
           margin-right: 0; } }
-  /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  /* line 21, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
   .write-home .list-unfinished {
     float: left;
     display: block;
@@ -1361,15 +1403,15 @@ button:hover {
         display: block;
         margin-right: 2.357651598%;
         width: 100%;
-        margin-top: 30px; }
+        margin-top: 40px; }
         /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
         .write-home .list-unfinished:last-child {
           margin-right: 0; } }
-    /* line 30, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .list-unfinished ul {
       margin-top: -15px;
       font-size: 1.2em; }
-  /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+  /* line 38, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
   .write-home .writer {
     position: relative;
     top: 20px;
@@ -1380,10 +1422,10 @@ button:hover {
     @media screen and (max-width: 850px) {
       .write-home .writer {
         width: 100%; } }
-    /* line 48, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .writer input, .write-home .writer textarea {
       border-radius: 0; }
-    /* line 51, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
+    /* line 52, C:/temp/mw222rs-project/stylesheets/3-layouts/components/write-home */
     .write-home .writer button {
       float: right;
       border-radius: 0; }

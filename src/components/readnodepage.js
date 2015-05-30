@@ -5,7 +5,7 @@ var ReadNode = require('./readnode');
 var ReadNodePage = React.createClass({
   render() {
 
-    var foundStories = _.result(_.find(this.props.stories, {key: this.props.params.key}), 'stories');
+    var foundStories = _.result(_.find(this.props.finishedStories, {key: this.props.params.key}), 'stories');
     var foundParent = _.find(foundStories, {isParent: true});
 
     return (

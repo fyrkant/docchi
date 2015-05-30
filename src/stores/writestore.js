@@ -1,17 +1,13 @@
 var Reflux = require('reflux');
 var actions = require('../actions');
 var Firebase = require('firebase');
-//_ = require('lodash'),
+var _ = require('lodash');
 
-var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
+var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/writing');
 
 module.exports = Reflux.createStore({
   init() {
-
     storiesRef.on('value', this.updateStories.bind(this));
-
-    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
-    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
     this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
@@ -19,9 +15,6 @@ module.exports = Reflux.createStore({
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
     this.listenTo(actions.setStatus, this.onSetStatus.bind(this));
-    // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
-    // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
-    // this.listenTo(actions.resetFocus, this.resetFocus);
   },
   onAddStoryPart(storyPart) {
 
@@ -140,11 +133,24 @@ module.exports = Reflux.createStore({
       storiesRef.child(key).update({
         status: status
       });
-      return true;
     }
   },
   updateStories(snap) {
-    this.trigger({stories:(this.last = snap.val() || {})});
+
+    _.map(snap.val(), function(story) {
+      if (story.status === 'done') {
+        storiesRef.child(story.key).once('value', function() {
+          storiesRef.parent().child('done').child(story.key).set(
+            story,
+            function(error) { console.log(error);}
+            );
+        });
+      } else if (story.status === 'writing') {
+        actions.unpublish(story.key);
+      }
+    });
+
+    this.trigger(this.last = snap.val() || {});
   },
   getDefaultData() {
 

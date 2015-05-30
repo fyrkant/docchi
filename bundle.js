@@ -39823,13 +39823,14 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'logout', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPart', 'destroyStoryPart', 'destroyStoryParts']);
+module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'logout', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPart', 'destroyStoryPart', 'destroyStoryParts', 'unpublish']);
 
 },{"reflux":217}],238:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var actions = require('../actions');
+var Link = require('react-router').Link;
 
 var Home = React.createClass({
   displayName: 'Home',
@@ -39839,14 +39840,25 @@ var Home = React.createClass({
       'div',
       { className: 'write-home' },
       React.createElement(
-        'p',
-        null,
-        'HEMMA! ',
+        'article',
+        { className: 'type-system-traditional' },
+        React.createElement(
+          'h1',
+          null,
+          'Välkommen till Docchi'
+        ),
         React.createElement(
           'a',
-          { onClick: actions.login },
+          { className: 'login', onClick: actions.login },
           'Logga in'
-        )
+        ),
+        ' för att kunna skriva din egen historia, eller ',
+        React.createElement(
+          Link,
+          { to: 'read' },
+          'läs någon av de redan skapade'
+        ),
+        '.'
       )
     );
   }
@@ -39854,7 +39866,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"../actions":237,"react":216}],239:[function(require,module,exports){
+},{"../actions":237,"react":216,"react-router":29}],239:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -39868,7 +39880,7 @@ var LeanStoryList = React.createClass({
     var _this = this;
 
     var createItem = function createItem(story, index) {
-      if (story.status === _this.props.filter && (_this.props.isWriteList && _this.user ? _this.props.user.uid === story.author.uid : true)) {
+      if (story.status === _this.props.filter) {
         return React.createElement(
           'li',
           { key: index, index: index },
@@ -39882,9 +39894,11 @@ var LeanStoryList = React.createClass({
       }
     };
 
+    var stories = this.props.isWriteList ? this.props.stories : this.props.finishedStories;
+
     var filter = this.props.user && this.props.isWriteList ? { status: this.props.filter, author: { uid: this.props.user.uid } } : { status: this.props.filter };
 
-    var divClass = !_.find(this.props.stories, filter) ? 'hide' : '';
+    var divClass = !_.find(stories, filter) ? 'hide' : '';
 
     return React.createElement(
       'div',
@@ -39892,12 +39906,12 @@ var LeanStoryList = React.createClass({
       React.createElement(
         'h2',
         null,
-        this.props.titleText + ' (' + _.toArray(_.filter(this.props.stories, filter)).length + ')'
+        this.props.titleText + ' (' + _.toArray(_.filter(stories, filter)).length + ')'
       ),
       React.createElement(
         'ul',
         null,
-        _.map(this.props.stories, createItem)
+        _.map(stories, createItem)
       )
     );
   }
@@ -39911,27 +39925,48 @@ module.exports = LeanStoryList;
 
 var React = require('react');
 var actions = require('../actions');
+var Router = require('react-router');
 
 var LoginButton = React.createClass({
   displayName: 'LoginButton',
 
+  mixins: [Router.Navigation],
+  handleLogout: function handleLogout(evt) {
+    evt.preventDefault();
+    actions.logout();
+    this.replaceWith('home');
+  },
   render: function render() {
     return this.props.user ? React.createElement(
-      'a',
-      { className: 'login', onClick: actions.logout },
-      'Logga ut ',
-      this.props.user.name
+      'span',
+      null,
+      React.createElement(
+        'p',
+        null,
+        'Inloggad som ',
+        React.createElement(
+          'em',
+          null,
+          this.props.user.name
+        )
+      ),
+      React.createElement(
+        'a',
+        { onClick: this.handleLogout },
+        'Logga ut'
+      )
     ) : React.createElement(
       'a',
-      { className: 'login', onClick: actions.login },
-      'Logga in'
+      { onClick: actions.login },
+      'Logga in med ',
+      React.createElement('i', { className: 'fa fa-github' })
     );
   }
 });
 
 module.exports = LoginButton;
 
-},{"../actions":237,"react":216}],241:[function(require,module,exports){
+},{"../actions":237,"react":216,"react-router":29}],241:[function(require,module,exports){
 'use strict';
 
 var React = require('react/addons');
@@ -40096,7 +40131,7 @@ var ReadNodePage = React.createClass({
 
     render: function render() {
 
-        var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
+        var foundStories = _.result(_.find(this.props.finishedStories, { key: this.props.params.key }), 'stories');
         var foundParent = _.find(foundStories, { isParent: true });
 
         return React.createElement(
@@ -40117,6 +40152,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var React = require('react');
 var Reflux = require('reflux');
 var WriteStore = require('../stores/writestore');
+var ReadStore = require('../stores/readstore');
 var LoginStore = require('../stores/loginstore');
 var Router = require('react-router');
 var RouteHandler = require('react-router').RouteHandler;
@@ -40125,7 +40161,7 @@ var LoginButton = require('./loginbutton');
 var Home = React.createClass({
   displayName: 'Home',
 
-  mixins: [Reflux.connect(WriteStore), Reflux.connect(LoginStore, 'user'), Router.State],
+  mixins: [Reflux.connect(WriteStore, 'stories'), Reflux.connect(ReadStore, 'finishedStories'), Reflux.connect(LoginStore, 'user'), Router.State],
   render: function render() {
     return React.createElement(
       'div',
@@ -40139,38 +40175,38 @@ var Home = React.createClass({
           React.createElement(
             'h1',
             null,
-            'Docchi'
+            React.createElement(
+              Router.Link,
+              { to: 'home' },
+              'Docchi'
+            )
           ),
           React.createElement(
             'h2',
-            null,
+            { className: 'write' + (!this.state.user ? ' hidden' : '') },
             React.createElement(
-              'span',
-              { className: 'write' },
-              this.state.user ? React.createElement(
-                Router.Link,
-                { to: 'write' },
-                'Skriv'
-              ) : ''
-            ),
-            React.createElement(
-              'span',
-              { className: 'read' },
-              React.createElement(
-                Router.Link,
-                { to: 'read' },
-                'Läs'
-              )
-            ),
-            React.createElement(
-              'span',
-              null,
-              React.createElement(LoginButton, { user: this.state.user })
+              Router.Link,
+              { to: 'write' },
+              'Skriv'
             )
+          ),
+          React.createElement(
+            'h2',
+            { className: 'read' },
+            React.createElement(
+              Router.Link,
+              { to: 'read' },
+              'Läs'
+            )
+          ),
+          React.createElement(
+            'span',
+            { className: 'login' },
+            React.createElement(LoginButton, { user: this.state.user })
           )
         )
       ),
-      React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories, user: this.state.user }))
+      React.createElement(RouteHandler, _extends({}, this.props, { stories: this.state.stories, finishedStories: this.state.finishedStories, user: this.state.user }))
     );
   }
 
@@ -40178,7 +40214,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"../stores/loginstore":253,"../stores/writestore":254,"./loginbutton":240,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
+},{"../stores/loginstore":253,"../stores/readstore":254,"../stores/writestore":255,"./loginbutton":240,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40462,7 +40498,7 @@ module.exports = WriteNode;
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var React = require('react');
-// var Router = require('react-router');
+var Router = require('react-router');
 var WriteNode = require('./writenode');
 var _ = require('lodash');
 // var actions = require('../actions');
@@ -40470,6 +40506,12 @@ var _ = require('lodash');
 var WriteNodePage = React.createClass({
   displayName: 'WriteNodePage',
 
+  mixins: [Router.Navigation],
+  componentWillMount: function componentWillMount() {
+    if (!this.props.user) {
+      this.replaceWith('home');
+    }
+  },
   render: function render() {
 
     var foundStories = _.result(_.find(this.props.stories, { key: this.props.params.key }), 'stories');
@@ -40485,7 +40527,7 @@ var WriteNodePage = React.createClass({
 
 module.exports = WriteNodePage;
 
-},{"./writenode":247,"lodash":3,"react":216}],249:[function(require,module,exports){
+},{"./writenode":247,"lodash":3,"react":216,"react-router":29}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -40787,19 +40829,63 @@ module.exports = Reflux.createStore({
 'use strict';
 
 var Reflux = require('reflux');
-var actions = require('../actions');
 var Firebase = require('firebase');
-//_ = require('lodash'),
+var actions = require('../actions');
 
-var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/');
+var finishedStoriesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/done');
 
 module.exports = Reflux.createStore({
   init: function init() {
+    finishedStoriesRef.on('value', this.updateStories.bind(this));
 
+    this.listenTo(actions.unpublish, this.onUnpublish.bind(this));
+  },
+  updateStories: function updateStories(snap) {
+
+    // _.map(snap.val(), function(story) {
+    //   if (story.status === 'done') {
+    //     finishedStoriesRef.child(story.key).once('value', function() {
+    //       finishedStoriesRef.child('done').child(story.key).set(
+    //         story,
+    //         function(error) { console.log(error);}
+    //         );
+    //     });
+    //   }
+    // });
+
+    this.trigger(this.last = snap.val() || {});
+  },
+  onUnpublish: function onUnpublish(key) {
+    var unpublishedRef = finishedStoriesRef.child(key);
+    unpublishedRef.remove();
+  },
+  getDefaultData: function getDefaultData() {
+
+    console.log('default data');
+
+    var stories;
+
+    finishedStoriesRef.on('value', function (snap) {
+      stories = snap.val();
+    });
+
+    return stories || {};
+  }
+});
+
+},{"../actions":237,"firebase":2,"reflux":217}],255:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux');
+var actions = require('../actions');
+var Firebase = require('firebase');
+var _ = require('lodash');
+
+var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/writing');
+
+module.exports = Reflux.createStore({
+  init: function init() {
     storiesRef.on('value', this.updateStories.bind(this));
-
-    // storiesRef.on("child_removed", this.updateStoriesChildRemoved.bind(this));
-    // storiesRef.on("child_added", this.updateStoriesChildAdded.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
     this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
@@ -40807,9 +40893,6 @@ module.exports = Reflux.createStore({
     this.listenTo(actions.destroyStoryParts, this.onDestroyStoryParts.bind(this));
     this.listenTo(actions.addStoryPart, this.onAddStoryPart.bind(this));
     this.listenTo(actions.setStatus, this.onSetStatus.bind(this));
-    // this.listenTo(actions.changeSelected, this.onChangeSelected.bind(this));
-    // this.listenTo(actions.changeFocus, this.onChangeFocus.bind(this));
-    // this.listenTo(actions.resetFocus, this.resetFocus);
   },
   onAddStoryPart: function onAddStoryPart(storyPart) {
 
@@ -40926,11 +41009,23 @@ module.exports = Reflux.createStore({
       storiesRef.child(key).update({
         status: status
       });
-      return true;
     }
   },
   updateStories: function updateStories(snap) {
-    this.trigger({ stories: this.last = snap.val() || {} });
+
+    _.map(snap.val(), function (story) {
+      if (story.status === 'done') {
+        storiesRef.child(story.key).once('value', function () {
+          storiesRef.parent().child('done').child(story.key).set(story, function (error) {
+            console.log(error);
+          });
+        });
+      } else if (story.status === 'writing') {
+        actions.unpublish(story.key);
+      }
+    });
+
+    this.trigger(this.last = snap.val() || {});
   },
   getDefaultData: function getDefaultData() {
 
@@ -40946,4 +41041,4 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":237,"firebase":2,"reflux":217}]},{},[251]);
+},{"../actions":237,"firebase":2,"lodash":3,"reflux":217}]},{},[251]);
