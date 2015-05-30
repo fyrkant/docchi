@@ -1,11 +1,12 @@
 var React = require('react/addons');
 var _ = require('lodash');
 var actions = require('../actions');
+var Router = require('react-router');
 var StoryAdder = require('./writestoryadder');
 var marked = require('marked');
 
 var WriteNode = React.createClass({
-  mixins:[React.addons.LinkedStateMixin],
+  mixins:[React.addons.LinkedStateMixin, Router.Navigation],
   getInitialState() {
     return {};
   },
@@ -124,6 +125,10 @@ var WriteNode = React.createClass({
       status = 'writing';
     }
     actions.setStatus(this.props.params.key, status);
+
+    if (!nextProps.data) {
+      this.replaceWith('write');
+    }
   },
   render() {
     var editingClass = this.state.isEditing ? 'editing' : '' ;

@@ -1,14 +1,11 @@
 var React = require('react');
-var Reflux = require('reflux');
-var LoginStore = require('../stores/loginstore');
 var actions = require('../actions');
 
 var LoginButton = React.createClass({
-  mixins:[Reflux.connect(LoginStore)],
   render: function() {
-    return (
-			<button onClick={actions.login}>Logga in</button>
-		);
+    return this.props.user ?
+      <a className="login" onClick={actions.logout}>Logga ut {this.props.user.name}</a>
+      : <a className="login" onClick={actions.login}>Logga in</a>;
   }
 });
 

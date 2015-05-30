@@ -48,11 +48,12 @@ module.exports = Reflux.createStore({
       key: concatKey
     });
   },
-  onAddStoryStart(storyStart) {
+  onAddStoryStart(storyStart, user) {
 
     var container = storiesRef.push({
       title: storyStart.title,
-      status: 'writing'
+      status: 'writing',
+      author: user
     });
     container.update({
       key: container.key()

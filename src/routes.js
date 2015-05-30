@@ -2,20 +2,17 @@ var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
 var DefaultRoute = Router.DefaultRoute;
-// var TodoApp = require('./components/todoapp');
-// var LoremPage = require('./components/lorempage');
-// var Write = require('./components/write');
-//var StoryNode = require('./components/storynode');
-//var Wrapper = require('./components/wrapper');
 var Wrap = require('./components/wrap');
 var MultiRoute = require('./components/multiroute');
 var WriteHome = require('./components/writehome');
 var WriteNodePage = require('./components/writenodepage');
 var ReadHome = require('./components/readhome');
 var ReadNodePage = require('./components/readnodepage');
+var Home = require('./components/home');
 
 module.exports = (
 	<Route path="/" handler={Wrap}>
+    <DefaultRoute name="home" handler={Home} />
     <Route name="write" path="write" handler={MultiRoute}>
       <Route name="writenodepage" path=":key" handler={WriteNodePage} />
       <DefaultRoute handler={WriteHome} />

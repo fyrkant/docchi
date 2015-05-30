@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var _ = require('lodash');
 var marked = require('marked');
-var Link = require('react-router').Link;
+// var Link = require('react-router').Link;
 var Router = require('react-router');
 
 var ReadNode = React.createClass({
@@ -50,7 +50,7 @@ var ReadNode = React.createClass({
 
                     return (
                     <h3 key={arrayKey}>
-                      <a onClick={() => this.context.router.replaceWith('choicenodes', {key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey})}>
+                      <a onClick={() => this.replaceWith('choicenodes', {key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey})}>
                         {foundChild.title}
                       </a>
                     </h3>);
@@ -63,7 +63,7 @@ var ReadNode = React.createClass({
 
             return (
               <h3 key={arrayKey}>
-                <a onClick={() => this.context.router.replaceWith('choicenodes', {key: this.props.params.key, choice: arrayKey})}>
+                <a onClick={() => this.replaceWith('choicenodes', {key: this.props.params.key, choice: arrayKey})}>
                   {foundChild.title}
                 </a>
               </h3>);

@@ -1219,17 +1219,27 @@ h1.header-title {
   left: 0;
   right: 0;
   width: 100%;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
   border-bottom: 3px solid #3367b0; }
-  /* line 15, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 13, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  .home header .header-items {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    /* line 20, C:/temp/mw222rs-project/stylesheets/0-plugins/bourbon/addons/clearfix */
+    .home header .header-items::after {
+      clear: both;
+      content: "";
+      display: table; }
+  /* line 20, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h1 {
     font-family: "lust-script";
     margin: 15px 5px 5px 5px;
@@ -1237,10 +1247,10 @@ h1.header-title {
     font-size: 4em;
     color: rgba(255, 255, 255, 0.5);
     transition: all 0.5s ease-in-out; }
-    /* line 24, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 29, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h1:hover {
       color: white; }
-  /* line 29, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h2 {
     padding: 0 20px;
     margin-top: auto;
@@ -1248,46 +1258,50 @@ h1.header-title {
     font-style: normal;
     width: 50%;
     font-size: 2em; }
-    /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 43, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 a {
       position: relative;
       padding: 0 20px;
       color: rgba(255, 255, 255, 0.5);
       transition: all 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53); }
-      /* line 43, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a:hover {
         color: white; }
-      /* line 47, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 53, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a.active {
         color: white;
         text-decoration: none;
         box-shadow: inset 0 -4px 0 yellow; }
-/* line 58, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 62, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  .home header .login {
+    color: white;
+    cursor: pointer; }
+/* line 68, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home .write-home {
   margin-top: 100px; }
 
-/* line 63, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 73, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.save {
   position: absolute;
   right: 5px;
   bottom: -25px;
   background-color: #00b053;
   transition: all 0.2s ease-in-out; }
-  /* line 70, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 80, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.save:hover {
     background: #00E36B; }
-/* line 74, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 84, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.cancel {
   position: absolute;
   right: 90px;
   bottom: -25px;
   background-color: #eea236;
   transition: all 0.2s ease-in-out; }
-  /* line 81, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 91, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.cancel:hover {
     background: #f0ad4e; }
 
-/* line 88, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 98, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button:hover {
   transition: all 0.2s ease-in-out; }
 

@@ -6,7 +6,7 @@ var ReadHome = React.createClass({
   render: function() {
     return (
       <div className="write-home">
-        <LeanStoryList {...this.props} titleText="Färdigställda historier " filter="done" linkTo="readnodes" />
+        <LeanStoryList {...this.props} titleText="Färdigställda historier " isWriteList={false} filter="done" linkTo="readnodes" />
       </div>
     );
   }

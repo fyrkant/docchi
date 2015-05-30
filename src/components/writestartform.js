@@ -7,7 +7,7 @@ var StartForm = React.createClass({
     e.stopPropagation();
     var storyPart = this.populateStoryStart();
     if (storyPart.title !== '' && storyPart.txt !== '') {
-      actions.addStoryStart(storyPart);
+      actions.addStoryStart(storyPart, this.props.user);
       this.emptyForm();
     }
   },

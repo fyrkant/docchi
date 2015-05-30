@@ -1,16 +1,21 @@
 .home {
 
   header {
+
     background-color: $blue;
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     border-bottom: 3px solid darken($blue, 9);
+
+    .header-items {
+      @include outer-container;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
 
     h1 {
       font-family: "lust-script";
@@ -33,6 +38,7 @@
       font-style: normal;
       width: 50%;
       font-size: 2em;
+      
 
       a {
         position: relative; 
@@ -50,8 +56,12 @@
           box-shadow: inset 0 -4px 0 $yellow;
 
           
-        }
-      }      
+        }      
+      }    
+    }
+    .login {
+      color: white;
+      cursor: pointer;
     }
   }
 
