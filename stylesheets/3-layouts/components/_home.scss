@@ -40,6 +40,8 @@
         }
       }
     h2 {
+      font-family: $helvetica;
+      font-weight: 700;
       padding: 0 20px;
       margin-top: auto;
       font-weight: 300;
@@ -50,14 +52,14 @@
         position: relative; 
         padding: 0 20px;
         color: transparentize(white, 0.5);
-        transition: all .3s $ease-in-quad;        
+        transition: all .3s ease-out;        
 
         &:hover {
           color: white;
         }
 
         &.active {          
-          font-size: 1.3em;
+          font-size: 1em;
           color: white;
           text-decoration: none;
           box-shadow: inset 0 -4px 0 $yellow;
@@ -91,7 +93,8 @@
         font-size: 2em;
       }         
 
-      a {        
+      a {
+        display: block;        
         color: white;
         cursor: pointer;
         transition: $button-transition;

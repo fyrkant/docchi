@@ -39880,7 +39880,24 @@ var LeanStoryList = React.createClass({
     var _this = this;
 
     var createItem = function createItem(story, index) {
-      if (story.status === _this.props.filter) {
+      if (_this.props.isWriteList) {
+        if (story.author.uid === _this.props.user.uid) {
+          return React.createElement(
+            'li',
+            { key: index, index: index },
+            React.createElement(
+              Link,
+              { to: _this.props.linkTo, params: { key: index } },
+              _.result(_.find(story.stories, { isParent: true }), 'title')
+            ),
+            !_this.props.isWriteList ? React.createElement(
+              'p',
+              { className: 'author' },
+              story.author.name
+            ) : ''
+          );
+        }
+      } else {
         return React.createElement(
           'li',
           { key: index, index: index },
@@ -39906,7 +39923,7 @@ var LeanStoryList = React.createClass({
       React.createElement(
         'h2',
         null,
-        this.props.titleText + ' (' + _.toArray(_.filter(stories, filter)).length + ')'
+        this.props.titleText
       ),
       React.createElement(
         'ul',
@@ -39931,6 +39948,10 @@ var LoginButton = React.createClass({
   displayName: 'LoginButton',
 
   mixins: [Router.Navigation],
+  handleLogin: function handleLogin(evt) {
+    evt.preventDefault();
+    actions.login(this.props.provider);
+  },
   handleLogout: function handleLogout(evt) {
     evt.preventDefault();
     actions.logout();
@@ -39939,7 +39960,7 @@ var LoginButton = React.createClass({
   render: function render() {
     return this.props.user ? React.createElement(
       'span',
-      null,
+      { className: this.props.user.provider === this.props.provider ? '' : 'hide' },
       React.createElement(
         'p',
         null,
@@ -39957,9 +39978,9 @@ var LoginButton = React.createClass({
       )
     ) : React.createElement(
       'a',
-      { onClick: actions.login },
+      { onClick: this.handleLogin },
       'Logga in med ',
-      React.createElement('i', { className: 'fa fa-github' })
+      this.props.provider
     );
   }
 });
@@ -39997,7 +40018,7 @@ var ReadHome = React.createClass({
     return React.createElement(
       'div',
       { className: 'write-home' },
-      React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Färdigställda historier ', isWriteList: false, filter: 'done', linkTo: 'readnodes' }))
+      React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Historier ', isWriteList: false, filter: 'done', linkTo: 'readnodes' }))
     );
   }
 
@@ -40018,9 +40039,6 @@ var ReadNode = React.createClass({
   displayName: 'ReadNode',
 
   mixins: [Router.Navigation],
-  handleChoice: function handleChoice(story) {
-    console.log(story);
-  },
   componentWillUpdate: function componentWillUpdate() {
     var node = this.getDOMNode();
     console.log(node);
@@ -40028,23 +40046,18 @@ var ReadNode = React.createClass({
   },
   componentDidUpdate: function componentDidUpdate() {
     var node = this.getDOMNode();
-    node.scrollBottom = node.scrollHeight;
+    node.scrollTop = node.scrollHeight;
+    window.scrollBy(node.height, 0);
   },
   render: function render() {
 
     var arrayedData = _.toArray(this.props.data);
 
-    var chosenPath = this.props.params.choice ? this.props.params.choice : null;
-
-    if (chosenPath) {
-      console.log(chosenPath.split(''));
-    }
-
     var rawMarkup = _.isUndefined(this.props.selected) ? '' : marked(this.props.selected.txt, { sanitize: true });
 
     return !this.props.selected ? React.createElement('div', null) : React.createElement(
       'article',
-      { className: 'type-system-traditional' },
+      { className: 'read-nodes type-system-traditional' },
       React.createElement(
         'div',
         { key: Math.random() },
@@ -40083,7 +40096,7 @@ var ReadNode = React.createClass({
               { key: arrayKey },
               React.createElement(
                 'a',
-                { onClick: function () {
+                { className: 'choice-link', onClick: function () {
                     return _this.replaceWith('choicenodes', { key: _this.props.params.key, choice: _this.props.params.choice + '-' + arrayKey });
                   } },
                 foundChild.title
@@ -40104,7 +40117,7 @@ var ReadNode = React.createClass({
           { key: arrayKey },
           React.createElement(
             'a',
-            { onClick: function () {
+            { className: 'choice-link', onClick: function () {
                 return _this2.replaceWith('choicenodes', { key: _this2.props.params.key, choice: arrayKey });
               } },
             foundChild.title
@@ -40183,15 +40196,6 @@ var Home = React.createClass({
           ),
           React.createElement(
             'h2',
-            { className: 'write' + (!this.state.user ? ' hidden' : '') },
-            React.createElement(
-              Router.Link,
-              { to: 'write' },
-              'Skriv'
-            )
-          ),
-          React.createElement(
-            'h2',
             { className: 'read' },
             React.createElement(
               Router.Link,
@@ -40200,9 +40204,19 @@ var Home = React.createClass({
             )
           ),
           React.createElement(
+            'h2',
+            { className: 'write' + (!this.state.user ? ' hidden' : '') },
+            React.createElement(
+              Router.Link,
+              { to: 'write' },
+              'Skriv'
+            )
+          ),
+          React.createElement(
             'span',
             { className: 'login' },
-            React.createElement(LoginButton, { user: this.state.user })
+            React.createElement(LoginButton, { provider: 'github', user: this.state.user }),
+            React.createElement(LoginButton, { provider: 'google', user: this.state.user })
           )
         )
       ),
@@ -40805,16 +40819,18 @@ module.exports = Reflux.createStore({
   getDefaultData: function getDefaultData() {
     return this.last;
   },
-  onLogin: function onLogin() {
-    ref.authWithOAuthPopup('github', (function (error, authData) {
+  onLogin: function onLogin(provider) {
+    ref.authWithOAuthPopup(provider, (function (error, authData) {
       if (error) {
         console.log('Login Failed!', error);
       } else {
         console.log('Authenticated successfully with payload:', authData);
         var user = {
-          name: authData.github.displayName,
+          name: authData[provider].displayName,
+          provider: authData.provider,
           uid: authData.uid
         };
+        console.log(user);
         this.trigger(this.last = user);
       }
     }).bind(this));

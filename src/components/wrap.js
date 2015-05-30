@@ -22,15 +22,15 @@ var Home = React.createClass({
             <h1>
               <Router.Link to="home">Docchi</Router.Link>
             </h1>
-
-            <h2 className={'write' + (!this.state.user ? ' hidden' : '')}>
-              <Router.Link to="write">Skriv</Router.Link>
-            </h2>
             <h2 className="read">
               <Router.Link to="read">Läs</Router.Link>
             </h2>
+            <h2 className={'write' + (!this.state.user ? ' hidden' : '')}>
+              <Router.Link to="write">Skriv</Router.Link>
+            </h2>
             <span className="login">
-              <LoginButton user={this.state.user} />
+              <LoginButton provider="github" user={this.state.user} />
+              <LoginButton provider="google" user={this.state.user} />
             </span>
           </div>
         </header>

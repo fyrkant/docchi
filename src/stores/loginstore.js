@@ -18,16 +18,18 @@ module.exports = Reflux.createStore({
   getDefaultData() {
     return this.last;
   },
-  onLogin() {
-    ref.authWithOAuthPopup('github', function(error, authData) {
+  onLogin(provider) {
+    ref.authWithOAuthPopup(provider, function(error, authData) {
       if (error) {
         console.log('Login Failed!', error);
       } else {
         console.log('Authenticated successfully with payload:', authData);
         var user = {
-          name: authData.github.displayName,
+          name: authData[provider].displayName,
+          provider: authData.provider,
           uid: authData.uid
         };
+        console.log(user);
         this.trigger((this.last = user));
       }
     }.bind(this));

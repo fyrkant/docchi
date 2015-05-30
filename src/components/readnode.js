@@ -6,32 +6,25 @@ var Router = require('react-router');
 
 var ReadNode = React.createClass({
   mixins: [Router.Navigation],
-  handleChoice(story) {
-    console.log(story);
-  },
   componentWillUpdate() {
     var node = this.getDOMNode();
     console.log(node);
-    this.shouldScrollToBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+    this.shouldScrollToBottom =
+      (node.scrollTop + node.offsetHeight) === node.scrollHeight;
   },
   componentDidUpdate() {
     var node = this.getDOMNode();
-    node.scrollBottom = node.scrollHeight;
+    node.scrollTop = node.scrollHeight;
+    window.scrollBy(node.height, 0);
   },
   render() {
 
     var arrayedData = _.toArray(this.props.data);
 
-    var chosenPath = this.props.params.choice ? this.props.params.choice : null;
-
-    if (chosenPath) {
-      console.log(chosenPath.split(''));
-    }
-
     var rawMarkup = _.isUndefined(this.props.selected) ? '' : marked(this.props.selected.txt, {sanitize: true});
 
     return !this.props.selected ? <div /> : (
-			<article className="type-system-traditional">
+			<article className="read-nodes type-system-traditional">
 				<div key={Math.random()}>
           <h1>{this.props.selected.title}</h1>
           <p dangerouslySetInnerHTML={{__html: rawMarkup}} />
@@ -41,20 +34,29 @@ var ReadNode = React.createClass({
           _.map(this.props.params.choice.split('-'), function(number, index, array) {
             return (
                 <div key={Math.random()}>
-                  <h3 className="segway">{arrayedData[number].title}</h3>
+                  <h3 className="segway">
+                    {arrayedData[number].title}
+                  </h3>
                   <p dangerouslySetInnerHTML={{__html: marked(arrayedData[number].txt, {sanitize: true})}} />
-                  {arrayedData[number].isEnding ? <strong>SLUT</strong> : ''}
-                  { index !== (array.length - 1) ? '' :  _.map(arrayedData[number].children, function(child) {
-                    var foundChild = _.find(this.props.data, function(s) {return s.key === child.key;});
-                    var arrayKey = _.findIndex(arrayedData, {key: foundChild.key});
 
-                    return (
-                    <h3 key={arrayKey}>
-                      <a onClick={() => this.replaceWith('choicenodes', {key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey})}>
-                        {foundChild.title}
-                      </a>
-                    </h3>);
-                  }.bind(this))}
+                  {arrayedData[number].isEnding ? <strong>SLUT</strong> : ''}
+
+                  { index !== (array.length - 1) ?
+                    '' :
+                    _.map(arrayedData[number].children, function(child) {
+                      var foundChild = _.find(this.props.data, function(s) {return s.key === child.key;});
+                      var arrayKey = _.findIndex(arrayedData, {key: foundChild.key});
+
+                      return (
+                        <h3 key={arrayKey}>
+                          <a className="choice-link" onClick={
+                            () => this.replaceWith('choicenodes', {key: this.props.params.key, choice: this.props.params.choice + '-' + arrayKey})
+                          }>
+                            {foundChild.title}
+                          </a>
+                        </h3>);
+                    }.bind(this))
+                  }
                 </div>);
           }.bind(this)) :
           _.map(this.props.selected.children, function(child) {
@@ -63,13 +65,13 @@ var ReadNode = React.createClass({
 
             return (
               <h3 key={arrayKey}>
-                <a onClick={() => this.replaceWith('choicenodes', {key: this.props.params.key, choice: arrayKey})}>
+                <a className="choice-link" onClick={() => this.replaceWith('choicenodes', {key: this.props.params.key, choice: arrayKey})}>
                   {foundChild.title}
                 </a>
               </h3>);
-          }.bind(this)) }
-			</article>
-			);
+          }.bind(this))
+        }
+			</article>);
   }
 });
 

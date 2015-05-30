@@ -4,6 +4,10 @@ var Router = require('react-router');
 
 var LoginButton = React.createClass({
   mixins: [Router.Navigation],
+  handleLogin(evt) {
+    evt.preventDefault();
+    actions.login(this.props.provider);
+  },
   handleLogout(evt) {
     evt.preventDefault();
     actions.logout();
@@ -11,8 +15,17 @@ var LoginButton = React.createClass({
   },
   render: function() {
     return this.props.user ?
-      <span><p>Inloggad som <em>{this.props.user.name}</em></p><a onClick={this.handleLogout}>Logga ut</a></span>
-      : <a onClick={actions.login}>Logga in med <i className="fa fa-github"></i></a>;
+      <span className={this.props.user.provider === this.props.provider ? '' : 'hide'}>
+        <p>
+          Inloggad som <em>{this.props.user.name}</em>
+        </p>
+        <a onClick={this.handleLogout}>
+          Logga ut
+        </a>
+      </span> :
+      <a onClick={this.handleLogin}>
+        Logga in med {this.props.provider}
+      </a>;
   }
 });
 
