@@ -6,23 +6,22 @@ var LeanStoryList = React.createClass({
   render: function() {
     var createItem = (story, index) => {
       if (this.props.isWriteList) {
-        if (story.author.uid === this.props.user.uid) {
+        if (story.status === this.props.filter && story.author.uid === this.props.user.uid) {
           return (
             <li key={index} index={index}>
               <Link to={this.props.linkTo} params={{key: index}}>
                 {_.result(_.find(story.stories, {isParent:true}), 'title')}
               </Link>
-              {!this.props.isWriteList ? <p className="author">{story.author.name}</p> : ''}
             </li>);
         }
       } else {
         return (
-          <li key={index} index={index}>
+          <h3 key={index} index={index}>
             <Link to={this.props.linkTo} params={{key: index}}>
               {_.result(_.find(story.stories, {isParent:true}), 'title')}
-              {!this.props.isWriteList ? '- ' + story.author.name : ''}
+              <p>av {story.author.name}</p>
             </Link>
-          </li>);
+          </h3>);
       }
     };
 
@@ -35,7 +34,7 @@ var LeanStoryList = React.createClass({
     return (
       <div className={divClass}>
         <h2>{this.props.titleText}</h2>
-        <ul>{_.map(stories, createItem)}</ul>
+        {this.props.isWriteList ? <ul>{_.map(stories, createItem)}</ul> : <div>{_.map(stories, createItem)}</div>}
       </div>);
 
   }

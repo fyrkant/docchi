@@ -8,7 +8,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    border-bottom: 3px solid darken($blue, 9);
+    border-bottom: 3px solid lighten($blue, 5);
 
     .header-items {
       @include outer-container;
@@ -24,14 +24,13 @@
     }
 
     h1 {
-      font-family: $helvetica;
       margin: 15px 5px 5px 5px;
       line-height: 1em;
       font-size: 4em;
-      color: white;
+      text-shadow: 5px 5px 2px transparentize(#fff, .9);
 
       a {
-        color:white;
+        color: white;
 
         .active {
           color: white;
@@ -39,12 +38,12 @@
         }
         }
       }
-    h2 {
-      font-family: $helvetica;
+    h2 {      
       margin: 15px 5px 5px 5px;
       font-weight: 100;
       font-style: normal;
       font-size: 3em;
+      text-shadow: 5px 5px 2px transparentize(#fff, .9);
 
       a {
         position: relative; 
@@ -56,7 +55,7 @@
           color: white;
         }
 
-        &.active {          
+        &.active {         
           font-size: 1em;
           color: white;
           text-decoration: none;
@@ -81,11 +80,12 @@
     .login {
       width: 250px;
       p {
+        color: transparentize(white, 0.5);
         display: inline;
-        padding: 0 .5em;
+        padding: 0;
       }
 
-      i {
+      i {        
         position: relative;
         top: .1em;
         font-size: 1.5em;
@@ -93,11 +93,12 @@
 
       a {
         display: block;        
-        color: white;
+        color: transparentize(white, 0.3);
         cursor: pointer;
         transition: $button-transition;
 
         &:hover {
+          color: #FFF;
           i {
             color: white
           }

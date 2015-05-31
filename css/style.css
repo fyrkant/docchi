@@ -14,7 +14,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], button 
   -o-appearance: none;
   appearance: none;
   -webkit-font-smoothing: antialiased;
-  background-color: #477dca;
+  background-color: #01579B;
   border-radius: 5px;
   border: none;
   color: #fff;
@@ -34,7 +34,7 @@ button, input[type="button"], input[type="reset"], input[type="submit"], button 
   white-space: nowrap; }
   /* line 21, C:/temp/mw222rs-project/stylesheets/1-base/buttons */
   button:hover, button:focus, input[type="button"]:hover, input[type="button"]:focus, input[type="reset"]:hover, input[type="reset"]:focus, input[type="submit"]:hover, input[type="submit"]:focus, button:hover, button:focus {
-    background-color: #2c5999;
+    background-color: #012c4f;
     color: #fff; }
   /* line 26, C:/temp/mw222rs-project/stylesheets/1-base/buttons */
   button:disabled, input[type="button"]:disabled, input[type="reset"]:disabled, input[type="submit"]:disabled, button:disabled {
@@ -83,8 +83,8 @@ input[type="color"], input[type="date"], input[type="datetime"], input[type="dat
     border-color: #c4c4c4; }
   /* line 46, C:/temp/mw222rs-project/stylesheets/1-base/forms */
   input[type="color"]:focus, input[type="date"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="email"]:focus, input[type="month"]:focus, input[type="number"]:focus, input[type="password"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="text"]:focus, input[type="time"]:focus, input[type="url"]:focus, input[type="week"]:focus, textarea:focus, select[multiple=multiple]:focus, textarea:focus {
-    border-color: #477dca;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(55, 112, 192, 0.7);
+    border-color: #01579B;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 5px rgba(1, 73, 130, 0.7);
     outline: none; }
 
 /* line 53, C:/temp/mw222rs-project/stylesheets/1-base/forms */
@@ -184,12 +184,12 @@ p {
 
 /* line 26, C:/temp/mw222rs-project/stylesheets/1-base/typography */
 a {
-  color: #477dca;
+  color: #01579B;
   text-decoration: none;
   transition: color 0.1s linear; }
   /* line 33, C:/temp/mw222rs-project/stylesheets/1-base/typography */
   a:active, a:focus, a:hover {
-    color: #2c5999; }
+    color: #012c4f; }
   /* line 38, C:/temp/mw222rs-project/stylesheets/1-base/typography */
   a:active, a:focus {
     outline: none; }
@@ -213,8 +213,8 @@ button {
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/2-modules/refills/centered-navigation */
 .centered-navigation {
-  background-color: #96b5e1;
-  border-bottom: 5px solid #7ea4da;
+  background-color: #0590fd;
+  border-bottom: 5px solid #017fe2;
   min-height: 55px;
   width: 100%;
   z-index: 9999; }
@@ -288,7 +288,7 @@ button {
       margin-left: 2.2em; } }
   /* line 101, C:/temp/mw222rs-project/stylesheets/2-modules/refills/centered-navigation */
   .centered-navigation ul li.nav-link {
-    background: #96b5e1;
+    background: #0590fd;
     display: block;
     line-height: 55px;
     overflow: hidden;
@@ -407,14 +407,14 @@ button {
             padding-bottom: 0.7em; } }
       /* line 248, C:/temp/mw222rs-project/stylesheets/2-modules/refills/centered-navigation */
       .centered-navigation ul.submenu li a {
-        background-color: #8aaddd;
+        background-color: #0287f1;
         display: inline-block;
         text-align: right;
         text-decoration: none;
         width: 100%; }
         @media screen and (min-width: 53.75em) {
           .centered-navigation ul.submenu li a {
-            background-color: #96b5e1;
+            background-color: #0590fd;
             padding-left: 1em;
             text-align: left;
             width: 12em; } }
@@ -494,7 +494,7 @@ button {
         z-index: 2; }
     /* line 63, C:/temp/mw222rs-project/stylesheets/2-modules/refills/label-switch */
     .label-switch input[type="checkbox"]:checked + .checkbox {
-      background: #477dca; }
+      background: #01579B; }
       /* line 66, C:/temp/mw222rs-project/stylesheets/2-modules/refills/label-switch */
       .label-switch input[type="checkbox"]:checked + .checkbox:before {
         -webkit-transform: scale(0);
@@ -541,7 +541,7 @@ button {
       background-color: #4d4d4d; }
     /* line 42, C:/temp/mw222rs-project/stylesheets/2-modules/refills/sliding-panel */
     .sliding-panel-content li a:hover {
-      background-color: #477dca;
+      background-color: #01579B;
       color: #fff; }
   /* line 48, C:/temp/mw222rs-project/stylesheets/2-modules/refills/sliding-panel */
   .sliding-panel-content.is-visible {
@@ -624,7 +624,7 @@ button {
   padding: 0; }
   /* line 22, C:/temp/mw222rs-project/stylesheets/2-modules/refills/accordion */
   .accordion a.js-accordion-trigger {
-    background: #477dca;
+    background: #01579B;
     color: white;
     border-radius: 5px;
     text-align: center;
@@ -700,7 +700,7 @@ article.type-system-traditional {
     line-height: 1.5; }
   /* line 34, C:/temp/mw222rs-project/stylesheets/2-modules/refills/type-system-traditional */
   article.type-system-traditional a {
-    color: #477dca;
+    color: #01579B;
     text-decoration: none; }
   /* line 39, C:/temp/mw222rs-project/stylesheets/2-modules/refills/type-system-traditional */
   article.type-system-traditional .type {
@@ -830,7 +830,7 @@ article.type-system-traditional {
     position: absolute;
     top: 5px;
     left: 155px;
-    background: #477dca;
+    background: #01579B;
     font-size: 0.9em;
     color: white;
     border-radius: 5px;
@@ -1213,13 +1213,13 @@ h1.header-title {
 
 /* line 3, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home header {
-  background-color: #477dca;
+  background-color: #01579B;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  border-bottom: 3px solid #3367b0; }
+  border-bottom: 3px solid #0165b4; }
   /* line 13, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .header-items {
     max-width: 68em;
@@ -1249,40 +1249,39 @@ h1.header-title {
                 flex-direction: column; } }
   /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h1 {
-    font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     margin: 15px 5px 5px 5px;
     line-height: 1em;
     font-size: 4em;
-    color: white; }
-    /* line 33, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1); }
+    /* line 32, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h1 a {
       color: white; }
-      /* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 35, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h1 a .active {
         color: white;
         text-decoration: none; }
-  /* line 42, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 41, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header h2 {
-    font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
     margin: 15px 5px 5px 5px;
     font-weight: 100;
     font-style: normal;
-    font-size: 3em; }
-    /* line 49, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    font-size: 3em;
+    text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1); }
+    /* line 48, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header h2 a {
       position: relative;
       padding: 0 20px;
       color: rgba(255, 255, 255, 0.5);
       transition: all 0.3s ease-out; }
-      /* line 55, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 54, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a:hover {
         color: white; }
-      /* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 58, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
       .home header h2 a.active {
         font-size: 1em;
         color: white;
         text-decoration: none; }
-  /* line 70, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 69, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .write.hidden {
     visibility: hidden; }
   @media screen and (max-width: 850px) {
@@ -1291,13 +1290,14 @@ h1.header-title {
           -ms-flex-direction: column;
               flex-direction: column;
       self-align: end; } }
-  /* line 81, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 80, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   .home header .login {
     width: 250px; }
-    /* line 83, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    /* line 82, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login p {
+      color: rgba(255, 255, 255, 0.5);
       display: inline;
-      padding: 0 0.5em; }
+      padding: 0; }
     /* line 88, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login i {
       position: relative;
@@ -1306,13 +1306,16 @@ h1.header-title {
     /* line 94, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
     .home header .login a {
       display: block;
-      color: white;
+      color: rgba(255, 255, 255, 0.7);
       cursor: pointer;
       transition: all 0.2s ease-in-out; }
-      /* line 101, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-      .home header .login a:hover i {
-        color: white; }
-/* line 110, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      /* line 100, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header .login a:hover {
+        color: #FFF; }
+        /* line 102, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        .home header .login a:hover i {
+          color: white; }
+/* line 111, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 .home .write-home {
   margin-top: 100px; }
   @media screen and (max-width: 850px) {
@@ -1320,32 +1323,32 @@ h1.header-title {
       margin-top: 280px;
       padding: 0 10px; } }
 
-/* line 120, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 121, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.save {
   position: absolute;
   right: 5px;
   bottom: -25px;
   background-color: #00b053;
   transition: all 0.2s ease-in-out; }
-  /* line 127, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 128, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.save:hover {
     background: #00E36B; }
-/* line 131, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 132, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.cancel {
   position: absolute;
   right: 90px;
   bottom: -25px;
   background-color: #eea236;
   transition: all 0.2s ease-in-out; }
-  /* line 138, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 139, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.cancel:hover {
     background: #f0ad4e; }
 
-/* line 145, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 146, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button:hover {
   transition: all 0.2s ease-in-out; }
 
-/* line 149, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 150, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 a.login {
   cursor: pointer; }
 
@@ -1539,23 +1542,71 @@ a.login {
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
 .read-nodes {
   margin-bottom: 50%; }
-  /* line 4, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  /* line 5, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
   .read-nodes h3 {
     text-indent: 1em; }
-    /* line 7, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 8, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-nodes h3.segway {
       font-style: normal;
       text-indent: 0; }
-    /* line 12, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 13, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-nodes h3 .choice-link {
       cursor: pointer;
+      box-shadow: inset 0 -2px 0 #f50057;
       color: #4d4d4d;
       transition: all 0.5s; }
-      /* line 17, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+      /* line 19, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
       .read-nodes h3 .choice-link:hover {
-        color: #333;
-        font-size: 1.3em;
-        box-shadow: inset 0 -4px 0 red; }
+        color: white;
+        box-shadow: inset 0 -1.5em 0 #f50057; }
+
+/* line 27, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+.read-list {
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px; }
+  /* line 20, C:/temp/mw222rs-project/stylesheets/0-plugins/bourbon/addons/clearfix */
+  .read-list::after {
+    clear: both;
+    content: "";
+    display: table; }
+  /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  .read-list h2 {
+    font-size: 2em; }
+  /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  .read-list h3 {
+    font-size: 1.5em; }
+    /* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    .read-list h3 p {
+      display: inline;
+      font-size: 0.9em;
+      padding-left: 0.2em;
+      color: #999; }
+  /* line 44, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  .read-list a {
+    cursor: pointer;
+    box-shadow: inset 0 -2px 0 #f50057;
+    color: #4d4d4d;
+    transition: all 0.5s; }
+    /* line 50, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    .read-list a:hover {
+      color: white;
+      box-shadow: inset 0 -1.5em 0 #f50057; }
+
+/* line 2, C:/temp/mw222rs-project/stylesheets/3-layouts/components/landing */
+article.landing h1 {
+  font-size: 3em;
+  line-height: 0.5em; }
+/* line 7, C:/temp/mw222rs-project/stylesheets/3-layouts/components/landing */
+article.landing a {
+  color: #4d4d4d;
+  box-shadow: inset 0 -2px 0 #f50057;
+  transition: all 0.5s; }
+  /* line 12, C:/temp/mw222rs-project/stylesheets/3-layouts/components/landing */
+  article.landing a:hover {
+    color: white;
+    box-shadow: inset 0 -1.5em 0 #f50057; }
 
 /* line 7, C:/temp/mw222rs-project/stylesheets/style.scss */
 .hide {

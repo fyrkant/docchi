@@ -39829,7 +39829,7 @@ module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'logi
 'use strict';
 
 var React = require('react');
-var actions = require('../actions');
+// var actions = require('../actions');
 var Link = require('react-router').Link;
 
 var Home = React.createClass({
@@ -39841,7 +39841,7 @@ var Home = React.createClass({
       { className: 'write-home' },
       React.createElement(
         'article',
-        { className: 'type-system-traditional' },
+        { className: 'landing' },
         React.createElement(
           'h1',
           null,
@@ -39865,7 +39865,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"../actions":237,"react":216,"react-router":29}],239:[function(require,module,exports){
+},{"react":216,"react-router":29}],239:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -39880,7 +39880,7 @@ var LeanStoryList = React.createClass({
 
     var createItem = function createItem(story, index) {
       if (_this.props.isWriteList) {
-        if (story.author.uid === _this.props.user.uid) {
+        if (story.status === _this.props.filter && story.author.uid === _this.props.user.uid) {
           return React.createElement(
             'li',
             { key: index, index: index },
@@ -39888,23 +39888,23 @@ var LeanStoryList = React.createClass({
               Link,
               { to: _this.props.linkTo, params: { key: index } },
               _.result(_.find(story.stories, { isParent: true }), 'title')
-            ),
-            !_this.props.isWriteList ? React.createElement(
-              'p',
-              { className: 'author' },
-              story.author.name
-            ) : ''
+            )
           );
         }
       } else {
         return React.createElement(
-          'li',
+          'h3',
           { key: index, index: index },
           React.createElement(
             Link,
             { to: _this.props.linkTo, params: { key: index } },
             _.result(_.find(story.stories, { isParent: true }), 'title'),
-            !_this.props.isWriteList ? '- ' + story.author.name : ''
+            React.createElement(
+              'p',
+              null,
+              'av ',
+              story.author.name
+            )
           )
         );
       }
@@ -39924,8 +39924,12 @@ var LeanStoryList = React.createClass({
         null,
         this.props.titleText
       ),
-      React.createElement(
+      this.props.isWriteList ? React.createElement(
         'ul',
+        null,
+        _.map(stories, createItem)
+      ) : React.createElement(
+        'div',
         null,
         _.map(stories, createItem)
       )
@@ -40016,7 +40020,7 @@ var ReadHome = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      { className: 'write-home' },
+      { className: 'read-list' },
       React.createElement(LeanStoryList, _extends({}, this.props, { titleText: 'Historier ', isWriteList: false, filter: 'done', linkTo: 'readnodes' }))
     );
   }
@@ -40902,6 +40906,8 @@ var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/
 module.exports = Reflux.createStore({
   init: function init() {
     storiesRef.on('value', this.updateStories.bind(this));
+    storiesRef.on('child_changed', this.childChanged.bind(this));
+    storiesRef.on('child_removed', this.childRemoved.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
     this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
@@ -41027,20 +41033,23 @@ module.exports = Reflux.createStore({
       });
     }
   },
-  updateStories: function updateStories(snap) {
+  childChanged: function childChanged(snap) {
+    var story = snap.val();
 
-    _.map(snap.val(), function (story) {
-      if (story.status === 'done') {
-        storiesRef.child(story.key).once('value', function () {
-          storiesRef.parent().child('done').child(story.key).set(story, function (error) {
-            console.log(error);
-          });
+    if (story.status === 'done') {
+      storiesRef.child(story.key).once('value', function () {
+        storiesRef.parent().child('done').child(story.key).set(story, function (error) {
+          console.log(error);
         });
-      } else if (story.status === 'writing') {
-        actions.unpublish(story.key);
-      }
-    });
-
+      });
+    } else if (story.status === 'writing') {
+      actions.unpublish(story.key);
+    }
+  },
+  childRemoved: function childRemoved(snap) {
+    actions.unpublish(snap.val().key);
+  },
+  updateStories: function updateStories(snap) {
     this.trigger(this.last = snap.val() || {});
   },
   getDefaultData: function getDefaultData() {

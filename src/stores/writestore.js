@@ -8,6 +8,8 @@ var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/
 module.exports = Reflux.createStore({
   init() {
     storiesRef.on('value', this.updateStories.bind(this));
+    storiesRef.on('child_changed', this.childChanged.bind(this));
+    storiesRef.on('child_removed', this.childRemoved.bind(this));
 
     this.listenTo(actions.addStoryStart, this.onAddStoryStart.bind(this));
     this.listenTo(actions.editStoryPart, this.onEditStoryPart.bind(this));
@@ -135,21 +137,24 @@ module.exports = Reflux.createStore({
       });
     }
   },
+  childChanged(snap) {
+    var story = snap.val();
+
+    if (story.status === 'done') {
+      storiesRef.child(story.key).once('value', function() {
+        storiesRef.parent().child('done').child(story.key).set(
+          story,
+          function(error) { console.log(error);}
+          );
+      });
+    } else if (story.status === 'writing') {
+      actions.unpublish(story.key);
+    }
+  },
+  childRemoved(snap) {
+    actions.unpublish(snap.val().key);
+  },
   updateStories(snap) {
-
-    _.map(snap.val(), function(story) {
-      if (story.status === 'done') {
-        storiesRef.child(story.key).once('value', function() {
-          storiesRef.parent().child('done').child(story.key).set(
-            story,
-            function(error) { console.log(error);}
-            );
-        });
-      } else if (story.status === 'writing') {
-        actions.unpublish(story.key);
-      }
-    });
-
     this.trigger(this.last = snap.val() || {});
   },
   getDefaultData() {
