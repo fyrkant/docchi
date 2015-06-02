@@ -1090,8 +1090,8 @@ div.editing .editInfoText {
     width: 24px;
     font-size: 1.3em;
     position: absolute;
-    top: -25px;
-    right: 0;
+    top: 0;
+    right: -25px;
     background: none;
     color: #e60000;
     transition: all 0.2s ease-in-out;
@@ -1182,7 +1182,7 @@ div.editing .editInfoText {
 
 /* line 320, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-node */
 .writer-wrap {
-  margin-top: 100px; }
+  margin-bottom: 50%; }
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/header */
 .centered-navigation {
@@ -1211,144 +1211,157 @@ h1.header-title {
   margin: 0;
   font-size: 4em; }
 
-/* line 3, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-.home header {
-  background-color: #01579B;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  border-bottom: 3px solid #0165b4; }
-  /* line 13, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-  .home header .header-items {
-    max-width: 68em;
-    margin-left: auto;
-    margin-right: auto;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row;
-    -webkit-justify-content: space-between;
-        -ms-flex-pack: justify;
-            justify-content: space-between;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center; }
-    /* line 20, C:/temp/mw222rs-project/stylesheets/0-plugins/bourbon/addons/clearfix */
-    .home header .header-items::after {
-      clear: both;
-      content: "";
-      display: table; }
+/* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+.home {
+  margin-top: 100px; }
+  @media screen and (max-width: 850px) {
+    .home {
+      margin-top: 330px;
+      padding: 0 10px; } }
+  /* line 9, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  .home header {
+    background-color: #01579B;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-bottom: 3px solid #0165b4; }
+    /* line 18, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .header-items {
+      max-width: 68em;
+      margin-left: auto;
+      margin-right: auto;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center; }
+      /* line 20, C:/temp/mw222rs-project/stylesheets/0-plugins/bourbon/addons/clearfix */
+      .home header .header-items::after {
+        clear: both;
+        content: "";
+        display: table; }
+      @media screen and (max-width: 850px) {
+        .home header .header-items {
+          -webkit-flex-direction: column;
+              -ms-flex-direction: column;
+                  flex-direction: column; } }
+    /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header h1 {
+      margin: 15px 5px 5px 5px;
+      line-height: 1em;
+      font-size: 4em;
+      text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1); }
+      /* line 37, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header h1 a {
+        color: white; }
+        /* line 40, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        .home header h1 a .active {
+          color: white;
+          text-decoration: none; }
+    /* line 46, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header h2 {
+      margin: 15px 5px 5px 5px;
+      font-weight: 100;
+      font-style: normal;
+      font-size: 3em;
+      text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1);
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row; }
+      /* line 55, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header h2 a {
+        position: relative;
+        padding: 0 20px;
+        color: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease-out; }
+        /* line 61, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        .home header h2 a:hover {
+          color: white; }
+        /* line 65, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        .home header h2 a.active {
+          font-size: 1em;
+          color: white;
+          text-decoration: none; }
+    /* line 76, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .write.hidden {
+      visibility: hidden; }
+      @media screen and (max-width: 850px) {
+        .home header .write.hidden {
+          display: none; } }
     @media screen and (max-width: 850px) {
-      .home header .header-items {
+      .home header .write, .home header .read {
         -webkit-flex-direction: column;
             -ms-flex-direction: column;
-                flex-direction: column; } }
-  /* line 26, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-  .home header h1 {
-    margin: 15px 5px 5px 5px;
-    line-height: 1em;
-    font-size: 4em;
-    text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1); }
-    /* line 32, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header h1 a {
-      color: white; }
-      /* line 35, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-      .home header h1 a .active {
-        color: white;
-        text-decoration: none; }
-  /* line 41, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-  .home header h2 {
-    margin: 15px 5px 5px 5px;
-    font-weight: 100;
-    font-style: normal;
-    font-size: 3em;
-    text-shadow: 5px 5px 2px rgba(255, 255, 255, 0.1); }
-    /* line 48, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header h2 a {
-      position: relative;
-      padding: 0 20px;
-      color: rgba(255, 255, 255, 0.5);
-      transition: all 0.3s ease-out; }
-      /* line 54, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-      .home header h2 a:hover {
-        color: white; }
-      /* line 58, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-      .home header h2 a.active {
-        font-size: 1em;
-        color: white;
-        text-decoration: none; }
-  /* line 69, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-  .home header .write.hidden {
-    visibility: hidden; }
-  @media screen and (max-width: 850px) {
-    .home header .write, .home header .read {
-      -webkit-flex-direction: column;
-          -ms-flex-direction: column;
-              flex-direction: column;
-      self-align: end; } }
-  /* line 80, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-  .home header .login {
-    width: 250px; }
-    /* line 82, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header .login p {
-      color: rgba(255, 255, 255, 0.5);
-      display: inline;
-      padding: 0; }
-    /* line 88, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header .login i {
-      position: relative;
-      top: 0.1em;
-      font-size: 1.5em; }
-    /* line 94, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-    .home header .login a {
-      display: block;
-      color: rgba(255, 255, 255, 0.7);
-      cursor: pointer;
-      transition: all 0.2s ease-in-out; }
-      /* line 100, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-      .home header .login a:hover {
-        color: #FFF; }
-        /* line 102, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-        .home header .login a:hover i {
-          color: white; }
-/* line 111, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
-.home .write-home {
-  margin-top: 100px; }
+                flex-direction: column;
+        self-align: end; } }
+    /* line 90, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+    .home header .login {
+      width: 250px; }
+      /* line 92, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header .login p {
+        color: rgba(255, 255, 255, 0.5);
+        display: inline;
+        padding: 0; }
+      /* line 98, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header .login i {
+        position: relative;
+        top: 0.1em;
+        font-size: 1.5em; }
+      /* line 104, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+      .home header .login a {
+        display: block;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition: all 0.2s ease-in-out; }
+        /* line 110, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+        .home header .login a:hover {
+          color: #FFF; }
+          /* line 112, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+          .home header .login a:hover i {
+            color: white; }
   @media screen and (max-width: 850px) {
     .home .write-home {
       margin-top: 280px;
       padding: 0 10px; } }
 
-/* line 121, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 131, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.save {
   position: absolute;
   right: 5px;
   bottom: -25px;
   background-color: #00b053;
   transition: all 0.2s ease-in-out; }
-  /* line 128, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 138, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.save:hover {
     background: #00E36B; }
-/* line 132, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 142, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button.cancel {
   position: absolute;
   right: 90px;
   bottom: -25px;
   background-color: #eea236;
   transition: all 0.2s ease-in-out; }
-  /* line 139, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+  /* line 149, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
   button.cancel:hover {
     background: #f0ad4e; }
 
-/* line 146, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 156, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 button:hover {
   transition: all 0.2s ease-in-out; }
 
-/* line 150, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
+/* line 160, C:/temp/mw222rs-project/stylesheets/3-layouts/components/home */
 a.login {
   cursor: pointer; }
 
@@ -1440,7 +1453,7 @@ a.login {
 .story-adder {
   position: relative;
   top: 0;
-  left: 0;
+  right: 0;
   border-radius: 0; }
   /* line 9, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
   .story-adder .writer {
@@ -1451,7 +1464,7 @@ a.login {
     border-radius: 0;
     border: 1px solid #ddd;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    z-index: 2;
+    z-index: 500;
     transition: all 0.2s ease-in-out; }
     /* line 21, C:/temp/mw222rs-project/stylesheets/3-layouts/components/story-adder */
     .story-adder .writer:child:focus {
@@ -1510,8 +1523,8 @@ a.login {
     width: 9px;
     /* same with indentation */
     height: 18px;
-    border-left: 3px solid black;
-    border-bottom: 3px solid black;
+    border-left: 3px solid #999;
+    border-bottom: 3px solid #999;
     margin-left: -15px;
     /* border top width */
     position: absolute;
@@ -1521,7 +1534,7 @@ a.login {
 
 /* line 3, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
 .page-transition-enter {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 3s ease-in-out;
   opacity: 0;
   position: absolute; }
 
@@ -1531,7 +1544,7 @@ a.login {
 
 /* line 11, C:/temp/mw222rs-project/stylesheets/3-layouts/components/page-transition */
 .page-transition-leave {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 3s ease-in-out;
   opacity: 1;
   position: absolute; }
 
@@ -1541,26 +1554,44 @@ a.login {
 
 /* line 1, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
 .read-nodes {
-  margin-bottom: 50%; }
-  /* line 5, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  margin-bottom: 50%;
+  float: left;
+  display: block;
+  margin-right: 2.357651598%;
+  width: 74.410587101%;
+  margin-left: 12.79470645%; }
+  /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+  .read-nodes:last-child {
+    margin-right: 0; }
+  @media screen and (max-width: 850px) {
+    .read-nodes {
+      float: left;
+      display: block;
+      margin-right: 2.357651598%;
+      width: 100%;
+      margin-left: 0%; }
+      /* line 89, C:/temp/mw222rs-project/stylesheets/0-plugins/neat/grid/span-columns */
+      .read-nodes:last-child {
+        margin-right: 0; } }
+  /* line 14, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
   .read-nodes h3 {
     text-indent: 1em; }
-    /* line 8, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 17, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-nodes h3.segway {
       font-style: normal;
       text-indent: 0; }
-    /* line 13, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 22, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-nodes h3 .choice-link {
       cursor: pointer;
       box-shadow: inset 0 -2px 0 #f50057;
       color: #4d4d4d;
       transition: all 0.5s; }
-      /* line 19, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+      /* line 28, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
       .read-nodes h3 .choice-link:hover {
         color: white;
         box-shadow: inset 0 -1.5em 0 #f50057; }
 
-/* line 27, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+/* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
 .read-list {
   max-width: 68em;
   margin-left: auto;
@@ -1571,25 +1602,25 @@ a.login {
     clear: both;
     content: "";
     display: table; }
-  /* line 31, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  /* line 40, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
   .read-list h2 {
-    font-size: 2em; }
-  /* line 34, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    font-size: 2.6em; }
+  /* line 43, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
   .read-list h3 {
     font-size: 1.5em; }
-    /* line 36, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 45, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-list h3 p {
       display: inline;
       font-size: 0.9em;
       padding-left: 0.2em;
       color: #999; }
-  /* line 44, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+  /* line 53, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
   .read-list a {
     cursor: pointer;
     box-shadow: inset 0 -2px 0 #f50057;
     color: #4d4d4d;
     transition: all 0.5s; }
-    /* line 50, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
+    /* line 59, C:/temp/mw222rs-project/stylesheets/3-layouts/components/read-nodes */
     .read-list a:hover {
       color: white;
       box-shadow: inset 0 -1.5em 0 #f50057; }
@@ -1615,4 +1646,8 @@ article.landing a {
 /* line 10, C:/temp/mw222rs-project/stylesheets/style.scss */
 .list-text {
   display: inline; }
+
+/* line 14, C:/temp/mw222rs-project/stylesheets/style.scss */
+body {
+  overflow-y: scroll; }
 /*# sourceMappingURL=style.css.map */

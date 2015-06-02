@@ -40899,7 +40899,7 @@ module.exports = Reflux.createStore({
 var Reflux = require('reflux');
 var actions = require('../actions');
 var Firebase = require('firebase');
-var _ = require('lodash');
+// var _ = require('lodash');
 
 var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/writing');
 
@@ -41066,4 +41066,4 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":237,"firebase":2,"lodash":3,"reflux":217}]},{},[251]);
+},{"../actions":237,"firebase":2,"reflux":217}]},{},[251]);

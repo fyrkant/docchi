@@ -1,7 +1,7 @@
 .story-adder
 	position: relative
 	top: 0
-	left:0
+	right:0
 
 	border-radius: 0;
 
@@ -14,7 +14,7 @@
 	    border-radius: 0
 	    border: $base-border
 	    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4)
-	    z-index: 2;
+	    z-index: 500;
 
 	    +transition(all 0.2s ease-in-out)
 
@@ -76,8 +76,8 @@
 		content:""
 		width:9px /* same with indentation */
 		height:18px
-		border-left: 3px solid black
-		border-bottom: 3px solid black
+		border-left: 3px solid $medium-gray
+		border-bottom: 3px solid $medium-gray
 		margin-left:-15px /* border top width */
 		position:absolute
 		top:-6px/* (line-height/2) */		

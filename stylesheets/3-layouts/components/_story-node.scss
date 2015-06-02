@@ -206,8 +206,8 @@ div.editing{
     @include size(24px);
     font-size: 1.3em;
     position: absolute;
-    top:-25px;
-    right: 0;
+    top:0;
+    right: -25px;
     background: none;
     color: $button-delete;    
     transition: $button-transition;
@@ -318,5 +318,5 @@ div.editing{
 }
 
 .writer-wrap {
-  margin-top: 100px;
+  margin-bottom: 50%;
 }

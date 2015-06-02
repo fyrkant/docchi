@@ -1,7 +1,7 @@
 var Reflux = require('reflux');
 var actions = require('../actions');
 var Firebase = require('firebase');
-var _ = require('lodash');
+// var _ = require('lodash');
 
 var storiesRef = new Firebase('https://blazing-fire-8429.firebaseio.com/stories/writing');
 
