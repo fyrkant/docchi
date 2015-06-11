@@ -5,6 +5,7 @@ module.exports = Reflux.createActions([
     'submitTodoLine',
     'login',
     'logout',
+    'popMessage',
     'setStatus',
     'addStoryStart',
     'addStoryPart',

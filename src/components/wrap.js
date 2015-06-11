@@ -3,15 +3,18 @@ var Reflux = require('reflux');
 var WriteStore = require('../stores/writestore');
 var ReadStore = require('../stores/readstore');
 var LoginStore = require('../stores/loginstore');
+var MessageStore = require('../stores/messagestore');
 var Router = require('react-router');
 var RouteHandler = require('react-router').RouteHandler;
 var LoginButton = require('./loginbutton');
+// var PopMessage = require('./popmessage');
 
 var Home = React.createClass({
   mixins:[
     Reflux.connect(WriteStore, 'stories'),
     Reflux.connect(ReadStore, 'finishedStories'),
     Reflux.connect(LoginStore, 'user'),
+    Reflux.connect(MessageStore, 'message'),
     Router.State
     ],
   render: function() {
@@ -31,6 +34,8 @@ var Home = React.createClass({
             <span className="login">
               <LoginButton provider="github" user={this.state.user} />
               <LoginButton provider="google" user={this.state.user} />
+              {/*<PopMessage />*/}
+              {this.state.message ? <p>{this.state.message}</p> : ''}
             </span>
           </div>
         </header>

@@ -39823,7 +39823,7 @@ exports.throwIf = function(val,msg){
 
 var Reflux = require('reflux');
 
-module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'logout', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPart', 'destroyStoryPart', 'destroyStoryParts', 'unpublish']);
+module.exports = Reflux.createActions(['deleteTodoLine', 'submitTodoLine', 'login', 'logout', 'popMessage', 'setStatus', 'addStoryStart', 'addStoryPart', 'editStoryPart', 'destroyStoryPart', 'destroyStoryParts', 'unpublish']);
 
 },{"reflux":217}],238:[function(require,module,exports){
 'use strict';
@@ -40171,14 +40171,16 @@ var Reflux = require('reflux');
 var WriteStore = require('../stores/writestore');
 var ReadStore = require('../stores/readstore');
 var LoginStore = require('../stores/loginstore');
+var MessageStore = require('../stores/messagestore');
 var Router = require('react-router');
 var RouteHandler = require('react-router').RouteHandler;
 var LoginButton = require('./loginbutton');
+// var PopMessage = require('./popmessage');
 
 var Home = React.createClass({
   displayName: 'Home',
 
-  mixins: [Reflux.connect(WriteStore, 'stories'), Reflux.connect(ReadStore, 'finishedStories'), Reflux.connect(LoginStore, 'user'), Router.State],
+  mixins: [Reflux.connect(WriteStore, 'stories'), Reflux.connect(ReadStore, 'finishedStories'), Reflux.connect(LoginStore, 'user'), Reflux.connect(MessageStore, 'message'), Router.State],
   render: function render() {
     return React.createElement(
       'div',
@@ -40220,7 +40222,12 @@ var Home = React.createClass({
             'span',
             { className: 'login' },
             React.createElement(LoginButton, { provider: 'github', user: this.state.user }),
-            React.createElement(LoginButton, { provider: 'google', user: this.state.user })
+            React.createElement(LoginButton, { provider: 'google', user: this.state.user }),
+            this.state.message ? React.createElement(
+              'p',
+              null,
+              this.state.message
+            ) : ''
           )
         )
       ),
@@ -40231,8 +40238,9 @@ var Home = React.createClass({
 });
 
 module.exports = Home;
+/*<PopMessage />*/
 
-},{"../stores/loginstore":253,"../stores/readstore":254,"../stores/writestore":255,"./loginbutton":240,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
+},{"../stores/loginstore":253,"../stores/messagestore":254,"../stores/readstore":255,"../stores/writestore":256,"./loginbutton":240,"react":216,"react-router":29,"reflux":217}],246:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -40422,7 +40430,7 @@ var WriteNode = React.createClass({
     var rawMarkup;
 
     if (!_.isUndefined(this.props.selected)) {
-      endingClass = this.props.selected.isEnding ? 'ending' : '';
+      endingClass = this.props.selected.isEnding ? ' ending' : '';
       rawMarkup = marked(this.props.selected.txt, { sanitize: true });
     }
 
@@ -40849,6 +40857,21 @@ module.exports = Reflux.createStore({
 'use strict';
 
 var Reflux = require('reflux');
+var actions = require('../actions');
+
+module.exports = Reflux.createStore({
+  init: function init() {
+    this.listenTo(actions.popMessage, this.onPopMessage.bind(this));
+  },
+  onPopMessage: function onPopMessage(message) {
+    this.trigger(message);
+  }
+});
+
+},{"../actions":237,"reflux":217}],255:[function(require,module,exports){
+'use strict';
+
+var Reflux = require('reflux');
 var Firebase = require('firebase');
 var actions = require('../actions');
 
@@ -40893,7 +40916,7 @@ module.exports = Reflux.createStore({
   }
 });
 
-},{"../actions":237,"firebase":2,"reflux":217}],255:[function(require,module,exports){
+},{"../actions":237,"firebase":2,"reflux":217}],256:[function(require,module,exports){
 'use strict';
 
 var Reflux = require('reflux');

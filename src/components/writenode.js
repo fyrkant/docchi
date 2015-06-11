@@ -139,7 +139,7 @@ var WriteNode = React.createClass({
     var rawMarkup;
 
     if (!_.isUndefined(this.props.selected)) {
-      endingClass = this.props.selected.isEnding ? 'ending' : '' ;
+      endingClass = this.props.selected.isEnding ? ' ending' : '' ;
       rawMarkup = marked(this.props.selected.txt, {sanitize: true});
     }
 
