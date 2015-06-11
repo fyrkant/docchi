@@ -1,7 +1,5 @@
 ## Docchi
 
-[![Build Status](https://magnum.travis-ci.com/1dv430/mw222rs-project.svg?token=qxeTPsBjzxAJwZECo7Z2&branch=master)](https://magnum.travis-ci.com/1dv430/mw222rs-project)
+[![Build Status](https://travis-ci.org/mw222rs/docchi.svg?branch=master)](https://travis-ci.org/mw222rs/docchi)[![Build Status](https://travis-ci.org/mw222rs/docchi.svg?branch=master)](https://travis-ci.org/mw222rs/docchi)
 
-Här finner du källkoden till mitt individuella mjukvaruutvecklingsprojekt som genomförs i kursen 1DV430 på Linnéuniversitetet.
-
-[Hoppa över till Wikin](../../wiki) för mera information kring applikationen och utvecklandets framfart.
+Docchi is an application written in JavaScript that lets the user read and write choose-your-own-adventure stories.
